@@ -10,7 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eduardo.fabs.ExpandedMenuModel;
+import com.eduardo.fabs.models.ExpandedMenuModel;
 import com.eduardo.fabs.R;
 
 import java.util.HashMap;

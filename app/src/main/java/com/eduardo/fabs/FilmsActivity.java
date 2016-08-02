@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
+import com.eduardo.fabs.models.ExpandedMenuModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.eduardo.fabs;
+package com.eduardo.fabs.models;
 
 /**
  * Created by Eduardo on 01/08/2016.

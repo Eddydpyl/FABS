@@ -18,6 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".data.FABSContentProvider"
+            android:authorities="com.eduardo.fabs"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

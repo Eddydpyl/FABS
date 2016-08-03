@@ -14,6 +14,7 @@ import android.content.SyncResult;
 import android.os.Bundle;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.fetch.FetchMovies;
 import com.eduardo.fabs.utils.Constants;
 
 /**
@@ -69,8 +70,6 @@ public class FABSSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-    /*
-     * Put the data transfer code here.
-     */
+        FetchMovies.updateData();
     }
 }

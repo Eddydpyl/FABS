@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.eduardo.fabs.utils.Constants;
 import com.eduardo.fabs.utils.UserCategory;
 
 /**
@@ -13,17 +14,16 @@ import com.eduardo.fabs.utils.UserCategory;
 
 public class FABSContract {
 
-    public static final String CONTENT_AUTHORITY = "com.eduardo.fabs";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + Constants.CONTENT_AUTHORITY);
 
-    public static final class MOVIES_TABLE implements BaseColumns {
+    public static final class MY_MOVIES_TABLE implements BaseColumns {
 
-        public static final String TABLE_NAME = "movies";
+        public static final String TABLE_NAME = "my_movies";
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
 
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
 
         // THE TITLE OF THE MOVIE
         public static final String COLUMN_TITLE = "title";
@@ -63,6 +63,134 @@ public class FABSContract {
 
         public static UserCategory getUserCategoryFromUri(Uri uri){
             return UserCategory.valueOf(uri.getQueryParameter(COLUMN_USER_CATEGORY));
+        }
+    }
+
+    public static final class POPULAR_MOVIES_TABLE implements BaseColumns {
+
+        public static final String TABLE_NAME = "popular_movies";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+        // THE TITLE OF THE MOVIE
+        public static final String COLUMN_TITLE = "title";
+
+        // A SHORT DESCRIPTION OF THE MOVIE
+        public static final String COLUMN_OVERVIEW = "overview";
+
+        // THE POSTER IMAGE OF THE MOVIE
+        public static final String COLUMN_POSTER_IMAGE = "poster_image";
+
+        // THE RELEASE DATE OF THE MOVIE
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+
+        // POPULARITY OF THE MOVIE
+        public static final String COLUMN_POPULARITY = "popularity";
+
+        // VOTE AVERAGE
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class TOP_RATED_MOVIES_TABLE implements BaseColumns {
+
+        public static final String TABLE_NAME = "top_rated_movies";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+        // THE TITLE OF THE MOVIE
+        public static final String COLUMN_TITLE = "title";
+
+        // A SHORT DESCRIPTION OF THE MOVIE
+        public static final String COLUMN_OVERVIEW = "overview";
+
+        // THE POSTER IMAGE OF THE MOVIE
+        public static final String COLUMN_POSTER_IMAGE = "poster_image";
+
+        // THE RELEASE DATE OF THE MOVIE
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+
+        // POPULARITY OF THE MOVIE
+        public static final String COLUMN_POPULARITY = "popularity";
+
+        // VOTE AVERAGE
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class UPCOMING_MOVIES_TABLE implements BaseColumns {
+
+        public static final String TABLE_NAME = "upcoming_movies";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+        // THE TITLE OF THE MOVIE
+        public static final String COLUMN_TITLE = "title";
+
+        // A SHORT DESCRIPTION OF THE MOVIE
+        public static final String COLUMN_OVERVIEW = "overview";
+
+        // THE POSTER IMAGE OF THE MOVIE
+        public static final String COLUMN_POSTER_IMAGE = "poster_image";
+
+        // THE RELEASE DATE OF THE MOVIE
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+
+        // POPULARITY OF THE MOVIE
+        public static final String COLUMN_POPULARITY = "popularity";
+
+        // VOTE AVERAGE
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class NOW_IN_THEATERS_MOVIES_TABLE implements BaseColumns {
+
+        public static final String TABLE_NAME = "now_in_theaters_movies";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Constants.CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+        // THE TITLE OF THE MOVIE
+        public static final String COLUMN_TITLE = "title";
+
+        // A SHORT DESCRIPTION OF THE MOVIE
+        public static final String COLUMN_OVERVIEW = "overview";
+
+        // THE POSTER IMAGE OF THE MOVIE
+        public static final String COLUMN_POSTER_IMAGE = "poster_image";
+
+        // THE RELEASE DATE OF THE MOVIE
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+
+        // POPULARITY OF THE MOVIE
+        public static final String COLUMN_POPULARITY = "popularity";
+
+        // VOTE AVERAGE
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
 }

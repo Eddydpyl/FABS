@@ -1,8 +1,5 @@
 package com.eduardo.fabs;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,12 +27,6 @@ public class FilmsActivity extends AppCompatActivity
     ExpandableListView expandableList;
     List<ExpandedMenuModel> listDataHeader;
     HashMap<ExpandedMenuModel, List<String>> listDataChild;
-    Account mAccount;
-
-    // An account type, in the form of a domain name
-    public static final String ACCOUNT_TYPE = "fabs.eduardo.com";
-    // The account name
-    public static final String ACCOUNT = "dummyaccount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +64,6 @@ public class FilmsActivity extends AppCompatActivity
                 return true;
             }
         });
-
-        // Create the dummy account
-        mAccount = CreateSyncAccount(this);
     }
 
     private void prepareListData() {
@@ -111,16 +99,6 @@ public class FilmsActivity extends AppCompatActivity
         listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
         listDataChild.put(listDataHeader.get(1), heading2);
 
-    }
-
-    public static Account CreateSyncAccount(Context context) {
-        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
-        AccountManager accountManager = (AccountManager) context.getSystemService(ACCOUNT_SERVICE);
-        if (accountManager.addAccountExplicitly(newAccount, null, null)) {}
-        else {
-            //The account exists or some other error occurred. Log this, report it, or handle it internally
-        }
-        return newAccount;
     }
 
     @Override
@@ -161,6 +139,7 @@ public class FilmsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        //TODO: Use actual items
         if (id == R.id.action_settings) {
             // Handle action
         }

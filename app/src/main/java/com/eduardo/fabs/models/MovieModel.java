@@ -34,7 +34,6 @@ public class MovieModel {
     private Boolean video;
     private Float vote_average;
 
-    private Boolean userEdited;
     private UserCategory userCategory;
     private Double userRating;
 
@@ -53,9 +52,6 @@ public class MovieModel {
         this.vote_count = vote_count;
         this.video = video;
         this.vote_average = vote_average;
-        this.userEdited = false;
-        this.userCategory = null;
-        this.userRating = null;
     }
 
     public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Float popularity, int vote_count, Boolean video, Float vote_average, UserCategory userCategory, Double userRating) {
@@ -73,7 +69,6 @@ public class MovieModel {
         this.vote_count = vote_count;
         this.video = video;
         this.vote_average = vote_average;
-        this.userEdited = true;
         this.userCategory = userCategory;
         this.userRating = userRating;
     }
@@ -94,7 +89,6 @@ public class MovieModel {
         this.vote_count = vote_count;
         this.video = video;
         this.vote_average = vote_average;
-        this.userEdited = userEdited;
         this.userCategory = userCategory;
         this.userRating = userRating;
     }
@@ -115,17 +109,8 @@ public class MovieModel {
         this.vote_count = vote_count;
         this.video = video;
         this.vote_average = vote_average;
-        this.userEdited = userEdited;
         this.userCategory = userCategory;
         this.userRating = userRating;
-    }
-
-    public Boolean getUserEdited() {
-        return userEdited;
-    }
-
-    public void setUserEdited(Boolean userEdited) {
-        this.userEdited = userEdited;
     }
 
     public double getUserRating() {
@@ -168,7 +153,7 @@ public class MovieModel {
         this.overview = overview;
     }
 
-    public String getRelease_date() {
+    public String getReleaseDate() {
         return release_date;
     }
 
@@ -257,23 +242,16 @@ public class MovieModel {
     }
 
     public String getImageFullURL() {
-        return Constants.MovieConstants.IMAGE_BASE_URL + Constants.MovieConstants.IMAGE_SMALL_SIZE + getPosterPath();
+        return Constants.TMDBConstants.IMAGE_BASE_URL + Constants.TMDBConstants.IMAGE_SMALL_SIZE + getPosterPath();
     }
 
     public String getRating() {
-        return getVoteAverage() + "/" + Constants.MovieConstants.RATING_MAX;
+        return getVoteAverage() + "/" + Constants.TMDBConstants.RATING_MAX;
     }
 
-    public String getMovieReleaseDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-mm");
-        String date = "";
-        try {
-            Date newDate = format.parse(getRelease_date());
-            format = new SimpleDateFormat("MMM dd, yyyy");
-            date = format.format(newDate);
-        } catch (ParseException e) {
-
-        }
+    public Date getMovieReleaseDate() throws ParseException {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = inputFormat.parse(getReleaseDate());
         return date;
     }
 }

@@ -311,46 +311,6 @@ public class FetchMovies {
 
     }
 
-    // Searches for movies in the local movie database
-    public class SearchLocalMoviesTask extends AsyncTask<String, Void, List<MovieModel>> {
-
-        public final String LOG_TAG = SearchLocalMoviesTask.class.getSimpleName();
-
-        private Context mContext;
-        String userCategory;
-
-        public SearchLocalMoviesTask(Context context, String userCategory) {
-            super();
-            mContext = context;
-            this.userCategory = userCategory;
-        }
-
-        @Override
-        protected List<MovieModel> doInBackground(String... searchQuery) {
-            return new ArrayList<>();
-        }
-    }
-
-    // Fetches movies in the local movie database
-    public class FetchLocalMoviesTask extends AsyncTask<String, Void, List<MovieModel>> {
-
-        public final String LOG_TAG = FetchLocalMoviesTask.class.getSimpleName();
-
-        private Context mContext;
-        String userCategory;
-
-        public FetchLocalMoviesTask(Context context, String userCategory) {
-            super();
-            mContext = context;
-            this.userCategory = userCategory;
-        }
-
-        @Override
-        protected List<MovieModel> doInBackground(String... searchQuery) {
-            return new ArrayList<>();
-        }
-    }
-
     // Retrieves a movie's details from the online movie database
     public class FetchMovieDetailsTask extends AsyncTask<String, Void, MovieModel> {
 

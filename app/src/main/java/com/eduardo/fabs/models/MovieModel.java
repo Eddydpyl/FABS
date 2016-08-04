@@ -4,8 +4,6 @@ package com.eduardo.fabs.models;
  * Created by Eduardo on 02/08/2016.
  */
 
-import android.database.Cursor;
-
 import com.eduardo.fabs.fetch.FetchMovies;
 import com.eduardo.fabs.utils.Constants;
 import com.eduardo.fabs.utils.UserCategory;
@@ -40,13 +38,11 @@ public class MovieModel {
     private UserCategory userCategory;
     private Double userRating;
 
-    public MovieModel() {}
-
-    public MovieModel(String poster_path, String overview, String release_date, String id, String title, Double popularity, Double vote_average) {
+    public MovieModel(String id, String poster_path, String overview, String release_date, String title, Double popularity, Double vote_average) {
+        this.id = id;
         this.poster_path = poster_path;
         this.overview = overview;
         this.release_date = release_date;
-        this.id = id;
         this.title = title;
         this.popularity = popularity;
         this.vote_average = vote_average;
@@ -70,26 +66,6 @@ public class MovieModel {
     }
 
     public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Double popularity, int vote_count, Boolean video, Double vote_average, UserCategory userCategory, Double userRating) {
-        this.poster_path = poster_path;
-        this.adult = adult;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.genre_ids = genre_ids;
-        this.id = id;
-        this.original_title = original_title;
-        this.original_language = original_language;
-        this.title = title;
-        this.backdrop_path = backdrop_path;
-        this.popularity = popularity;
-        this.vote_count = vote_count;
-        this.video = video;
-        this.vote_average = vote_average;
-        this.userCategory = userCategory;
-        this.userRating = userRating;
-    }
-
-    // TODO: Constructor from cursor
-    public MovieModel(Cursor cursor) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;

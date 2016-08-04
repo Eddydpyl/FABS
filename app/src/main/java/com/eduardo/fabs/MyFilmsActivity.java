@@ -14,19 +14,38 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
+import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FilmsActivity extends AppCompatActivity
+public class MyFilmsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
     List<ExpandedMenuModel> listDataHeader;
     HashMap<ExpandedMenuModel, List<String>> listDataChild;
+
+    private static final String[] MY_FILMS_COLUMNS = {
+        FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_POSTER_IMAGE,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_OVERVIEW,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY,
+            FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE
+    };
+
+    static final int COL_MY_MOVIE_ID = 0;
+    static final int COL_MY_MOVIE_POSTER_IMAGE = 1;
+    static final int COL_MY_MOVIE_OVERVIEW= 2;
+    static final int COL_MY_MOVIE_RELEASE_DATE = 3;
+    static final int COL_MY_MOVIE_TITLE = 4;
+    static final int COL_MY_MOVIE_POPULARITY = 5;
+    static final int COL_MY_MOVIE_VOTE_AVERAGE = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

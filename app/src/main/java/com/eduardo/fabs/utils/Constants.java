@@ -15,8 +15,10 @@ public final class Constants {
         public final static String MOVIE_TAG = "movie";
         public final static String SERIES_TAG = "tv";
         public final static String DISCOVER_TAG = "discover";
+        public final static String SEARCH_TAG = "search";
+        public final static String QUERY_PARAM = "query=";
         public static final String API_KEY_QUERY_PARAM = "api_key=";
-        public static final String API_KEY = "";
+        public static final String API_KEY = "5e06959ff0b33747049b1ac2295f4aac";
 
         public final static String REQUEST_POPULAR = "popular";
         public final static String REQUEST_TOP_RATED = "top_rated";

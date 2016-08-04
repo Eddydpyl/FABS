@@ -6,14 +6,17 @@ package com.eduardo.fabs.models;
 
 import android.database.Cursor;
 
+import com.eduardo.fabs.fetch.FetchMovies;
 import com.eduardo.fabs.utils.Constants;
 import com.eduardo.fabs.utils.UserCategory;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,15 +32,27 @@ public class MovieModel {
     private String original_language;
     private String title;
     private String backdrop_path;
-    private Float popularity;
+    private Double popularity;
     private int vote_count;
     private Boolean video;
-    private Float vote_average;
+    private Double vote_average;
 
     private UserCategory userCategory;
     private Double userRating;
 
-    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Float popularity, int vote_count, Boolean video, Float vote_average) {
+    public MovieModel() {}
+
+    public MovieModel(String poster_path, String overview, String release_date, String id, String title, Double popularity, Double vote_average) {
+        this.poster_path = poster_path;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.id = id;
+        this.title = title;
+        this.popularity = popularity;
+        this.vote_average = vote_average;
+    }
+
+    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Double popularity, int vote_count, Boolean video, Double vote_average) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;
@@ -54,7 +69,7 @@ public class MovieModel {
         this.vote_average = vote_average;
     }
 
-    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Float popularity, int vote_count, Boolean video, Float vote_average, UserCategory userCategory, Double userRating) {
+    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Double popularity, int vote_count, Boolean video, Double vote_average, UserCategory userCategory, Double userRating) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;
@@ -93,24 +108,27 @@ public class MovieModel {
         this.userRating = userRating;
     }
 
-    // TODO: Constructor from JSON
-    public MovieModel(JSONObject jsonObject) throws JSONException{
-        this.poster_path = poster_path;
-        this.adult = adult;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.genre_ids = genre_ids;
-        this.id = id;
-        this.original_title = original_title;
-        this.original_language = original_language;
-        this.title = title;
-        this.backdrop_path = backdrop_path;
-        this.popularity = popularity;
-        this.vote_count = vote_count;
-        this.video = video;
-        this.vote_average = vote_average;
-        this.userCategory = userCategory;
-        this.userRating = userRating;
+    public MovieModel(JSONObject movieJson) throws JSONException{
+        this.id = String.valueOf(movieJson.getInt(FetchMovies.ID));
+        this.title = movieJson.getString(FetchMovies.TITLE);
+        this.overview = movieJson.getString(FetchMovies.OVERVIEW);
+        this.poster_path = movieJson.getString(FetchMovies.POSTER_IMAGE);
+        this.release_date = movieJson.getString(FetchMovies.RELEASE_DATE);
+        this.popularity = movieJson.getDouble(FetchMovies.POPULARITY);
+        this.vote_average = movieJson.getDouble(FetchMovies.VOTE_AVERAGE);
+        this.adult = movieJson.getBoolean(FetchMovies.ADULT);
+        JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRES);
+        List<Integer> genresIDs = new ArrayList<Integer>();
+        for(int i = 0; i < genres.length(); i++){
+            Integer integer = genres.getJSONObject(i).getInt(FetchMovies.GENRES_ID);
+            genresIDs.add(integer);
+        }
+        this.genre_ids = genresIDs;
+        this.original_title = movieJson.getString(FetchMovies.ORIGINAL_TITLE);
+        this.original_language = movieJson.getString(FetchMovies.ORIGINAL_LANGUAGE);
+        this.backdrop_path = movieJson.getString(FetchMovies.BACKDROP_PATH);
+        this.vote_count = movieJson.getInt(FetchMovies.VOTE_COUNT);
+        this.video = movieJson.getBoolean(FetchMovies.VIDEO);
     }
 
     public double getUserRating() {
@@ -209,11 +227,11 @@ public class MovieModel {
         this.backdrop_path = backdrop_path;
     }
 
-    public Float getPopularity() {
+    public Double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(Float popularity) {
+    public void setPopularity(Double popularity) {
         this.popularity = popularity;
     }
 
@@ -233,11 +251,11 @@ public class MovieModel {
         this.video = video;
     }
 
-    public Float getVoteAverage() {
+    public Double getVoteAverage() {
         return vote_average;
     }
 
-    public void setVoteAverage(Float vote_average) {
+    public void setVoteAverage(Double vote_average) {
         this.vote_average = vote_average;
     }
 

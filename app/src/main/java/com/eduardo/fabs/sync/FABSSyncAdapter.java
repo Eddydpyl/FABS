@@ -70,6 +70,6 @@ public class FABSSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        FetchMovies.updateData();
+        FetchMovies.updateData(getContext());
     }
 }

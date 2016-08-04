@@ -18,6 +18,7 @@ public final class Constants {
         public final static String SEARCH_TAG = "search";
         public final static String QUERY_PARAM = "query=";
         public static final String API_KEY_QUERY_PARAM = "api_key=";
+        //TODO: This is a dummy API key that, while functional, will not be used in the release version
         public static final String API_KEY = "5e06959ff0b33747049b1ac2295f4aac";
 
         public final static String REQUEST_POPULAR = "popular";

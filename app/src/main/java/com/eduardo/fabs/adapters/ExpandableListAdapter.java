@@ -10,8 +10,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eduardo.fabs.models.ExpandedMenuModel;
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.models.ExpandedMenuModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,15 +77,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // TODO: Add separators by inserting drawables in the groupPosition you want
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
         ExpandedMenuModel headerTitle = (ExpandedMenuModel) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (groupPosition != 2) {
             convertView = layoutInflater.inflate(R.layout.nav_submenu_parent, null);
+        } else {
+            convertView = layoutInflater.inflate(R.layout.nav_divider, null);
+            convertView.setOnClickListener(null);
+            return convertView;
         }
+
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_parent);
         ImageView headerIcon = (ImageView) convertView.findViewById(R.id.iconimage);
         lblListHeader.setTypeface(null, Typeface.BOLD);
@@ -110,6 +115,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             }
         });
+
         return convertView;
     }
 
@@ -118,9 +124,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.mContext
+            LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.nav_submenu_child, null);
+            convertView = layoutInflater.inflate(R.layout.nav_submenu_child, null);
         }
 
         TextView txtListChild = (TextView) convertView

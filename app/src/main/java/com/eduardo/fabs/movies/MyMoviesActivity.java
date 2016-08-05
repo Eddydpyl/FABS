@@ -167,6 +167,21 @@ public class MyMoviesActivity extends AppCompatActivity
         item2.setIconImg(android.R.drawable.ic_delete);
         listDataHeader.add(item2);
 
+        ExpandedMenuModel item3 = new ExpandedMenuModel();
+        item3.setIconName("SEPARATOR");
+        item3.setIconImg(android.R.drawable.ic_delete);
+        listDataHeader.add(item3);
+
+        ExpandedMenuModel item4 = new ExpandedMenuModel();
+        item4.setIconName("Settings");
+        item4.setIconImg(android.R.drawable.ic_delete);
+        listDataHeader.add(item4);
+
+        ExpandedMenuModel item5 = new ExpandedMenuModel();
+        item5.setIconName("Donate");
+        item5.setIconImg(android.R.drawable.ic_delete);
+        listDataHeader.add(item5);
+
         List<String> heading1 = new ArrayList<String>();
         heading1.add("Completed");
         heading1.add("Plan to Watch");

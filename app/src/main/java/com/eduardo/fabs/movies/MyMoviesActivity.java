@@ -1,4 +1,4 @@
-package com.eduardo.fabs;
+package com.eduardo.fabs.movies;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
@@ -35,7 +36,7 @@ public class MyMoviesActivity extends AppCompatActivity
         state = i;
     }
 
-    private static final String[] MY_MOVIES_COLUMNS = {
+    public static final String[] MY_MOVIES_COLUMNS = {
         FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID,
             FABSContract.MY_MOVIES_TABLE.COLUMN_POSTER_IMAGE,
             FABSContract.MY_MOVIES_TABLE.COLUMN_OVERVIEW,
@@ -108,7 +109,7 @@ public class MyMoviesActivity extends AppCompatActivity
                 switch (i){
                     case 0:{
                         // Click on "My Collection"
-                        MyMoviesFragment myMoviesFragment = new MyMoviesFragment();
+                        MyMoviesFragment myMoviesFragment = MyMoviesFragment.newInstance(1);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myMoviesFragment).commit();
                         break;
                     }
@@ -120,7 +121,9 @@ public class MyMoviesActivity extends AppCompatActivity
                 return true;
             }
         });
-
+        // Both are expanded by default
+        expandableList.expandGroup(0);
+        expandableList.expandGroup(1);
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {

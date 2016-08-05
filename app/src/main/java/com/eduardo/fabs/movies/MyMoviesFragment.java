@@ -1,10 +1,12 @@
-package com.eduardo.fabs;
+package com.eduardo.fabs.movies;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,17 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.eduardo.fabs.adapters.MyMoviesRecyclerViewAdapter;
-import com.eduardo.fabs.dummy.DummyContent;
+import com.eduardo.fabs.R;
+import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
+import com.eduardo.fabs.data.FABSContract;
 
 public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     // Each loader in an activity needs a different ID
     private static final int MYMOVIES_LOADER = 0;
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    private int mColumnCount = 1;
+    private CursorRecyclerAdapter cursorRecyclerAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -33,8 +35,6 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public MyMoviesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static MyMoviesFragment newInstance(int columnCount) {
         MyMoviesFragment fragment = new MyMoviesFragment();
         Bundle args = new Bundle();
@@ -55,11 +55,9 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -68,7 +66,22 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS));
+            // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
+            cursorRecyclerAdapter = new CursorRecyclerAdapter(null) {
+                @Override
+                public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, Cursor cursor) {
+                    // TODO: Fill view with data from cursor
+                    ((MovieViewHolder) holder).mContentView.setText(cursor.getString(MyMoviesActivity.COL_MY_MOVIE_OVERVIEW));
+                }
+
+                @Override
+                public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    // TODO: Create layout for movies in fragment_mymovies
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_mymovies, parent, false);
+                    return new MovieViewHolder(view);
+                }
+            };
+            recyclerView.setAdapter(cursorRecyclerAdapter);
         }
         return view;
     }
@@ -86,16 +99,22 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        // We create the cursor that our adapter will use, but we don't assign it here
+        // TODO: Use sort order specified by the user
+        String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
+        Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, sortOrder);
+        return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, sortOrder);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        // Here cursorRecyclerAdapter receives the cursor it needs to work
+        cursorRecyclerAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        cursorRecyclerAdapter.swapCursor(null);
     }
 }

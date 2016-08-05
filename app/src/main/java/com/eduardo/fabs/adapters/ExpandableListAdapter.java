@@ -43,9 +43,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        int childCount = 0;
-        if (groupPosition != 2) {
+        int childCount;
+        try {
             childCount = this.mListDataChild.get(this.mListDataHeader.get(groupPosition)).size();
+        } catch (NullPointerException n){
+            childCount = 0;
         }
         return childCount;
     }
@@ -84,7 +86,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.nav_submenu_parent, null);
         }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.submenu);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_parent);
         ImageView headerIcon = (ImageView) convertView.findViewById(R.id.iconimage);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle.getIconName());
@@ -122,7 +124,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.submenu);
+                .findViewById(R.id.textView_child);
 
         txtListChild.setText(childText);
 

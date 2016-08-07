@@ -19,24 +19,42 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.data.FABSContract;
 
-public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class TopRatedMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
-    private static final int MYMOVIES_LOADER = 0;
+    private static final int TOPRATEDMOVIES_LOADER = 1;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
+
+    public static final String[] TOP_RATED_MOVIES_COLUMNS = {
+            FABSContract.TOP_RATED_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.TOP_RATED_MOVIES_TABLE._ID,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_POSTER_IMAGE,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_OVERVIEW,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_RELEASE_DATE,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_TITLE,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_POPULARITY,
+            FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_VOTE_AVERAGE
+    };
+
+    static final int COL_TOP_RATED_MOVIES_TABLE_ID = 0;
+    static final int COL_TOP_RATED_MOVIES_TABLE_POSTER_IMAGE = 1;
+    static final int COL_TOP_RATED_MOVIES_TABLE_OVERVIEW= 2;
+    static final int COL_TOP_RATED_MOVIES_TABLE_RELEASE_DATE = 3;
+    static final int COL_TOP_RATED_MOVIES_TABLE_TITLE = 4;
+    static final int TOP_RATED_MOVIES_TABLE_POPULARITY = 5;
+    static final int COL_TOP_RATED_MOVIES_TABLE_VOTE_AVERAGE = 6;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
 
-    public MyMoviesFragment() {
+    public TopRatedMoviesFragment() {
     }
 
-    public static MyMoviesFragment newInstance(int columnCount) {
-        MyMoviesFragment fragment = new MyMoviesFragment();
+    public static TopRatedMoviesFragment newInstance(int columnCount) {
+        TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -51,12 +69,12 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        MyMoviesActivity.setState(0);
+        DiscoverMoviesActivity.setState(1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_topratedmovies_list, container, false);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -71,13 +89,13 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                 @Override
                 public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, Cursor cursor) {
                     // TODO: Fill view with data from cursor
-                    ((MovieViewHolder) holder).mContentView.setText(cursor.getString(MyMoviesActivity.COL_MY_MOVIES_OVERVIEW));
+                    ((MovieViewHolder) holder).mContentView.setText(cursor.getString(COL_TOP_RATED_MOVIES_TABLE_OVERVIEW));
                 }
 
                 @Override
                 public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    // TODO: Create layout for movies in fragment_mymovies
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_mymovies, parent, false);
+                    // TODO: Create layout for movies in fragment_discovermovies
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_discovermovies, parent, false);
                     return new MovieViewHolder(view);
                 }
             };
@@ -101,10 +119,10 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
         // TODO: Use sort order specified by the user
-        String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
-        Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        String sortOrder = FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_POPULARITY;
+        Uri uri = FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI;
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, sortOrder);
-        return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, sortOrder);
+        return new CursorLoader(getActivity(), uri, TOP_RATED_MOVIES_COLUMNS, null, null, sortOrder);
     }
 
     @Override

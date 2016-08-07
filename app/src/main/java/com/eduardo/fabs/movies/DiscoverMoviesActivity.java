@@ -15,21 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
-import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MyMoviesActivity extends AppCompatActivity
+public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    public static final String TAG = "myMovies";
+    public static final String TAG = "discoverMovies";
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -43,46 +41,24 @@ public class MyMoviesActivity extends AppCompatActivity
         state = i;
     }
 
-    public static final String[] MY_MOVIES_COLUMNS = {
-        FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_POSTER_IMAGE,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_OVERVIEW,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY,
-            FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING
-    };
-
-    static final int COL_MY_MOVIES_ID = 0;
-    static final int COL_MY_MOVIES_POSTER_IMAGE = 1;
-    static final int COL_MY_MOVIES_OVERVIEW = 2;
-    static final int COL_MY_MOVIES_RELEASE_DATE = 3;
-    static final int COL_MY_MOVIES_TITLE = 4;
-    static final int COL_MY_MOVIES_POPULARITY = 5;
-    static final int COL_MY_MOVIES_VOTE_AVERAGE = 6;
-    static final int COL_MY_MOVIES_USER_CATEGORY = 7;
-    static final int COL_MY_MOVIES_USER_RATING = 8;
-
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mymovies);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_mymovies);
+        setContentView(R.layout.activity_discovermovies);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_discovermovies);
         setSupportActionBar(toolbar);
 
         context = this;
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_mymovies);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
-        expandableList = (ExpandableListView) findViewById(R.id.navigationMenu_mymovies);
+        expandableList = (ExpandableListView) findViewById(R.id.navigationMenu_discovermovies);
 
         prepareListData();
 
@@ -96,41 +72,37 @@ public class MyMoviesActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 switch (childString){
                     case "Completed":{
-                        CompletedMoviesFragment fragment = CompletedMoviesFragment.newInstance(1);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        break;
-                    }
-                    case "Plan to Watch":{
-                        PlanToWatchMoviesFragment fragment = PlanToWatchMoviesFragment.newInstance(1);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        break;
-                    }
-                    case "Popular":{
-                        Intent intent = new Intent(context, DiscoverMoviesActivity.class);
-                        intent.putExtra(getString(R.string.intent_fragment), 0);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        break;
-                    }
-                    case "Top Rated":{
-                        Intent intent = new Intent(context, DiscoverMoviesActivity.class);
+                        Intent intent = new Intent(context, MyMoviesActivity.class);
                         intent.putExtra(getString(R.string.intent_fragment), 1);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                         break;
                     }
-                    case "Upcoming":{
-                        Intent intent = new Intent(context, DiscoverMoviesActivity.class);
+                    case "Plan to Watch":{
+                        Intent intent = new Intent(context, MyMoviesActivity.class);
                         intent.putExtra(getString(R.string.intent_fragment), 2);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                         break;
                     }
+                    case "Popular":{
+                        PopularMoviesFragment fragment = PopularMoviesFragment.newInstance(1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
+                    }
+                    case "Top Rated":{
+                        TopRatedMoviesFragment fragment = TopRatedMoviesFragment.newInstance(1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
+                    }
+                    case "Upcoming":{
+                        UpcomingMoviesFragment fragment = UpcomingMoviesFragment.newInstance(1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
+                    }
                     case "Now in Theaters":{
-                        Intent intent = new Intent(context, DiscoverMoviesActivity.class);
-                        intent.putExtra(getString(R.string.intent_fragment), 3);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
+                        NowInTheatersMoviesFragment fragment = NowInTheatersMoviesFragment.newInstance(1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                 }
@@ -144,8 +116,9 @@ public class MyMoviesActivity extends AppCompatActivity
                     case 0:{
                         // Click on "My Collection"
                         drawer.closeDrawer(GravityCompat.START);
-                        MyMoviesFragment fragment = MyMoviesFragment.newInstance(1);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        Intent intent = new Intent(context, MyMoviesFragment.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
                         break;
                     }
                     case 1:{
@@ -161,7 +134,7 @@ public class MyMoviesActivity extends AppCompatActivity
                     }
                     case 4:{
                         // Click on "Donate"
-                        Intent intent = new Intent(context, DonateActivity.class);
+                        Intent intent = new Intent();
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);
@@ -176,9 +149,9 @@ public class MyMoviesActivity extends AppCompatActivity
         expandableList.expandGroup(1);
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
-        if(intent != null){
+        if(intent != null) {
             Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
-            if(i != 0){
+            if (i != 0) {
                 setState(i);
             }
         }
@@ -197,16 +170,19 @@ public class MyMoviesActivity extends AppCompatActivity
             Fragment fragment;
             switch (state){
                 case 0:
-                    fragment = new MyMoviesFragment();
+                    fragment = PopularMoviesFragment.newInstance(1);
                     break;
                 case 1:
-                    fragment = new CompletedMoviesFragment();
+                    fragment = TopRatedMoviesFragment.newInstance(1);
                     break;
                 case 2:
-                    fragment = new PlanToWatchMoviesFragment();
+                    fragment = UpcomingMoviesFragment.newInstance(1);
+                    break;
+                case 3:
+                    fragment = NowInTheatersMoviesFragment.newInstance(1);
                     break;
                 default:
-                    fragment = new MyMoviesFragment();
+                    fragment = PopularMoviesFragment.newInstance(1);
             }
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -257,7 +233,7 @@ public class MyMoviesActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -268,7 +244,7 @@ public class MyMoviesActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.mymovies, menu);
+        getMenuInflater().inflate(R.menu.discovermovies, menu);
         return true;
     }
 
@@ -280,7 +256,7 @@ public class MyMoviesActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings_mymovies) {
+        if (id == R.id.action_settings_discovermovies) {
             return true;
         }
 
@@ -289,7 +265,7 @@ public class MyMoviesActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

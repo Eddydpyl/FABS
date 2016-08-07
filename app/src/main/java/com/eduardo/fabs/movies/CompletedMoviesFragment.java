@@ -18,11 +18,12 @@ import android.view.ViewGroup;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.data.FABSContract;
+import com.eduardo.fabs.utils.UserCategory;
 
-public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class CompletedMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
-    private static final int MYMOVIES_LOADER = 0;
+    private static final int COMPLETEDMOVIES_LOADER = 1;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
@@ -32,11 +33,11 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
      * fragment (e.g. upon screen orientation changes).
      */
 
-    public MyMoviesFragment() {
+    public CompletedMoviesFragment() {
     }
 
-    public static MyMoviesFragment newInstance(int columnCount) {
-        MyMoviesFragment fragment = new MyMoviesFragment();
+    public static CompletedMoviesFragment newInstance(int columnCount) {
+        CompletedMoviesFragment fragment = new CompletedMoviesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -51,12 +52,12 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        MyMoviesActivity.setState(0);
+        MyMoviesActivity.setState(1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_completedmovies_list, container, false);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -102,7 +103,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         // We create the cursor that our adapter will use, but we don't assign it here
         // TODO: Use sort order specified by the user
         String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
-        Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        Uri uri = FABSContract.MY_MOVIES_TABLE.buildMovieUriWithUserCategory(UserCategory.COMPLETED);
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, sortOrder);
         return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, sortOrder);
     }

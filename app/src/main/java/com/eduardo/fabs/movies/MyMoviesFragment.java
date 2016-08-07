@@ -86,6 +86,12 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(MYMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public void onAttach(Context context) {

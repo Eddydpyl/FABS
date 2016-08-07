@@ -21,6 +21,7 @@ import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
+import com.eduardo.fabs.sync.FABSSyncAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +74,8 @@ public class MyMoviesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         context = this;
+        FABSSyncAdapter.syncImmediately(context);
+        FABSSyncAdapter.periodicSync(context);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

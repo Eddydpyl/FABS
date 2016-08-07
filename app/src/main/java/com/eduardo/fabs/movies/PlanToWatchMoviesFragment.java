@@ -87,6 +87,11 @@ public class PlanToWatchMoviesFragment extends Fragment implements LoaderManager
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(PLANTOWATCHMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onAttach(Context context) {

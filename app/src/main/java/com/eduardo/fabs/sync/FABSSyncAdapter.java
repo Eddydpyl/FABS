@@ -45,7 +45,7 @@ public class FABSSyncAdapter extends AbstractThreadedSyncAdapter {
 
         if (accountManager.getPassword(newAccount) == null) {
             if (!accountManager.addAccountExplicitly(newAccount, null, null)) {
-                return null;
+                return accountManager.getAccountsByType(Constants.ACCOUNT_TYPE)[0];
             }
         }
         return newAccount;

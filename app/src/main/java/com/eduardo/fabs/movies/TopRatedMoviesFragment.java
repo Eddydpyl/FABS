@@ -104,6 +104,12 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(TOPRATEDMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public void onAttach(Context context) {

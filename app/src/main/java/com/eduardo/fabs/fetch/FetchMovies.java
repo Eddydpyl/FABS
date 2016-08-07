@@ -45,9 +45,10 @@ public class FetchMovies {
     public static final String BACKDROP_PATH = "backdrop_path";
     public static final String BELONGS_TO_COLLECTION = "belongs_to_collection";
     public static final String BUDGET = "budget";
-    public static final String GENRES = "genres";
-    public static final String GENRES_ID = "id";
-    public static final String GENRES_NAME = "name";
+    public static final String GENRESA = "genres";
+    public static final String GENRESA_ID = "id";
+    public static final String GENRESA_NAME = "name";
+    public static final String GENRESB = "genre_ids";
     public static final String HOMEPAGE = "homepage";
     public static final String IMDB_ID = "imdb_id";
     public static final String ORIGINAL_LANGUAGE = "original_language";

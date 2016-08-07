@@ -104,6 +104,12 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(NOWINTHEATERSMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public void onAttach(Context context) {

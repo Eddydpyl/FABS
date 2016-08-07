@@ -75,7 +75,6 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popularmovies_list, container, false);
-
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -104,6 +103,11 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(POPULARMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onAttach(Context context) {

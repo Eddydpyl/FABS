@@ -87,6 +87,12 @@ public class CompletedMoviesFragment extends Fragment implements LoaderManager.L
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(COMPLETEDMOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public void onAttach(Context context) {

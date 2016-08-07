@@ -93,13 +93,23 @@ public class MovieModel {
         this.popularity = movieJson.getDouble(FetchMovies.POPULARITY);
         this.vote_average = movieJson.getDouble(FetchMovies.VOTE_AVERAGE);
         this.adult = movieJson.getBoolean(FetchMovies.ADULT);
-        JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRES);
         List<Integer> genresIDs = new ArrayList<Integer>();
-        for(int i = 0; i < genres.length(); i++){
-            Integer integer = genres.getJSONObject(i).getInt(FetchMovies.GENRES_ID);
-            genresIDs.add(integer);
+        JSONArray genres;
+        try{
+            genres = movieJson.getJSONArray(FetchMovies.GENRESA);
+            for(int i = 0; i < genres.length(); i++){
+                Integer integer = genres.getJSONObject(i).getInt(FetchMovies.GENRESA_ID);
+                genresIDs.add(integer);
+                this.genre_ids = genresIDs;
+            }
+        } catch (JSONException exception){
+            genres = movieJson.getJSONArray(FetchMovies.GENRESB);
+            for(int i = 0; i < genres.length(); i++){
+                Integer integer = (Integer) genres.get(i);
+                genresIDs.add(integer);
+                this.genre_ids = genresIDs;
+            }
         }
-        this.genre_ids = genresIDs;
         this.original_title = movieJson.getString(FetchMovies.ORIGINAL_TITLE);
         this.original_language = movieJson.getString(FetchMovies.ORIGINAL_LANGUAGE);
         this.backdrop_path = movieJson.getString(FetchMovies.BACKDROP_PATH);

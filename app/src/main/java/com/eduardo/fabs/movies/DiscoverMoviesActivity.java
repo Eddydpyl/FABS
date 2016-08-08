@@ -1,5 +1,6 @@
 package com.eduardo.fabs.movies;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -242,9 +245,27 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     }
 
     @Override
+    public void startActivity(Intent intent) {
+        //check if search intent
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            intent.putExtra(getString(R.string.intent_activity), TAG);
+        }
+
+        super.startActivity(intent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.discovermovies, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.discovermovies, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search_discovermovies).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
@@ -254,12 +275,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings_discovermovies) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

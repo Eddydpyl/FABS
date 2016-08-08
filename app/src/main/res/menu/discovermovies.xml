@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search_discovermovies"
+        android:title="Search"
+        android:icon="@drawable/ic_menu_search"
+        app:showAsAction="collapseActionView|always"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
     <item
-        android:id="@+id/action_settings_discovermovies"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_menu_sort"
+        app:showAsAction="always"
+        android:title="Sort">
+        <menu>
+            <item
+                android:id="@+id/menuSortNewest_discovermovies"
+                android:title="Sort by newest" />
+            <item
+                android:id="@+id/menuSortRating_discovermovies"
+                android:title="Sort by rating" />
+        </menu>
+    </item>
 </menu>

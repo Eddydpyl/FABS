@@ -19,6 +19,8 @@
     <string name="title_fragment_top_rated_movies">Top Rated Films</string>
     <string name="title_fragment_upcoming_movies">Upcoming Films</string>
 
+    <string name="search_hint">Search</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
@@ -76,5 +78,6 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
 
 </resources>

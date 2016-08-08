@@ -29,6 +29,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             String origin = intent.getStringExtra(getString(R.string.intent_activity));
+            Integer fragment = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             //TODO: use the query and origin to search your data
         }
     }

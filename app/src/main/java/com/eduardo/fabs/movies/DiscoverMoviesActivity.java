@@ -33,7 +33,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "discoverMovies";
-    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
+    public static String sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -280,12 +280,15 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.menuSortNewest_discovermovies) {
             sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+            reloadFragment();
             return true;
         } else if(id == R.id.menuSortPopularity_discovermovies){
             sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY;
+            reloadFragment();
             return true;
         } else if(id == R.id.menuSortRating_discovermovies){
             sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+            reloadFragment();
             return true;
         } return super.onOptionsItemSelected(item);
     }
@@ -295,5 +298,30 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void reloadFragment(){
+        Fragment fragment;
+        switch (state){
+            case 0:
+                fragment = PopularMoviesFragment.newInstance(1);
+                break;
+            case 1:
+                fragment = TopRatedMoviesFragment.newInstance(1);
+                break;
+            case 2:
+                fragment = UpcomingMoviesFragment.newInstance(1);
+                break;
+            case 3:
+                fragment = NowInTheatersMoviesFragment.newInstance(1);
+                break;
+            default:
+                fragment = PopularMoviesFragment.newInstance(1);
+        }
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

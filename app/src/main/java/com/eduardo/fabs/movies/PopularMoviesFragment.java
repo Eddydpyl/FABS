@@ -25,7 +25,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     private static final int POPULARMOVIES_LOADER = 0;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private CursorRecyclerAdapter cursorRecyclerAdapter;
+    private static CursorRecyclerAdapter cursorRecyclerAdapter;
 
     public static final String[] POPULAR_MOVIES_COLUMNS = {
             FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.POPULAR_MOVIES_TABLE._ID,
@@ -124,10 +124,9 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
         // TODO: Use sort order specified by the user
-        String sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY;
         Uri uri = FABSContract.POPULAR_MOVIES_TABLE.CONTENT_URI;
-        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, sortOrder);
-        return new CursorLoader(getActivity(), uri, POPULAR_MOVIES_COLUMNS, null, null, sortOrder);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, DiscoverMoviesActivity.sortOrder);
+        return new CursorLoader(getActivity(), uri, POPULAR_MOVIES_COLUMNS, null, null, DiscoverMoviesActivity.sortOrder);
     }
 
     @Override

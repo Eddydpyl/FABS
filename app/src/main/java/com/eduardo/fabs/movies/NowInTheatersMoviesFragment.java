@@ -125,11 +125,9 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
-        // TODO: Use sort order specified by the user
-        String sortOrder = FABSContract.NOW_IN_THEATERS_MOVIES_TABLE.COLUMN_POPULARITY;
         Uri uri = FABSContract.NOW_IN_THEATERS_MOVIES_TABLE.CONTENT_URI;
-        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, sortOrder);
-        return new CursorLoader(getActivity(), uri, NOW_IN_THEATERS_MOVIES_COLUMNS, null, null, sortOrder);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, DiscoverMoviesActivity.sortOrder);
+        return new CursorLoader(getActivity(), uri, NOW_IN_THEATERS_MOVIES_COLUMNS, null, null, DiscoverMoviesActivity.sortOrder);
     }
 
     @Override

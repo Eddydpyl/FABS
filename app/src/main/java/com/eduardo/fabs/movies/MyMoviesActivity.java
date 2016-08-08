@@ -34,6 +34,7 @@ public class MyMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "myMovies";
+    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE;
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -275,6 +276,7 @@ public class MyMoviesActivity extends AppCompatActivity
         //check if search intent
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             intent.putExtra(getString(R.string.intent_activity), TAG);
+            intent.putExtra(getString(R.string.intent_fragment), state);
         }
 
         super.startActivity(intent);
@@ -302,12 +304,20 @@ public class MyMoviesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.menuSortNewest_mymovies) {
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+            reloadFragment();
             return true;
         } else if(id == R.id.menuSortPopularity_mymovies){
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
+            reloadFragment();
             return true;
         } else if(id == R.id.menuSortAverageRating_mymovies){
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+            reloadFragment();
             return true;
         } else if(id == R.id.menuSortPersonalRating_mymovies){
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING;
+            reloadFragment();
             return true;
         } return super.onOptionsItemSelected(item);
     }
@@ -317,5 +327,27 @@ public class MyMoviesActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void reloadFragment(){
+        Fragment fragment;
+        switch (state){
+            case 0:
+                fragment = new MyMoviesFragment();
+                break;
+            case 1:
+                fragment = new CompletedMoviesFragment();
+                break;
+            case 2:
+                fragment = new PlanToWatchMoviesFragment();
+                break;
+            default:
+                fragment = new MyMoviesFragment();
+        }
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

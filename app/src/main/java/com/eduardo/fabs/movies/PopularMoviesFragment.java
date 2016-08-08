@@ -25,7 +25,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     private static final int POPULARMOVIES_LOADER = 0;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private static CursorRecyclerAdapter cursorRecyclerAdapter;
+    private CursorRecyclerAdapter cursorRecyclerAdapter;
 
     public static final String[] POPULAR_MOVIES_COLUMNS = {
             FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.POPULAR_MOVIES_TABLE._ID,

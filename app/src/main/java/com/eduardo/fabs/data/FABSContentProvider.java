@@ -46,7 +46,7 @@ public class FABSContentProvider extends ContentProvider {
     }
 
     private static final String sUserCategorySelection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? ";
-    private static String sIDSelection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
+    private static final String sIDSelection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
 
     public FABSContentProvider() {}
 

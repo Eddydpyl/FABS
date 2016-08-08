@@ -304,19 +304,19 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         Fragment fragment;
         switch (state){
             case 0:
-                fragment = PopularMoviesFragment.newInstance(1);
+                fragment = PopularMoviesFragment.newInstance(1);;
                 break;
             case 1:
-                fragment = TopRatedMoviesFragment.newInstance(1);
+                fragment = TopRatedMoviesFragment.newInstance(1);;
                 break;
             case 2:
-                fragment = UpcomingMoviesFragment.newInstance(1);
+                fragment = UpcomingMoviesFragment.newInstance(1);;
                 break;
             case 3:
                 fragment = NowInTheatersMoviesFragment.newInstance(1);
                 break;
             default:
-                fragment = PopularMoviesFragment.newInstance(1);
+                fragment = PopularMoviesFragment.newInstance(1);;
         }
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

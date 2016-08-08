@@ -291,7 +291,7 @@ public class FetchMovies {
     }
 
     // Searches for movies in the online movie database
-    public class SearchOnlineMoviesTask extends AsyncTask<String, Void, List<MovieModel>> {
+    public static class SearchOnlineMoviesTask extends AsyncTask<String, Void, List<MovieModel>> {
 
         public final String LOG_TAG = SearchOnlineMoviesTask.class.getSimpleName();
 

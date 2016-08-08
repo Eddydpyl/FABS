@@ -63,6 +63,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().setTitle(getContext().getString(R.string.title_fragment_now_in_theaters_movies));
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {

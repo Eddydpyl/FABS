@@ -9,6 +9,15 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_donate">Donate</string>
+
+    <string name="title_fragment_completed_movies">Completed Films</string>
+    <string name="title_fragment_plan_to_watch_movies">Plan to Watch</string>
+    <string name="title_fragment_my_movies">FABS Films</string>
+    <string name="title_fragment_now_in_theaters_movies">Now in Theaters</string>
+    <string name="title_fragment_popular_movies">Popular Films</string>
+    <string name="title_fragment_top_rated_movies">Top Rated Films</string>
+    <string name="title_fragment_upcoming_movies">Upcoming Films</string>
 
     <!-- Strings related to Settings -->
 
@@ -67,5 +76,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_donate">DonateActivity</string>
+
 </resources>

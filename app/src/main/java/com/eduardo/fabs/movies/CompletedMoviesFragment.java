@@ -47,7 +47,7 @@ public class CompletedMoviesFragment extends Fragment implements LoaderManager.L
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getActivity().setTitle(getContext().getString(R.string.title_fragment_completed_movies));
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }

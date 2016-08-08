@@ -47,6 +47,7 @@ public class PlanToWatchMoviesFragment extends Fragment implements LoaderManager
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(getContext().getString(R.string.title_fragment_plan_to_watch_movies));
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

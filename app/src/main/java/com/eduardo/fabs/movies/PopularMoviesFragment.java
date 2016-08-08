@@ -64,6 +64,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(getContext().getString(R.string.title_fragment_popular_movies));
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

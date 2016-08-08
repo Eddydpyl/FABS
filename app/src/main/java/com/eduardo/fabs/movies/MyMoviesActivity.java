@@ -181,9 +181,7 @@ public class MyMoviesActivity extends AppCompatActivity
         Intent intent = getIntent();
         if(intent != null){
             Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
-            if(i != 0){
-                setState(i);
-            }
+            setState(i);
         }
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

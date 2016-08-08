@@ -83,12 +83,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (groupPosition != 2) {
-            convertView = layoutInflater.inflate(R.layout.nav_submenu_parent, null);
-        } else {
+        if (groupPosition == 2){
             convertView = layoutInflater.inflate(R.layout.nav_divider, null);
             convertView.setOnClickListener(null);
             return convertView;
+        } else if(groupPosition == 1){
+            convertView = layoutInflater.inflate(R.layout.nav_submenu_parent, null);
+            convertView.setOnClickListener(null);
+        } else {
+            convertView = layoutInflater.inflate(R.layout.nav_submenu_parent, null);
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_parent);

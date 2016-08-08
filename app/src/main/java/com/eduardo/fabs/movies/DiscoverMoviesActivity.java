@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
@@ -116,7 +117,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                     case 0:{
                         // Click on "My Collection"
                         drawer.closeDrawer(GravityCompat.START);
-                        Intent intent = new Intent(context, MyMoviesFragment.class);
+                        Intent intent = new Intent(context, MyMoviesActivity.class);
+                        intent.putExtra(getString(R.string.intent_fragment), 0);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                         break;
@@ -134,7 +136,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                     }
                     case 4:{
                         // Click on "Donate"
-                        Intent intent = new Intent();
+                        Intent intent = new Intent(context, DonateActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);
@@ -151,9 +153,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         Intent intent = getIntent();
         if(intent != null) {
             Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
-            if (i != 0) {
-                setState(i);
-            }
+            setState(i);
         }
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

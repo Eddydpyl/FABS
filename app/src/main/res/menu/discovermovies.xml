@@ -15,6 +15,9 @@
                 android:id="@+id/menuSortNewest_discovermovies"
                 android:title="Sort by newest" />
             <item
+                android:id="@+id/menuSortPopularity_discovermovies"
+                android:title="Sort by popularity" />
+            <item
                 android:id="@+id/menuSortRating_discovermovies"
                 android:title="Sort by rating" />
         </menu>

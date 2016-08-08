@@ -159,6 +159,7 @@ public class MyMoviesActivity extends AppCompatActivity
                         break;
                     }
                     case 3:{
+                        // Click on "Settings"
                         Intent intent = new Intent(context, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
@@ -300,7 +301,15 @@ public class MyMoviesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+        if (id == R.id.menuSortNewest_mymovies) {
+            return true;
+        } else if(id == R.id.menuSortPopularity_mymovies){
+            return true;
+        } else if(id == R.id.menuSortAverageRating_mymovies){
+            return true;
+        } else if(id == R.id.menuSortPersonalRating_mymovies){
+            return true;
+        } return super.onOptionsItemSelected(item);
     }
 
     @Override

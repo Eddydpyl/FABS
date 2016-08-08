@@ -15,8 +15,14 @@
                 android:id="@+id/menuSortNewest_mymovies"
                 android:title="Sort by newest" />
             <item
-                android:id="@+id/menuSortRating_mymovies"
-                android:title="Sort by rating" />
+                android:id="@+id/menuSortPopularity_mymovies"
+                android:title="Sort by popularity" />
+            <item
+                android:id="@+id/menuSortAverageRating_mymovies"
+                android:title="Sort by average rating" />
+            <item
+                android:id="@+id/menuSortPersonalRating_mymovies"
+                android:title="Sort by personal rating" />
         </menu>
     </item>
 </menu>

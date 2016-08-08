@@ -22,6 +22,7 @@ import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.ExpandableListAdapter;
+import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "discoverMovies";
+    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -131,6 +133,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         break;
                     }
                     case 3:{
+                        // Click on "Settings"
                         Intent intent = new Intent(context, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
@@ -275,7 +278,16 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+        if (id == R.id.menuSortNewest_discovermovies) {
+            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+            return true;
+        } else if(id == R.id.menuSortPopularity_discovermovies){
+            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY;
+            return true;
+        } else if(id == R.id.menuSortRating_discovermovies){
+            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+            return true;
+        } return super.onOptionsItemSelected(item);
     }
 
     @Override

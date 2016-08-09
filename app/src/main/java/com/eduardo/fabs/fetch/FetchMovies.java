@@ -313,7 +313,7 @@ public class FetchMovies {
     }
 
     // Retrieves a movie's details from the online movie database
-    public class FetchMovieDetailsTask extends AsyncTask<String, Void, MovieModel> {
+    public static class FetchMovieDetailsTask extends AsyncTask<String, Void, MovieModel> {
 
         public final String LOG_TAG = FetchMovieDetailsTask.class.getSimpleName();
 

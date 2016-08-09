@@ -41,6 +41,14 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     HashMap<ExpandedMenuModel, List<String>> listDataChild;
     Context context;
 
+    static final int COL_DISCOVER_MOVIES_ID = 0;
+    static final int COL_DISCOVER_MOVIES_POSTER_IMAGE = 1;
+    static final int COL_DISCOVER_MOVIES_OVERVIEW= 2;
+    static final int COL_DISCOVER_MOVIES_RELEASE_DATE = 3;
+    static final int COL_DISCOVER_MOVIES_TITLE = 4;
+    static final int COL_DISCOVER_MOVIES_POPULARITY = 5;
+    static final int COL_DISCOVER_MOVIES_VOTE_AVERAGE = 6;
+
     private static int state;
 
     public static void setState(int i){

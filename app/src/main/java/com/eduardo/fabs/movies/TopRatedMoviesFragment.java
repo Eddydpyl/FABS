@@ -19,6 +19,8 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.data.FABSContract;
 
+import java.io.IOException;
+
 public class TopRatedMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
@@ -86,16 +88,18 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
-            cursorRecyclerAdapter = new CursorRecyclerAdapter(null) {
+            cursorRecyclerAdapter = new CursorRecyclerAdapter<MovieViewHolder>(null) {
                 @Override
-                public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, Cursor cursor) {
-                    // TODO: Fill view with data from cursor
-                    ((MovieViewHolder) holder).mContentView.setText(cursor.getString(COL_TOP_RATED_MOVIES_TABLE_OVERVIEW));
+                public void onBindViewHolderCursor(MovieViewHolder holder, Cursor cursor) {
+                    try {
+                        MovieViewHolder.populateMovieModel(getContext(), holder, cursor);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
-                public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    // TODO: Create layout for movies in fragment_discovermovies
+                public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_discovermovies, parent, false);
                     return new MovieViewHolder(view);
                 }

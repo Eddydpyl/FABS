@@ -19,6 +19,8 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.data.FABSContract;
 
+import java.io.IOException;
+
 public class PopularMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
@@ -36,14 +38,6 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
             FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY,
             FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE
     };
-
-    static final int COL_POPULAR_MOVIES_ID = 0;
-    static final int COL_POPULAR_MOVIES_POSTER_IMAGE = 1;
-    static final int COL_POPULAR_MOVIES_OVERVIEW= 2;
-    static final int COL_POPULAR_MOVIES_RELEASE_DATE = 3;
-    static final int COL_POPULAR_MOVIES_TITLE = 4;
-    static final int COL_POPULAR_MOVIES_POPULARITY = 5;
-    static final int COL_POPULAR_MOVIES_VOTE_AVERAGE = 6;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -85,16 +79,18 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
-            cursorRecyclerAdapter = new CursorRecyclerAdapter(null) {
+            cursorRecyclerAdapter = new CursorRecyclerAdapter<MovieViewHolder>(null) {
                 @Override
-                public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, Cursor cursor) {
-                    // TODO: Fill view with data from cursor
-                    ((MovieViewHolder) holder).mContentView.setText(cursor.getString(COL_POPULAR_MOVIES_OVERVIEW));
+                public void onBindViewHolderCursor(MovieViewHolder holder, Cursor cursor) {
+                    try {
+                        MovieViewHolder.populateMovieModel(getContext(), holder, cursor);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
-                public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    // TODO: Create layout for movies in fragment_discovermovies
+                public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_discovermovies, parent, false);
                     return new MovieViewHolder(view);
                 }

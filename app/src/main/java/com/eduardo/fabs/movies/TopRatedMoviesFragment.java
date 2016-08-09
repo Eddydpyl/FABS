@@ -39,14 +39,6 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
             FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_VOTE_AVERAGE
     };
 
-    static final int COL_TOP_RATED_MOVIES_TABLE_ID = 0;
-    static final int COL_TOP_RATED_MOVIES_TABLE_POSTER_IMAGE = 1;
-    static final int COL_TOP_RATED_MOVIES_TABLE_OVERVIEW= 2;
-    static final int COL_TOP_RATED_MOVIES_TABLE_RELEASE_DATE = 3;
-    static final int COL_TOP_RATED_MOVIES_TABLE_TITLE = 4;
-    static final int TOP_RATED_MOVIES_TABLE_POPULARITY = 5;
-    static final int COL_TOP_RATED_MOVIES_TABLE_VOTE_AVERAGE = 6;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).

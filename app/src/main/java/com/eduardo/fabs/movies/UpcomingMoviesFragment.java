@@ -39,14 +39,6 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
             FABSContract.UPCOMING_MOVIES_TABLE.COLUMN_VOTE_AVERAGE
     };
 
-    static final int COL_UPCOMING_MOVIES_ID = 0;
-    static final int COL_UPCOMING_MOVIES_POSTER_IMAGE = 1;
-    static final int COL_UPCOMING_MOVIES_OVERVIEW= 2;
-    static final int COL_UPCOMING_MOVIES_RELEASE_DATE = 3;
-    static final int COL_UPCOMING_MOVIES_TITLE = 4;
-    static final int COL_UPCOMING_MOVIES_POPULARITY = 5;
-    static final int COL_UPCOMING_MOVIES_VOTE_AVERAGE = 6;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).

@@ -123,7 +123,6 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
-        // TODO: Use sort order specified by the user
         Uri uri = FABSContract.POPULAR_MOVIES_TABLE.CONTENT_URI;
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, DiscoverMoviesActivity.sortOrder);
         return new CursorLoader(getActivity(), uri, POPULAR_MOVIES_COLUMNS, null, null, DiscoverMoviesActivity.sortOrder);

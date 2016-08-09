@@ -201,27 +201,26 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
         ExpandedMenuModel item1 = new ExpandedMenuModel();
         item1.setIconName("My Collection");
-        item1.setIconImg(android.R.drawable.ic_delete);
+        item1.setIconImg(R.drawable.ic_mymovies);
         listDataHeader.add(item1);
 
         ExpandedMenuModel item2 = new ExpandedMenuModel();
         item2.setIconName("Discover");
-        item2.setIconImg(android.R.drawable.ic_delete);
+        item2.setIconImg(R.drawable.ic_movies);
         listDataHeader.add(item2);
 
         ExpandedMenuModel item3 = new ExpandedMenuModel();
         item3.setIconName("SEPARATOR");
-        item3.setIconImg(android.R.drawable.ic_delete);
         listDataHeader.add(item3);
 
         ExpandedMenuModel item4 = new ExpandedMenuModel();
         item4.setIconName("Settings");
-        item4.setIconImg(android.R.drawable.ic_delete);
+        item4.setIconImg(R.drawable.ic_settings);
         listDataHeader.add(item4);
 
         ExpandedMenuModel item5 = new ExpandedMenuModel();
         item5.setIconName("Donate");
-        item5.setIconImg(android.R.drawable.ic_delete);
+        item5.setIconImg(R.drawable.ic_gift);
         listDataHeader.add(item5);
 
         List<String> heading1 = new ArrayList<String>();

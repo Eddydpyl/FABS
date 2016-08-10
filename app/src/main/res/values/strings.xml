@@ -19,6 +19,8 @@
     <string name="title_fragment_top_rated_movies">Top Rated Films</string>
     <string name="title_fragment_upcoming_movies">Upcoming Films</string>
 
+    <string name="pref_previously_started">prevStarted</string>
+
     <string name="search_hint">Search...</string>
 
     <!-- Strings related to Settings -->

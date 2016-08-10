@@ -3,7 +3,9 @@ package com.eduardo.fabs.movies;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -78,7 +80,14 @@ public class MyMoviesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         context = this;
-        FABSSyncAdapter.syncImmediately(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
+        if(!previouslyStarted) {
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean(getString(R.string.pref_previously_started), Boolean.TRUE);
+            edit.commit();
+            FABSSyncAdapter.syncImmediately(context);
+        }
         FABSSyncAdapter.periodicSync(context);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);

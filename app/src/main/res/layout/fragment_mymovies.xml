@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     card_view:cardElevation="2dp"
     card_view:cardCornerRadius="4dp">
@@ -27,16 +27,25 @@
             android:text="Title"
             android:id="@+id/title"
             android:layout_alignTop= "@+id/poster"
-            android:layout_toRightOf="@+id/poster" />
+            android:layout_toRightOf="@+id/poster"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:lines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Overview"
+            android:text="@string/longtext"
             android:id="@+id/overview"
             android:layout_below="@+id/title"
             android:layout_toRightOf="@+id/poster"
-            android:layout_toEndOf="@+id/poster" />
+            android:layout_toEndOf="@+id/poster"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:lines="3"
+            android:ellipsize="end"/>
 
     </RelativeLayout>
 

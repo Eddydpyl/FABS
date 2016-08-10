@@ -6,6 +6,7 @@
 
     <string name="intent_activity">ACTIVITY</string>
     <string name="intent_fragment">FRAGMENT</string>
+    <string name="intent_movie_id">ID</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
@@ -22,6 +23,9 @@
     <string name="pref_previously_started">prevStarted</string>
 
     <string name="search_hint">Search...</string>
+
+    <string name="longtext">Soon Lara spotted other landmarks—an outcropping of limestone beside the path that had a silhouette like a man’s face, a marshy spot beside the river where the waterfowl were easily startled, a tall tree that looked like a man with his arms upraised. They were drawing near to the place where there was an island in the river. The island was a good spot to make camp. They would sleep on the island tonight.
+Lara had been back and forth along the river path many times in her short life. Her people had not created the path—it had always been there, like the river—but their deerskin-shod feet and the wooden wheels of their handcarts kept the path well worn. Lara’s people were salt traders, and their livelihood took them on a continual journey.</string>
 
     <!-- Strings related to Settings -->
 
@@ -81,5 +85,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
 
 </resources>

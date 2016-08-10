@@ -1,6 +1,7 @@
 package com.eduardo.fabs.movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
+import com.eduardo.fabs.adapters.RecyclerItemClickListener;
 import com.eduardo.fabs.data.FABSContract;
 
 import java.io.IOException;
@@ -86,6 +89,25 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                     return new MovieViewHolder(view);
                 }
             };
+            recyclerView.setAdapter(cursorRecyclerAdapter);
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener(){
+
+                @Override
+                public void onItemClick(View view, int position) {
+                    TextView textView = (TextView) view.findViewById(R.id.ID);
+                    String ID = textView.getText().toString();
+                    Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
+                    intent.putExtra(getString(R.string.intent_movie_id), ID);
+                    intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
+                    intent.putExtra(getString(R.string.intent_fragment), 0);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onLongItemClick(View view, int position) {
+
+                }
+            }));
         }
         return view;
     }

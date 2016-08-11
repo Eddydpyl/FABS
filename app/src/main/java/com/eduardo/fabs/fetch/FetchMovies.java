@@ -334,7 +334,7 @@ public class FetchMovies {
             // Will contain the raw JSON response as a string.
             String jsonStr = null;
 
-            String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/" + movieID
+            String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/" + movieID[0]
                     + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM + Constants.TMDBConstants.API_KEY;
             ;
 
@@ -392,4 +392,6 @@ public class FetchMovies {
             return null;
         }
     }
+
+    //TODO Load more movies on scroll end
 }

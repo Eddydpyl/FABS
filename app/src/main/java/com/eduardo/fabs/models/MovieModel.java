@@ -245,8 +245,8 @@ public class MovieModel {
         this.vote_average = vote_average;
     }
 
-    public String getImageFullURL() {
-        return Constants.TMDBConstants.IMAGE_BASE_URL + Constants.TMDBConstants.IMAGE_SMALL_SIZE + getPosterPath();
+    public String getImageFullURL(String size) {
+        return Constants.TMDBConstants.IMAGE_BASE_URL + size + getPosterPath();
     }
 
     public String getRating() {
@@ -257,5 +257,12 @@ public class MovieModel {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = inputFormat.parse(getReleaseDate());
         return date;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieModel{" +
+                "original_title='" + original_title + '\'' +
+                '}';
     }
 }

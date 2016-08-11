@@ -10,8 +10,9 @@ import android.view.MenuItem;
 import com.eduardo.fabs.movies.DiscoverMoviesActivity;
 import com.eduardo.fabs.movies.MyMoviesActivity;
 
-public class DonateActivity extends AppCompatActivity {
+//TODO: Write Donate Activity
 
+public class DonateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

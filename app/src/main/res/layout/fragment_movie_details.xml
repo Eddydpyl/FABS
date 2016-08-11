@@ -9,5 +9,10 @@
     tools:context="com.eduardo.fabs.movies.MovieDetailsActivityFragment"
     tools:showIn="@layout/activity_movie_details">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/poster"
+        android:src="@drawable/ic_movie_placeholder"/>
 
 </RelativeLayout>

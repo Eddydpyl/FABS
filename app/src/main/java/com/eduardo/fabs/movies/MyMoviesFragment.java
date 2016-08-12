@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,8 +27,6 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     // Each loader in an activity needs a different ID
     private static final int MYMOVIES_LOADER = 0;
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
 
     /**
@@ -40,11 +37,8 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public MyMoviesFragment() {
     }
 
-    public static MyMoviesFragment newInstance(int columnCount) {
+    public static MyMoviesFragment newInstance() {
         MyMoviesFragment fragment = new MyMoviesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -52,11 +46,6 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getContext().getString(R.string.title_fragment_my_movies));
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-
         MyMoviesActivity.setState(0);
     }
 
@@ -67,11 +56,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
             cursorRecyclerAdapter = new CursorRecyclerAdapter<MovieViewHolder>(null) {
                 @Override
@@ -117,7 +102,6 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         getLoaderManager().initLoader(MYMOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
-
 
     @Override
     public void onAttach(Context context) {

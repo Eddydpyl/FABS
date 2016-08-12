@@ -1,7 +1,9 @@
 package com.eduardo.fabs.movies;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,17 +20,22 @@ import android.widget.TextView;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
+import com.eduardo.fabs.adapters.EndlessRecyclerViewScrollListener;
 import com.eduardo.fabs.adapters.RecyclerItemClickListener;
 import com.eduardo.fabs.data.FABSContract;
+import com.eduardo.fabs.fetch.FetchMovies;
+import com.eduardo.fabs.models.MovieModel;
+import com.eduardo.fabs.utils.Constants;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 public class PopularMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
     private static final int POPULARMOVIES_LOADER = 0;
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
 
     public static final String[] POPULAR_MOVIES_COLUMNS = {
@@ -50,11 +56,9 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     public PopularMoviesFragment() {
     }
 
-    public static PopularMoviesFragment newInstance(int columnCount) {
+    public static PopularMoviesFragment newInstance() {
         PopularMoviesFragment fragment = new PopularMoviesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY;
         return fragment;
     }
 
@@ -62,11 +66,6 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getContext().getString(R.string.title_fragment_popular_movies));
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-
         DiscoverMoviesActivity.setState(0);
     }
 
@@ -74,13 +73,10 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popularmovies_list, container, false);
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+            final Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
             // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
             cursorRecyclerAdapter = new CursorRecyclerAdapter<MovieViewHolder>(null) {
                 @Override
@@ -99,7 +95,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
                 }
             };
             recyclerView.setAdapter(cursorRecyclerAdapter);
-            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener(){
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(View view, int position) {
@@ -117,6 +113,60 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
 
                 }
             }));
+            EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    if(page > 100){
+                        // The online database has only up to 100 pages at any time
+                        return;
+                    }
+                    try {
+                        SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor edit = sharedPref.edit();
+                        edit.putInt(getString(R.string.pref_pages_loaded_popular_movies), page);
+                        edit.commit();
+
+                        List<MovieModel> popularMovies = new FetchMovies.FetchMoreMoviesTask(context, Constants.TMDBConstants.REQUEST_POPULAR).execute(page).get();
+                        Vector<ContentValues> popularMoviesVector = new Vector<ContentValues>(popularMovies.size());
+
+                        for (int i = 0; i < popularMovies.size(); i++) {
+                            ContentValues movieValues = new ContentValues();
+                            String id = popularMovies.get(i).getId();
+                            String title = popularMovies.get(i).getTitle();
+                            String overview = popularMovies.get(i).getOverview();
+                            String poster_image = popularMovies.get(i).getPosterPath();
+                            String release_date = popularMovies.get(i).getReleaseDate();
+                            Double popularity = popularMovies.get(i).getPopularity();
+                            Double vote_average = popularMovies.get(i).getVoteAverage();
+
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE._ID, Integer.valueOf(id));
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_TITLE, title);
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_OVERVIEW, overview);
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POSTER_IMAGE, poster_image);
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE, release_date);
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY, popularity);
+                            movieValues.put(FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE, vote_average);
+
+                            popularMoviesVector.add(movieValues);
+                        }
+
+                        // add popular movies to database
+                        if (popularMoviesVector.size() > 0) {
+                            ContentValues[] cvArray = new ContentValues[popularMoviesVector.size()];
+                            popularMoviesVector.toArray(cvArray);
+                            context.getContentResolver().bulkInsert(FABSContract.POPULAR_MOVIES_TABLE.CONTENT_URI, cvArray);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            Integer previouslyStarted = sharedPref.getInt(getString(R.string.pref_pages_loaded_popular_movies), 1);
+            endlessRecyclerViewScrollListener.setCurrentPage(previouslyStarted);
+            recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
         }
         return view;
     }

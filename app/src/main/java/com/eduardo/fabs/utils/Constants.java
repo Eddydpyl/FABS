@@ -37,6 +37,8 @@ public final class Constants {
         public final static String IMAGE_HUGE_SIZE = "w780";
         public final static String IMAGE_ORIGINAL_SIZE = "original";
 
+        public final static String PARAM_PAGE = "page=";
+
         public final static String RATING_MAX = "10";
     }
 }

@@ -100,22 +100,22 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         break;
                     }
                     case "Popular":{
-                        PopularMoviesFragment fragment = PopularMoviesFragment.newInstance(1);
+                        PopularMoviesFragment fragment = PopularMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Top Rated":{
-                        TopRatedMoviesFragment fragment = TopRatedMoviesFragment.newInstance(1);
+                        TopRatedMoviesFragment fragment = TopRatedMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Upcoming":{
-                        UpcomingMoviesFragment fragment = UpcomingMoviesFragment.newInstance(1);
+                        UpcomingMoviesFragment fragment = UpcomingMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Now in Theaters":{
-                        NowInTheatersMoviesFragment fragment = NowInTheatersMoviesFragment.newInstance(1);
+                        NowInTheatersMoviesFragment fragment = NowInTheatersMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -184,19 +184,19 @@ public class DiscoverMoviesActivity extends AppCompatActivity
             Fragment fragment;
             switch (state){
                 case 0:
-                    fragment = PopularMoviesFragment.newInstance(1);
+                    fragment = PopularMoviesFragment.newInstance();
                     break;
                 case 1:
-                    fragment = TopRatedMoviesFragment.newInstance(1);
+                    fragment = TopRatedMoviesFragment.newInstance();
                     break;
                 case 2:
-                    fragment = UpcomingMoviesFragment.newInstance(1);
+                    fragment = UpcomingMoviesFragment.newInstance();
                     break;
                 case 3:
-                    fragment = NowInTheatersMoviesFragment.newInstance(1);
+                    fragment = NowInTheatersMoviesFragment.newInstance();
                     break;
                 default:
-                    fragment = PopularMoviesFragment.newInstance(1);
+                    fragment = PopularMoviesFragment.newInstance();
             }
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -311,19 +311,19 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         Fragment fragment;
         switch (state){
             case 0:
-                fragment = PopularMoviesFragment.newInstance(1);;
+                fragment = new PopularMoviesFragment();
                 break;
             case 1:
-                fragment = TopRatedMoviesFragment.newInstance(1);;
+                fragment = new TopRatedMoviesFragment();
                 break;
             case 2:
-                fragment = UpcomingMoviesFragment.newInstance(1);;
+                fragment = new UpcomingMoviesFragment();
                 break;
             case 3:
-                fragment = NowInTheatersMoviesFragment.newInstance(1);
+                fragment = new NowInTheatersMoviesFragment();
                 break;
             default:
-                fragment = PopularMoviesFragment.newInstance(1);;
+                fragment = new PopularMoviesFragment();
         }
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

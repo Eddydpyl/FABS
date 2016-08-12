@@ -112,12 +112,12 @@ public class MyMoviesActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 switch (childString){
                     case "Completed":{
-                        CompletedMoviesFragment fragment = CompletedMoviesFragment.newInstance(1);
+                        CompletedMoviesFragment fragment = CompletedMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Plan to Watch":{
-                        PlanToWatchMoviesFragment fragment = PlanToWatchMoviesFragment.newInstance(1);
+                        PlanToWatchMoviesFragment fragment = PlanToWatchMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -160,7 +160,7 @@ public class MyMoviesActivity extends AppCompatActivity
                     case 0:{
                         // Click on "My Collection"
                         drawer.closeDrawer(GravityCompat.START);
-                        MyMoviesFragment fragment = MyMoviesFragment.newInstance(1);
+                        MyMoviesFragment fragment = MyMoviesFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -212,16 +212,16 @@ public class MyMoviesActivity extends AppCompatActivity
             Fragment fragment;
             switch (state){
                 case 0:
-                    fragment = new MyMoviesFragment();
+                    fragment = MyMoviesFragment.newInstance();
                     break;
                 case 1:
-                    fragment = new CompletedMoviesFragment();
+                    fragment = CompletedMoviesFragment.newInstance();
                     break;
                 case 2:
-                    fragment = new PlanToWatchMoviesFragment();
+                    fragment = PlanToWatchMoviesFragment.newInstance();
                     break;
                 default:
-                    fragment = new MyMoviesFragment();
+                    fragment = MyMoviesFragment.newInstance();
             }
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();

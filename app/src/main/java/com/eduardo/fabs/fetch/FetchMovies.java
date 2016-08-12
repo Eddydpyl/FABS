@@ -2,9 +2,11 @@ package com.eduardo.fabs.fetch;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.eduardo.fabs.R;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.MovieModel;
 import com.eduardo.fabs.utils.Constants;
@@ -93,6 +95,15 @@ public class FetchMovies {
         context.getContentResolver().delete(FABSContract.POPULAR_MOVIES_TABLE.CONTENT_URI,null,null);
         context.getContentResolver().delete(FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI,null,null);
         context.getContentResolver().delete(FABSContract.UPCOMING_MOVIES_TABLE.CONTENT_URI,null,null);
+
+        // delete scrolling data
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPref.edit();
+        edit.putInt(context.getString(R.string.pref_pages_loaded_popular_movies), 1);
+        edit.putInt(context.getString(R.string.pref_pages_loaded_theaters_movies), 1);
+        edit.putInt(context.getString(R.string.pref_pages_loaded_top_rated_movies), 1);
+        edit.putInt(context.getString(R.string.pref_pages_loaded_upcoming_movies), 1);
+        edit.commit();
 
         Vector<ContentValues> popularMoviesVector = new Vector<ContentValues>(popularMovies.size());
 
@@ -393,5 +404,28 @@ public class FetchMovies {
         }
     }
 
-    //TODO Load more movies on scroll end
+    // Retrieves more movies from the online movie database
+    public static class FetchMoreMoviesTask extends AsyncTask<Integer, Void, List<MovieModel>> {
+
+        public final String LOG_TAG = FetchMoreMoviesTask.class.getSimpleName();
+
+        private Context mContext;
+        private String category;
+
+        public FetchMoreMoviesTask(Context context, String category) {
+            super();
+            mContext = context;
+            this.category = category;
+        }
+
+        @Override
+        protected List<MovieModel> doInBackground(Integer... pageNum) {
+
+            String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/"
+                    + category + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
+                    + Constants.TMDBConstants.API_KEY + "&" + Constants.TMDBConstants.PARAM_PAGE + pageNum[0];
+
+            return fetchMovies(urlStr);
+        }
+    }
 }

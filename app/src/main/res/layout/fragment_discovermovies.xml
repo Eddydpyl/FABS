@@ -43,7 +43,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/longtext"
             android:id="@+id/overview"
             android:layout_below="@+id/title"
             android:layout_toRightOf="@+id/poster"

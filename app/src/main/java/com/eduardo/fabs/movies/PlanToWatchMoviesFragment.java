@@ -117,9 +117,9 @@ public class PlanToWatchMoviesFragment extends Fragment implements LoaderManager
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
-        Uri uri = FABSContract.MY_MOVIES_TABLE.buildMovieUriWithUserCategory(UserCategory.PLANTOWATCH);
-        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, MyMoviesActivity.sortOrder);
-        return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, MyMoviesActivity.sortOrder);
+        Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? ";
+        return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, new String[]{UserCategory.PLANTOWATCH.toString()}, MyMoviesActivity.sortOrder);
     }
 
     @Override

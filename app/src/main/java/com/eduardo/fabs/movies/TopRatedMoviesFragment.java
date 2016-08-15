@@ -193,7 +193,6 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
         Uri uri = FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI;
-        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, DiscoverMoviesActivity.sortOrder);
         return new CursorLoader(getActivity(), uri, TOP_RATED_MOVIES_COLUMNS, null, null, DiscoverMoviesActivity.sortOrder);
     }
 

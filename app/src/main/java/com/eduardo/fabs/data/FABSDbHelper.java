@@ -28,7 +28,7 @@ public class FABSDbHelper extends SQLiteOpenHelper {
                 FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " REAL NOT NULL," +
                 FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " REAL NOT NULL," +
                 FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " TEXT NOT NULL," +
-                FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " REAL NOT NULL " +
+                FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " REAL " +
                 ")";
         final String CREATE_TABLE_POPULAR_MOVIES = "CREATE TABLE " + FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME + " (" +
                 FABSContract.POPULAR_MOVIES_TABLE._ID + " INTEGER PRIMARY KEY," +
@@ -76,6 +76,7 @@ public class FABSDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FABSContract.TOP_RATED_MOVIES_TABLE.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FABSContract.UPCOMING_MOVIES_TABLE.TABLE_NAME);

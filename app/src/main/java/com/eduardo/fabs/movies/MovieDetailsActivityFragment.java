@@ -1,10 +1,15 @@
 package com.eduardo.fabs.movies;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,12 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.fetch.FetchMovies;
 import com.eduardo.fabs.models.MovieModel;
 import com.eduardo.fabs.utils.Constants;
+import com.eduardo.fabs.utils.UserCategory;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -31,6 +38,8 @@ public class MovieDetailsActivityFragment extends Fragment {
     private static TextView episodes_seen;
     private static Spinner personal_score;
 
+    private static Boolean updated = false;
+
     public MovieDetailsActivityFragment() {
     }
 
@@ -38,7 +47,10 @@ public class MovieDetailsActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ID = getActivity().getIntent().getStringExtra(getString(R.string.intent_movie_id));
-        // TODO: Add interaction with user database
+        final Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        final String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
+        Cursor cursor = getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, new String[]{ID}, null);
+
         try {
             movieModel = new FetchMovies.FetchMovieDetailsTask(getContext()).execute(ID).get();
 
@@ -46,11 +58,33 @@ public class MovieDetailsActivityFragment extends Fragment {
             String imageUrlStr = movieModel.getImageFullURL(Constants.TMDBConstants.IMAGE_MEDIUM_SIZE);
             Picasso.with(getContext()).load(imageUrlStr).into(poster);
 
+            episodes_seen = (TextView) rootView.findViewById(R.id.episodes_seen);
+
+            final Button increase_episodes = (Button) rootView.findViewById(R.id.increase_episodes);
+            increase_episodes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    episodes_seen.setText("1");
+                    status.setSelection(1);
+                    personal_score.setEnabled(true);
+                    updateUserDatabase(selection, getActivity().getContentResolver());
+                }
+            });
+            final Button decrease_episodes = (Button) rootView.findViewById(R.id.decrease_episodes);
+            decrease_episodes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    episodes_seen.setText("0");
+                    if(status.getSelectedItemPosition()==1){
+                        status.setSelection(2);
+                        personal_score.setEnabled(false);
+                    }
+                    updateUserDatabase(selection, getActivity().getContentResolver());
+                }
+            });
+
             status = (Spinner) rootView.findViewById(R.id.status);
-            List<String> list_status = new ArrayList<String>();
-            list_status.add("");
-            list_status.add("Completed");
-            list_status.add("Plan to Watch");
+            List<String> list_status = Arrays.asList(getResources().getStringArray(R.array.list_movie_status));
             // Populate the spinner using a customized ArrayAdapter that hides the first (dummy) entry
             ArrayAdapter<String> adapter_status = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list_status) {
                 @Override
@@ -80,25 +114,34 @@ public class MovieDetailsActivityFragment extends Fragment {
             adapter_status.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             status.setAdapter(adapter_status);
+            // Set the Listener
+            status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-            episodes_seen = (TextView) rootView.findViewById(R.id.episodes_seen);
-            TextView episodes_count = (TextView) rootView.findViewById(R.id.episodes_count);
-            Button increase_episodes = (Button) rootView.findViewById(R.id.increase_episodes);
-            Button decrease_episodes = (Button) rootView.findViewById(R.id.decrease_episodes);
+                    if(i == 1){
+                        episodes_seen.setText("1");
+                        increase_episodes.setClickable(true);
+                        decrease_episodes.setClickable(true);
+                        personal_score.setEnabled(true);
+                        updateUserDatabase(selection, getActivity().getContentResolver());
+                    } else if(i == 2){
+                        episodes_seen.setText("0");
+                        increase_episodes.setClickable(true);
+                        decrease_episodes.setClickable(true);
+                        personal_score.setEnabled(false);
+                        updateUserDatabase(selection, getActivity().getContentResolver());
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
             personal_score = (Spinner) rootView.findViewById(R.id.personal_score);
-            List<String> list_score = new ArrayList<String>();
-            list_score.add("");
-            list_score.add("(10) Masterpiece");
-            list_score.add("(9) Great");
-            list_score.add("(8) Very Good");
-            list_score.add("(7) Good");
-            list_score.add("(6) Fine");
-            list_score.add("(5) Average");
-            list_score.add("(4) Bad");
-            list_score.add("(3) Very Bad");
-            list_score.add("(2) Horrible");
-            list_score.add("(1) Appalling");
+            List<String> list_score = Arrays.asList(getResources().getStringArray(R.array.list_personal_score));
             // Populate the spinner using a customized ArrayAdapter that hides the first (dummy) entry
             ArrayAdapter<String> adapter_score = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list_score) {
                 @Override
@@ -128,11 +171,52 @@ public class MovieDetailsActivityFragment extends Fragment {
             adapter_score.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             personal_score.setAdapter(adapter_score);
+            // Set the Listener
+            personal_score.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if(i != 0){
+                        updateUserDatabase(selection, getActivity().getContentResolver());
+                    }
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+
+            // If the movie exists in the user database, load the pertinent info
+            if(cursor.getCount()==1){
+                cursor.moveToFirst();
+                if(cursor.getString(MyMoviesActivity.COL_MY_MOVIES_USER_CATEGORY).toString().equals(UserCategory.COMPLETED.toString())){
+                    status.setSelection(1);
+                } else{
+                    status.setSelection(2);
+                }
+                if(status.getSelectedItemPosition()==1){
+                    episodes_seen.setText("1");
+                } else {
+                    episodes_seen.setText("0");
+                }
+                if((Integer)cursor.getInt(MyMoviesActivity.COL_MY_MOVIES_USER_RATING)!=null){
+                    personal_score.setSelection(cursor.getInt(MyMoviesActivity.COL_MY_MOVIES_USER_RATING));
+                }
+            }
+
+            // Fill in with the rest of the retrieved info
             TextView title = (TextView) rootView.findViewById(R.id.title);
             title.setText(movieModel.getTitle());
             TextView overview = (TextView) rootView.findViewById(R.id.overview);
             overview.setText(movieModel.getOverview());
+
+            // Disable fields if user doesn't choose a status
+            if(status.getSelectedItemPosition() == 0){
+                increase_episodes.setClickable(false);
+                decrease_episodes.setClickable(false);
+                personal_score.setEnabled(false);
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -141,5 +225,30 @@ public class MovieDetailsActivityFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    private static void updateUserDatabase(String selection, ContentResolver contentResolver){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FABSContract.MY_MOVIES_TABLE._ID, Integer.valueOf(ID));
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_POSTER_IMAGE, movieModel.getPosterPath());
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_OVERVIEW, movieModel.getOverview());
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE, movieModel.getReleaseDate());
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE, movieModel.getTitle());
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY, movieModel.getPopularity());
+        contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE, movieModel.getVoteAverage());
+        if(personal_score.getSelectedItemPosition()!=0){
+            contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING, personal_score.getSelectedItemPosition());
+        }
+        switch (status.getSelectedItemPosition()){
+            case 1:
+                contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY, UserCategory.COMPLETED.toString());
+                break;
+            case 2:
+                contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY, UserCategory.PLANTOWATCH.toString());
+                break;
+        }
+        if(contentResolver.update(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues, selection, new String[] {ID}) == 0){
+            contentResolver.insert(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues);
+        }
     }
 }

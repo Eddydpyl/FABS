@@ -12,8 +12,8 @@
         android:title="Sort">
         <menu>
             <item
-                android:id="@+id/menuSortNewest_discovermovies"
-                android:title="Sort by newest" />
+                android:id="@+id/menuSortDate_discovermovies"
+                android:title="Sort by release date" />
             <item
                 android:id="@+id/menuSortPopularity_discovermovies"
                 android:title="Sort by popularity" />

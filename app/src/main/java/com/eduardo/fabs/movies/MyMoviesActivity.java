@@ -32,11 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO: Setup tablet display
+
 public class MyMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "myMovies";
-    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE + " DESC";
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -311,20 +313,20 @@ public class MyMoviesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.menuSortNewest_mymovies) {
+        if (id == R.id.menuSortDate_mymovies) {
             sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE;
             reloadFragment();
             return true;
         } else if(id == R.id.menuSortPopularity_mymovies){
-            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY;
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
             reloadFragment();
             return true;
         } else if(id == R.id.menuSortAverageRating_mymovies){
-            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
             reloadFragment();
             return true;
         } else if(id == R.id.menuSortPersonalRating_mymovies){
-            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING;
+            sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
             reloadFragment();
             return true;
         } return super.onOptionsItemSelected(item);

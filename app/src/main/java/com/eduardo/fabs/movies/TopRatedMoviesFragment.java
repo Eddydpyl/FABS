@@ -58,7 +58,7 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
 
     public static TopRatedMoviesFragment newInstance() {
         TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
         return fragment;
     }
 

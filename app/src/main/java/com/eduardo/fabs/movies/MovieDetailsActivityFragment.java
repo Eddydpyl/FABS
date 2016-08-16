@@ -210,6 +210,29 @@ public class MovieDetailsActivityFragment extends Fragment {
             title.setText(movieModel.getTitle());
             TextView overview = (TextView) rootView.findViewById(R.id.overview);
             overview.setText(movieModel.getOverview());
+            TextView releaseDate = (TextView) rootView.findViewById(R.id.releaseDate);
+            releaseDate.setText(movieModel.getReleaseDate());
+            TextView voteAverage = (TextView) rootView.findViewById(R.id.voteAverage);
+            voteAverage.setText(movieModel.getRating());
+            TextView budget = (TextView) rootView.findViewById(R.id.budget);
+            if(movieModel.getBudget()!=0){
+                budget.setText(movieModel.getBudget().toString() + "$");
+            } else{
+                budget.setText("-");
+            }
+            TextView revenue = (TextView) rootView.findViewById(R.id.revenue);
+            if(movieModel.getRevenue()!=0){
+                revenue.setText(movieModel.getRevenue().toString() + "$");
+            } else{
+                revenue.setText("-");
+            }
+            TextView genres = (TextView) rootView.findViewById(R.id.genres);
+            List<String> genreList = movieModel.getGenre_names();
+            String genreString = genreList.get(0);
+            for(int i = 1; i < genreList.size(); i++){
+                genreString.concat("," + genreList.get(i));
+            }
+            genres.setText(genreString);
 
             // Disable fields if user doesn't choose a status
             if(status.getSelectedItemPosition() == 0){

@@ -33,7 +33,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "discoverMovies";
-    public static String sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+    public static String sortOrder;
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -285,16 +285,16 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.menuSortNewest_discovermovies) {
+        if (id == R.id.menuSortDate_discovermovies) {
             sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
             reloadFragment();
             return true;
         } else if(id == R.id.menuSortPopularity_discovermovies){
-            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY;
+            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
             reloadFragment();
             return true;
         } else if(id == R.id.menuSortRating_discovermovies){
-            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE;
+            sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
             reloadFragment();
             return true;
         } return super.onOptionsItemSelected(item);

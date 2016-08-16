@@ -25,15 +25,19 @@ public class MovieModel {
     private String overview;
     private String release_date;
     private List<Integer> genre_ids;
+    private List<String> genre_names;
     private String id;
     private String original_title;
     private String original_language;
     private String title;
     private String backdrop_path;
     private Double popularity;
-    private int vote_count;
+    private Integer vote_count;
     private Boolean video;
     private Double vote_average;
+    private Integer budget;
+    private Integer revenue;
+    private Integer runtime;
 
     private UserCategory userCategory;
     private Double userRating;
@@ -48,42 +52,6 @@ public class MovieModel {
         this.vote_average = vote_average;
     }
 
-    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Double popularity, int vote_count, Boolean video, Double vote_average) {
-        this.poster_path = poster_path;
-        this.adult = adult;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.genre_ids = genre_ids;
-        this.id = id;
-        this.original_title = original_title;
-        this.original_language = original_language;
-        this.title = title;
-        this.backdrop_path = backdrop_path;
-        this.popularity = popularity;
-        this.vote_count = vote_count;
-        this.video = video;
-        this.vote_average = vote_average;
-    }
-
-    public MovieModel(String poster_path, Boolean adult, String overview, String release_date, List<Integer> genre_ids, String id, String original_title, String original_language, String title, String backdrop_path, Double popularity, int vote_count, Boolean video, Double vote_average, UserCategory userCategory, Double userRating) {
-        this.poster_path = poster_path;
-        this.adult = adult;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.genre_ids = genre_ids;
-        this.id = id;
-        this.original_title = original_title;
-        this.original_language = original_language;
-        this.title = title;
-        this.backdrop_path = backdrop_path;
-        this.popularity = popularity;
-        this.vote_count = vote_count;
-        this.video = video;
-        this.vote_average = vote_average;
-        this.userCategory = userCategory;
-        this.userRating = userRating;
-    }
-
     public MovieModel(JSONObject movieJson) throws JSONException{
         this.id = String.valueOf(movieJson.getInt(FetchMovies.ID));
         this.title = movieJson.getString(FetchMovies.TITLE);
@@ -93,21 +61,24 @@ public class MovieModel {
         this.popularity = movieJson.getDouble(FetchMovies.POPULARITY);
         this.vote_average = movieJson.getDouble(FetchMovies.VOTE_AVERAGE);
         this.adult = movieJson.getBoolean(FetchMovies.ADULT);
-        List<Integer> genresIDs = new ArrayList<Integer>();
-        JSONArray genres;
+        this.genre_ids = new ArrayList<Integer>();
+        this.genre_names = new ArrayList<String>();
         try{
-            genres = movieJson.getJSONArray(FetchMovies.GENRESA);
+            this.budget = movieJson.getInt(FetchMovies.BUDGET);
+            this.revenue = movieJson.getInt(FetchMovies.REVENUE);
+            this.runtime = movieJson.getInt(FetchMovies.RUNTIME);
+            JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRESA);
             for(int i = 0; i < genres.length(); i++){
                 Integer integer = genres.getJSONObject(i).getInt(FetchMovies.GENRESA_ID);
-                genresIDs.add(integer);
-                this.genre_ids = genresIDs;
+                String string = genres.getJSONObject(i).getString(FetchMovies.GENRESA_NAME);
+                this.genre_ids.add(integer);
+                this.genre_names.add(string);
             }
         } catch (JSONException exception){
-            genres = movieJson.getJSONArray(FetchMovies.GENRESB);
+            JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRESB);
             for(int i = 0; i < genres.length(); i++){
                 Integer integer = (Integer) genres.get(i);
-                genresIDs.add(integer);
-                this.genre_ids = genresIDs;
+                this.genre_ids.add(integer);
             }
         }
         this.original_title = movieJson.getString(FetchMovies.ORIGINAL_TITLE);
@@ -243,6 +214,38 @@ public class MovieModel {
 
     public void setVoteAverage(Double vote_average) {
         this.vote_average = vote_average;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
+
+    public Integer getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(Integer revenue) {
+        this.revenue = revenue;
+    }
+
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public List<String> getGenre_names() {
+        return genre_names;
+    }
+
+    public void setGenre_names(List<String> genre_names) {
+        this.genre_names = genre_names;
     }
 
     public String getImageFullURL(String size) {

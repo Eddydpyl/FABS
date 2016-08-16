@@ -58,7 +58,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
 
     public static NowInTheatersMoviesFragment newInstance() {
         NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
         return fragment;
     }
 

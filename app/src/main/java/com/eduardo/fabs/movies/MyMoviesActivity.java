@@ -38,7 +38,7 @@ public class MyMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "myMovies";
-    public static String sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_RELEASE_DATE + " DESC";
+    public static String sortOrder;
 
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -114,12 +114,14 @@ public class MyMoviesActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 switch (childString){
                     case "Completed":{
-                        CompletedMoviesFragment fragment = CompletedMoviesFragment.newInstance();
+                        CompletedMoviesFragment fragment = new CompletedMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Plan to Watch":{
-                        PlanToWatchMoviesFragment fragment = PlanToWatchMoviesFragment.newInstance();
+                        PlanToWatchMoviesFragment fragment = new PlanToWatchMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -162,7 +164,8 @@ public class MyMoviesActivity extends AppCompatActivity
                     case 0:{
                         // Click on "My Collection"
                         drawer.closeDrawer(GravityCompat.START);
-                        MyMoviesFragment fragment = MyMoviesFragment.newInstance();
+                        MyMoviesFragment fragment = new MyMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -195,8 +198,10 @@ public class MyMoviesActivity extends AppCompatActivity
         expandableList.expandGroup(1);
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
+        String savedSortOrder = null;
         if(intent != null){
             Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
+            savedSortOrder = intent.getStringExtra(getString(R.string.intent_sort_order));
             setState(i);
         }
         // Check that the activity is using the layout version with
@@ -214,16 +219,23 @@ public class MyMoviesActivity extends AppCompatActivity
             Fragment fragment;
             switch (state){
                 case 0:
-                    fragment = MyMoviesFragment.newInstance();
+                    fragment = new MyMoviesFragment();
+                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                     break;
                 case 1:
-                    fragment = CompletedMoviesFragment.newInstance();
+                    fragment = new CompletedMoviesFragment();
+                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                     break;
                 case 2:
-                    fragment = PlanToWatchMoviesFragment.newInstance();
+                    fragment = new PlanToWatchMoviesFragment();
+                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                     break;
                 default:
-                    fragment = MyMoviesFragment.newInstance();
+                    fragment = new MyMoviesFragment();
+            }
+            // Restore the sort order after clicking home in some other activity that returns here
+            if(savedSortOrder!=null){
+                sortOrder = savedSortOrder;
             }
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -287,6 +299,7 @@ public class MyMoviesActivity extends AppCompatActivity
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             intent.putExtra(getString(R.string.intent_activity), TAG);
             intent.putExtra(getString(R.string.intent_fragment), state);
+            intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
         }
 
         super.startActivity(intent);

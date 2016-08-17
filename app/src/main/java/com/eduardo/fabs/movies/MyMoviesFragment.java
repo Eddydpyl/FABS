@@ -37,11 +37,6 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public MyMoviesFragment() {
     }
 
-    public static MyMoviesFragment newInstance() {
-        MyMoviesFragment fragment = new MyMoviesFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +80,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 0);
+                    intent.putExtra(getString(R.string.intent_sort_order), MyMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

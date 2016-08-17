@@ -56,12 +56,6 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
     public PopularMoviesFragment() {
     }
 
-    public static PopularMoviesFragment newInstance() {
-        PopularMoviesFragment fragment = new PopularMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +99,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 0);
+                    intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

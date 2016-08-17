@@ -38,11 +38,6 @@ public class CompletedMoviesFragment extends Fragment implements LoaderManager.L
     public CompletedMoviesFragment() {
     }
 
-    public static CompletedMoviesFragment newInstance() {
-        CompletedMoviesFragment fragment = new CompletedMoviesFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +81,7 @@ public class CompletedMoviesFragment extends Fragment implements LoaderManager.L
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 1);
+                    intent.putExtra(getString(R.string.intent_sort_order), MyMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

@@ -56,12 +56,6 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
     public NowInTheatersMoviesFragment() {
     }
 
-    public static NowInTheatersMoviesFragment newInstance() {
-        NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         getActivity().setTitle(getContext().getString(R.string.title_fragment_now_in_theaters_movies));
@@ -106,6 +100,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 3);
+                    intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

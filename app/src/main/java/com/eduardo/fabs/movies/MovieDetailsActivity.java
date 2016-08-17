@@ -13,6 +13,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private static String TAG;
     private static Integer STATE;
+    private static String SORT_ORDER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         TAG = intent.getStringExtra(getString(R.string.intent_activity));
         STATE = intent.getIntExtra(getString(R.string.intent_fragment),0);
+        SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
     }
 
     @Override
@@ -37,24 +39,28 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         case 0: {
                             Intent intent = new Intent(this, DiscoverMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 0);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
                         case 1: {
                             Intent intent = new Intent(this, DiscoverMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 1);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
                         case 2: {
                             Intent intent = new Intent(this, DiscoverMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 2);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
                         case 3: {
                             Intent intent = new Intent(this, DiscoverMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 3);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
@@ -64,18 +70,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         case 0: {
                             Intent intent = new Intent(this, MyMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 0);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
                         case 1: {
                             Intent intent = new Intent(this, MyMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 1);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }
                         case 2: {
                             Intent intent = new Intent(this, MyMoviesActivity.class);
                             intent.putExtra(getString(R.string.intent_fragment), 2);
+                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
                             startActivity(intent);
                             break;
                         }

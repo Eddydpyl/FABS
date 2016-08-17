@@ -56,12 +56,6 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
     public UpcomingMoviesFragment() {
     }
 
-    public static UpcomingMoviesFragment newInstance() {
-        UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +100,7 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 2);
+                    intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

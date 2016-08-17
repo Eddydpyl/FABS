@@ -38,11 +38,6 @@ public class PlanToWatchMoviesFragment extends Fragment implements LoaderManager
     public PlanToWatchMoviesFragment() {
     }
 
-    public static PlanToWatchMoviesFragment newInstance() {
-        PlanToWatchMoviesFragment fragment = new PlanToWatchMoviesFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +81,7 @@ public class PlanToWatchMoviesFragment extends Fragment implements LoaderManager
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 2);
+                    intent.putExtra(getString(R.string.intent_sort_order), MyMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

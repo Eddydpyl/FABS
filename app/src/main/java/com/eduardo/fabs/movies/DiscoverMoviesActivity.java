@@ -100,22 +100,26 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         break;
                     }
                     case "Popular":{
-                        PopularMoviesFragment fragment = PopularMoviesFragment.newInstance();
+                        PopularMoviesFragment fragment = new PopularMoviesFragment();
+                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Top Rated":{
-                        TopRatedMoviesFragment fragment = TopRatedMoviesFragment.newInstance();
+                        TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
+                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Upcoming":{
-                        UpcomingMoviesFragment fragment = UpcomingMoviesFragment.newInstance();
+                        UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
+                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
                     case "Now in Theaters":{
-                        NowInTheatersMoviesFragment fragment = NowInTheatersMoviesFragment.newInstance();
+                        NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
+                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -165,8 +169,10 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         expandableList.expandGroup(1);
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
+        String savedSortOrder = null;
         if(intent != null) {
             Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
+            savedSortOrder = intent.getStringExtra(getString(R.string.intent_sort_order));
             setState(i);
         }
         // Check that the activity is using the layout version with
@@ -184,20 +190,28 @@ public class DiscoverMoviesActivity extends AppCompatActivity
             Fragment fragment;
             switch (state){
                 case 0:
-                    fragment = PopularMoviesFragment.newInstance();
+                    fragment = new PopularMoviesFragment();
+                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                     break;
                 case 1:
-                    fragment = TopRatedMoviesFragment.newInstance();
+                    fragment = new TopRatedMoviesFragment();
+                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                     break;
                 case 2:
-                    fragment = UpcomingMoviesFragment.newInstance();
+                    fragment = new UpcomingMoviesFragment();
+                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
                     break;
                 case 3:
-                    fragment = NowInTheatersMoviesFragment.newInstance();
+                    fragment = new NowInTheatersMoviesFragment();
+                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                     break;
                 default:
-                    fragment = PopularMoviesFragment.newInstance();
+                    fragment = new PopularMoviesFragment();
+                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
             }
+            // Restore the sort order after clicking home in some other activity that returns here
+            if(savedSortOrder!=null)
+                sortOrder = savedSortOrder;
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
@@ -259,6 +273,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         //check if search intent
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             intent.putExtra(getString(R.string.intent_activity), TAG);
+            intent.putExtra(getString(R.string.intent_fragment), state);
+            intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
         }
 
         super.startActivity(intent);

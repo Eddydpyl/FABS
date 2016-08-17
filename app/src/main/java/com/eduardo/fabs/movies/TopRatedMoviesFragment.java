@@ -56,12 +56,6 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
     public TopRatedMoviesFragment() {
     }
 
-    public static TopRatedMoviesFragment newInstance() {
-        TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
-        DiscoverMoviesActivity.sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +100,7 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
                     intent.putExtra(getString(R.string.intent_fragment), 1);
+                    intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
 

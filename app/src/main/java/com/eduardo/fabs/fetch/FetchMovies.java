@@ -70,6 +70,10 @@ public class FetchMovies {
     public static final String TAGLINE = "tagline";
     public static final String VIDEO = "video";
     public static final String VOTE_COUNT = "vote_count";
+    public static final String VIDEOS = "videos";
+    public static final String VIDEOS_ID = "id";
+    public static final String VIDEOS_NAME = "name";
+    public static final String VIDEOS_TYPE = "type";
 
     // Updates all local databases
     public static void updateData(Context context){
@@ -346,7 +350,8 @@ public class FetchMovies {
             String jsonStr = null;
 
             String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/" + movieID[0]
-                    + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM + Constants.TMDBConstants.API_KEY;
+                    + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM + Constants.TMDBConstants.API_KEY + "&"
+                    + Constants.TMDBConstants.APPEND_TO_RESPONSE + Constants.TMDBConstants.REQUEST_VIDEOS;
             ;
 
             try {

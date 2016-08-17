@@ -38,6 +38,8 @@ public class MovieModel {
     private Integer budget;
     private Integer revenue;
     private Integer runtime;
+    private List<String> videosID;
+    private List<String> videosName;
 
     private UserCategory userCategory;
     private Double userRating;
@@ -63,16 +65,28 @@ public class MovieModel {
         this.adult = movieJson.getBoolean(FetchMovies.ADULT);
         this.genre_ids = new ArrayList<Integer>();
         this.genre_names = new ArrayList<String>();
+        this.videosName = new ArrayList<String>();
+        this.videosID = new ArrayList<String>();
         try{
             this.budget = movieJson.getInt(FetchMovies.BUDGET);
             this.revenue = movieJson.getInt(FetchMovies.REVENUE);
             this.runtime = movieJson.getInt(FetchMovies.RUNTIME);
             JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRESA);
             for(int i = 0; i < genres.length(); i++){
-                Integer integer = genres.getJSONObject(i).getInt(FetchMovies.GENRESA_ID);
-                String string = genres.getJSONObject(i).getString(FetchMovies.GENRESA_NAME);
-                this.genre_ids.add(integer);
-                this.genre_names.add(string);
+                Integer genreID = genres.getJSONObject(i).getInt(FetchMovies.GENRESA_ID);
+                String genreNAME = genres.getJSONObject(i).getString(FetchMovies.GENRESA_NAME);
+                this.genre_ids.add(genreID);
+                this.genre_names.add(genreNAME);
+            }
+            JSONArray videosArray = movieJson.getJSONObject(FetchMovies.VIDEOS).getJSONArray(FetchMovies.RESULTS);
+            for(int i = 0; i < videosArray.length(); i++){
+                String videoID = videosArray.getJSONObject(i).getString(FetchMovies.VIDEOS_ID);
+                String videoNAME = videosArray.getJSONObject(i).getString(FetchMovies.VIDEOS_NAME);
+                String videoTYPE = videosArray.getJSONObject(i).getString(FetchMovies.VIDEOS_TYPE);
+                if(videoTYPE.equals("Trailer")){
+                    this.videosID.add(videoID);
+                    this.videosName.add(videoNAME);
+                }
             }
         } catch (JSONException exception){
             JSONArray genres = movieJson.getJSONArray(FetchMovies.GENRESB);
@@ -246,6 +260,22 @@ public class MovieModel {
 
     public void setGenre_names(List<String> genre_names) {
         this.genre_names = genre_names;
+    }
+
+    public List<String> getVideosName() {
+        return videosName;
+    }
+
+    public void setVideosName(List<String> videosName) {
+        this.videosName = videosName;
+    }
+
+    public List<String> getVideosID() {
+        return videosID;
+    }
+
+    public void setVideosID(List<String> videosID) {
+        this.videosID = videosID;
     }
 
     public String getImageFullURL(String size) {

@@ -121,7 +121,7 @@ public class MyMoviesActivity extends AppCompatActivity
                     }
                     case "Plan to Watch":{
                         PlanToWatchMoviesFragment fragment = new PlanToWatchMoviesFragment();
-                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                         break;
                     }
@@ -228,7 +228,7 @@ public class MyMoviesActivity extends AppCompatActivity
                     break;
                 case 2:
                     fragment = new PlanToWatchMoviesFragment();
-                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                     break;
                 default:
                     fragment = new MyMoviesFragment();

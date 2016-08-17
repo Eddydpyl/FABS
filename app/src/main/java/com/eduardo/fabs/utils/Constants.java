@@ -28,6 +28,7 @@ public final class Constants {
         public final static String REQUEST_MOVIES_IN_THEATERS = "now_playing";
         public final static String REQUEST_SERIES_ON_THE_AIR = "on_the_air";
         public final static String REQUEST_SERIES_AIRING_TODAY = "airing_today";
+        public final static String REQUEST_VIDEOS = "videos";
 
         public final static String IMAGE_TINY_SIZE = "w92";
         public final static String IMAGE_VERY_SMALL_SIZE = "w154";
@@ -38,6 +39,7 @@ public final class Constants {
         public final static String IMAGE_ORIGINAL_SIZE = "original";
 
         public final static String PARAM_PAGE = "page=";
+        public final static  String APPEND_TO_RESPONSE = "append_to_response=";
 
         public final static String RATING_MAX = "10";
     }

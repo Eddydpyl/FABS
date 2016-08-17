@@ -2,6 +2,9 @@ package com.eduardo.fabs.movies;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.data.FABSContract;
@@ -42,6 +46,8 @@ public class MovieDetailsActivityFragment extends Fragment {
 
     public MovieDetailsActivityFragment() {
     }
+
+    // TODO: Add delete button to action bar
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -234,9 +240,12 @@ public class MovieDetailsActivityFragment extends Fragment {
             }
             genres.setText(genreString);
 
-            // Disable fields if user doesn't choose a status
+            // TODO: Add trailers to the UI
+            // backEnd has already been programmed
+
+            // Disable fields if user has not chosen a status yet
             if(status.getSelectedItemPosition() == 0){
-                increase_episodes.setClickable(false);
+                increase_episodes.setClickable(true);
                 decrease_episodes.setClickable(false);
                 personal_score.setEnabled(false);
             }
@@ -273,5 +282,16 @@ public class MovieDetailsActivityFragment extends Fragment {
         if(contentResolver.update(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues, selection, new String[] {ID}) == 0){
             contentResolver.insert(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues);
         }
+    }
+
+    private void startVideo(String videoID) {
+        // default youtube app
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoID));
+        List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY);
+        if (list.size() == 0) {
+            // default youtube app not present or doesn't conform to the standard we know
+            Toast.makeText(getContext(), "You need the Youtube official app to play this video", Toast.LENGTH_LONG).show();
+        }
+        startActivity(i);
     }
 }

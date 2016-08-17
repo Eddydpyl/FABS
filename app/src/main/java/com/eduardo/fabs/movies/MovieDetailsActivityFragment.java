@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,20 +45,46 @@ public class MovieDetailsActivityFragment extends Fragment {
     private static TextView episodes_seen;
     private static Spinner personal_score;
 
-    private static Boolean updated = false;
+    final static Uri URI = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+    final static String SELECTION = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
 
     public MovieDetailsActivityFragment() {
     }
 
-    // TODO: Add delete button to action bar
+    @Override
+    public void onCreate(final Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_movie_details, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.delete_mymovie) {
+            if(status.getSelectedItemPosition()!=0){
+                status.setSelection(0);
+                episodes_seen.setText("0");
+                personal_score.setSelection(0);
+                personal_score.setEnabled(false);
+                getActivity().getContentResolver().delete(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, SELECTION, new String[] {ID});
+            }
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ID = getActivity().getIntent().getStringExtra(getString(R.string.intent_movie_id));
-        final Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
-        final String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
-        Cursor cursor = getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, new String[]{ID}, null);
+        Cursor cursor = getActivity().getContentResolver().query(URI, MyMoviesActivity.MY_MOVIES_COLUMNS, SELECTION, new String[]{ID}, null);
 
         try {
             movieModel = new FetchMovies.FetchMovieDetailsTask(getContext()).execute(ID).get();
@@ -73,7 +102,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                     episodes_seen.setText("1");
                     status.setSelection(1);
                     personal_score.setEnabled(true);
-                    updateUserDatabase(selection, getActivity().getContentResolver());
+                    updateUserDatabase(getActivity().getContentResolver());
                 }
             });
             final Button decrease_episodes = (Button) rootView.findViewById(R.id.decrease_episodes);
@@ -84,8 +113,8 @@ public class MovieDetailsActivityFragment extends Fragment {
                     if(status.getSelectedItemPosition()==1){
                         status.setSelection(2);
                         personal_score.setEnabled(false);
+                        updateUserDatabase(getActivity().getContentResolver());
                     }
-                    updateUserDatabase(selection, getActivity().getContentResolver());
                 }
             });
 
@@ -130,13 +159,13 @@ public class MovieDetailsActivityFragment extends Fragment {
                         increase_episodes.setClickable(true);
                         decrease_episodes.setClickable(true);
                         personal_score.setEnabled(true);
-                        updateUserDatabase(selection, getActivity().getContentResolver());
+                        updateUserDatabase(getActivity().getContentResolver());
                     } else if(i == 2){
                         episodes_seen.setText("0");
                         increase_episodes.setClickable(true);
                         decrease_episodes.setClickable(true);
                         personal_score.setEnabled(false);
-                        updateUserDatabase(selection, getActivity().getContentResolver());
+                        updateUserDatabase(getActivity().getContentResolver());
                     }
                 }
 
@@ -182,7 +211,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if(i != 0){
-                        updateUserDatabase(selection, getActivity().getContentResolver());
+                        updateUserDatabase(getActivity().getContentResolver());
                     }
                 }
 
@@ -243,10 +272,8 @@ public class MovieDetailsActivityFragment extends Fragment {
             // TODO: Add trailers to the UI
             // backEnd has already been programmed
 
-            // Disable fields if user has not chosen a status yet
+            // Disable score field if user has not chosen a status yet
             if(status.getSelectedItemPosition() == 0){
-                increase_episodes.setClickable(true);
-                decrease_episodes.setClickable(false);
                 personal_score.setEnabled(false);
             }
 
@@ -259,7 +286,7 @@ public class MovieDetailsActivityFragment extends Fragment {
         return rootView;
     }
 
-    private static void updateUserDatabase(String selection, ContentResolver contentResolver){
+    private static void updateUserDatabase(ContentResolver contentResolver){
         ContentValues contentValues = new ContentValues();
         contentValues.put(FABSContract.MY_MOVIES_TABLE._ID, Integer.valueOf(ID));
         contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_POSTER_IMAGE, movieModel.getPosterPath());
@@ -279,7 +306,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                 contentValues.put(FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY, UserCategory.PLANTOWATCH.toString());
                 break;
         }
-        if(contentResolver.update(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues, selection, new String[] {ID}) == 0){
+        if(contentResolver.update(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues, SELECTION, new String[] {ID}) == 0){
             contentResolver.insert(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues);
         }
     }

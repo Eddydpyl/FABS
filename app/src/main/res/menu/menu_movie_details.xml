@@ -3,4 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.eduardo.fabs.movies.MovieDetailsActivity">
 
+    <item android:id="@+id/delete_mymovie"
+        android:title="Delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="collapseActionView|always"/>
+
 </menu>

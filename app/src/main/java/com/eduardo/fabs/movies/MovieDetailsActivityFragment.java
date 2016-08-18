@@ -2,6 +2,7 @@ package com.eduardo.fabs.movies;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,7 +83,7 @@ public class MovieDetailsActivityFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ID = getActivity().getIntent().getStringExtra(getString(R.string.intent_movie_id));
         Cursor cursor = getActivity().getContentResolver().query(URI, MyMoviesActivity.MY_MOVIES_COLUMNS, SELECTION, new String[]{ID}, null);
@@ -269,8 +271,44 @@ public class MovieDetailsActivityFragment extends Fragment {
             }
             genres.setText(genreString);
 
-            // TODO: Add trailers to the UI
-            // backEnd has already been programmed
+            // Create a list of trailers that launch the youtube app
+            LinearLayout trailers = (LinearLayout) rootView.findViewById(R.id.trailers);
+
+            class TrailerAdapter extends ArrayAdapter<String>{
+
+                List<String> trailerTitles;
+
+                public TrailerAdapter(Context context, int resource, List<String> objects) {
+                    super(context, resource, objects);
+                    trailerTitles = objects;
+                }
+
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = convertView;
+                    if (view == null) {
+                        view = inflater.inflate(R.layout.list_item_trailer, parent, false);
+                    }
+                    ImageView imageView = (ImageView) view.findViewById(R.id.trailer_icon);
+                    TextView textView = (TextView) view.findViewById(R.id.trailer_title);
+                    textView.setText(trailerTitles.get(position));
+                    return view;
+                }
+            }
+            TrailerAdapter trailerAdapter = new TrailerAdapter(getContext(), android.R.layout.simple_list_item_1, movieModel.getVideosName());
+            for(int i = 0; i < movieModel.getVideosName().size(); i++){
+                final int j = i;
+                View view = trailerAdapter.getView(i, null, null);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String trailerID = movieModel.getVideosID().get(j);
+                        startVideo(trailerID);
+                    }
+                });
+                trailers.addView(view);
+            }
 
             // Disable score field if user has not chosen a status yet
             if(status.getSelectedItemPosition() == 0){
@@ -318,7 +356,8 @@ public class MovieDetailsActivityFragment extends Fragment {
         if (list.size() == 0) {
             // default youtube app not present or doesn't conform to the standard we know
             Toast.makeText(getContext(), "You need the Youtube official app to play this video", Toast.LENGTH_LONG).show();
+        } else {
+            startActivity(i);
         }
-        startActivity(i);
     }
 }

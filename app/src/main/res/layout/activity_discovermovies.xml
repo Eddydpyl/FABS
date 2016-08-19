@@ -21,15 +21,17 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header">
 
-    <ExpandableListView
-        android:id="@+id/navigationMenu_discovermovies"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="165dp"
-        android:background="@android:color/transparent"
-        android:groupIndicator="@android:color/transparent"
-        android:divider="@android:color/transparent">
-    </ExpandableListView>
+        <ListView
+            android:id="@+id/navigationMenu_discovermovies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="165dp"
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:background="@android:color/transparent"
+            android:groupIndicator="@android:color/transparent"
+            android:divider="@android:color/transparent">
+        </ListView>
 
     </android.support.design.widget.NavigationView>
 

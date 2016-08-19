@@ -17,13 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListView;
+import android.widget.ListView;
 
-import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
-import com.eduardo.fabs.SettingsActivity;
-import com.eduardo.fabs.adapters.ExpandableListAdapter;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.ExpandedMenuModel;
 import com.eduardo.fabs.sync.FABSSyncAdapter;
@@ -40,8 +36,7 @@ public class MyMoviesActivity extends AppCompatActivity
     public static final String TAG = "myMovies";
     public static String sortOrder;
 
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
+    ListView listView;
     List<ExpandedMenuModel> listDataHeader;
     HashMap<ExpandedMenuModel, List<String>> listDataChild;
     Context context;
@@ -100,12 +95,14 @@ public class MyMoviesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_mymovies);
         navigationView.setNavigationItemSelectedListener(this);
-        expandableList = (ExpandableListView) findViewById(R.id.navigationMenu_mymovies);
+        listView = (ListView) findViewById(R.id.navigationMenu_mymovies);
 
+        /*
         prepareListData();
 
         mMenuAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, expandableList);
         expandableList.setAdapter(mMenuAdapter);
+
 
         expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -196,6 +193,7 @@ public class MyMoviesActivity extends AppCompatActivity
         // Both are expanded by default
         expandableList.expandGroup(0);
         expandableList.expandGroup(1);
+        */
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
         String savedSortOrder = null;

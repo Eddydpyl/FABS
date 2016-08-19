@@ -71,7 +71,7 @@ public class FetchMovies {
     public static final String VIDEO = "video";
     public static final String VOTE_COUNT = "vote_count";
     public static final String VIDEOS = "videos";
-    public static final String VIDEOS_ID = "id";
+    public static final String VIDEOS_ID = "key";
     public static final String VIDEOS_NAME = "name";
     public static final String VIDEOS_TYPE = "type";
 

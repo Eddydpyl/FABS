@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.data.FABSContract;
@@ -304,7 +301,8 @@ public class MovieDetailsActivityFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         String trailerID = movieModel.getVideosID().get(j);
-                        startVideo(trailerID);
+                        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailerID));
+                        startActivity(i);
                     }
                 });
                 trailers.addView(view);
@@ -346,18 +344,6 @@ public class MovieDetailsActivityFragment extends Fragment {
         }
         if(contentResolver.update(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues, SELECTION, new String[] {ID}) == 0){
             contentResolver.insert(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, contentValues);
-        }
-    }
-
-    private void startVideo(String videoID) {
-        // default youtube app
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoID));
-        List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY);
-        if (list.size() == 0) {
-            // default youtube app not present or doesn't conform to the standard we know
-            Toast.makeText(getContext(), "You need the Youtube official app to play this video", Toast.LENGTH_LONG).show();
-        } else {
-            startActivity(i);
         }
     }
 }

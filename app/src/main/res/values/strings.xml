@@ -31,6 +31,20 @@
     <string name="pref_pages_loaded_theaters_movies">loadedTheatersMovies</string>
 
     <string name="search_hint">Search...</string>
+    
+    <string-array name="list_nav_movies">
+        <item>My Collection</item>
+        <item>Completed</item>
+        <item>Plan to Watch</item>
+        <item>Discover</item>
+        <item>Popular</item>
+        <item>Top Rated</item>
+        <item>Upcoming</item>
+        <item>Now in Theaters</item>
+        <item></item>
+        <item>Settings</item>
+        <item>Donate</item>
+    </string-array>
 
     <string-array name="list_movie_status">
         <item></item>

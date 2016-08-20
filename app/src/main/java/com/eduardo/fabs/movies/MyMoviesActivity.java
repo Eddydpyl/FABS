@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +23,9 @@ import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.NavigationAdapter;
+import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.sync.FABSSyncAdapter;
-import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 
 //TODO: Setup tablet display
 
@@ -100,7 +99,12 @@ public class MyMoviesActivity extends AppCompatActivity
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
+                                setTitle(getString(R.string.title_fragment_my_movies));
+                                MyMoviesActivity.setState(0);
                                 MyMoviesFragment fragment = new MyMoviesFragment();
+                                Bundle bundle = new Bundle(1);
+                                bundle.putInt(getString(R.string.intent_fragment), state);
+                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -113,7 +117,12 @@ public class MyMoviesActivity extends AppCompatActivity
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
-                                CompletedMoviesFragment fragment = new CompletedMoviesFragment();
+                                setTitle(getString(R.string.title_fragment_completed_movies));
+                                MyMoviesActivity.setState(1);
+                                MyMoviesFragment fragment = new MyMoviesFragment();
+                                Bundle bundle = new Bundle(1);
+                                bundle.putInt(getString(R.string.intent_fragment), state);
+                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -126,7 +135,12 @@ public class MyMoviesActivity extends AppCompatActivity
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
-                                PlanToWatchMoviesFragment fragment = new PlanToWatchMoviesFragment();
+                                setTitle(getString(R.string.title_fragment_plan_to_watch_movies));
+                                MyMoviesActivity.setState(2);
+                                MyMoviesFragment fragment = new MyMoviesFragment();
+                                Bundle bundle = new Bundle(1);
+                                bundle.putInt(getString(R.string.intent_fragment), state);
+                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -234,22 +248,26 @@ public class MyMoviesActivity extends AppCompatActivity
             }
 
             // Create a new Fragment to be placed in the activity layout
-            Fragment fragment;
+            MyMoviesFragment fragment = new MyMoviesFragment();
+            Bundle bundle = new Bundle(1);
+            bundle.putInt(getString(R.string.intent_fragment), state);
+            fragment.setArguments(bundle);
             switch (state){
                 case 0:
-                    fragment = new MyMoviesFragment();
                     sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                    setTitle(getString(R.string.title_fragment_my_movies));
                     break;
                 case 1:
-                    fragment = new CompletedMoviesFragment();
                     sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                    setTitle(getString(R.string.title_fragment_completed_movies));
                     break;
                 case 2:
-                    fragment = new PlanToWatchMoviesFragment();
                     sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
+                    setTitle(getString(R.string.title_fragment_plan_to_watch_movies));
                     break;
                 default:
-                    fragment = new MyMoviesFragment();
+                    sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                    setTitle(getString(R.string.title_fragment_my_movies));
             }
             // Restore the sort order after clicking home in some other activity that returns here
             if(savedSortOrder!=null){
@@ -330,20 +348,10 @@ public class MyMoviesActivity extends AppCompatActivity
     }
 
     private void reloadFragment(){
-        Fragment fragment;
-        switch (state){
-            case 0:
-                fragment = new MyMoviesFragment();
-                break;
-            case 1:
-                fragment = new CompletedMoviesFragment();
-                break;
-            case 2:
-                fragment = new PlanToWatchMoviesFragment();
-                break;
-            default:
-                fragment = new MyMoviesFragment();
-        }
+        MyMoviesFragment fragment = new MyMoviesFragment();
+        Bundle bundle = new Bundle(1);
+        bundle.putInt(getString(R.string.intent_fragment), state);
+        fragment.setArguments(bundle);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);

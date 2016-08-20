@@ -20,14 +20,15 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.adapters.RecyclerItemClickListener;
 import com.eduardo.fabs.data.FABSContract;
+import com.eduardo.fabs.utils.UserCategory;
 
 import java.io.IOException;
 
 public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Each loader in an activity needs a different ID
-    private static final int MYMOVIES_LOADER = 0;
-    private CursorRecyclerAdapter cursorRecyclerAdapter;
+    private static int loader;
+    private static CursorRecyclerAdapter cursorRecyclerAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,8 +41,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(getContext().getString(R.string.title_fragment_my_movies));
-        MyMoviesActivity.setState(0);
+        loader = getArguments().getInt(getString(R.string.intent_fragment));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                     Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
-                    intent.putExtra(getString(R.string.intent_fragment), 0);
+                    intent.putExtra(getString(R.string.intent_fragment), loader);
                     intent.putExtra(getString(R.string.intent_sort_order), MyMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
@@ -95,7 +95,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MYMOVIES_LOADER, null, this);
+        getLoaderManager().initLoader(loader, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -112,8 +112,23 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // We create the cursor that our adapter will use, but we don't assign it here
-        Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
-        return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, MyMoviesActivity.sortOrder);
+        final Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+        switch (loader){
+            case 0:
+                return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, MyMoviesActivity.sortOrder);
+            case 1: {
+                String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? ";
+                String[] selectionArgs = {UserCategory.COMPLETED.toString()};
+                return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+            }
+            case 2: {
+                String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? ";
+                String[] selectionArgs = {UserCategory.PLANTOWATCH.toString()};
+                return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+            }
+            default:
+                return new CursorLoader(getActivity(), uri, MyMoviesActivity.MY_MOVIES_COLUMNS, null, null, MyMoviesActivity.sortOrder);
+        }
     }
 
     @Override

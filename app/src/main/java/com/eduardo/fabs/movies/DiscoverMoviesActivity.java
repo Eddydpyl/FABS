@@ -8,33 +8,34 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.SettingsActivity;
+import com.eduardo.fabs.adapters.NavigationAdapter;
 import com.eduardo.fabs.data.FABSContract;
-import com.eduardo.fabs.models.ExpandedMenuModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 
 public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String TAG = "discoverMovies";
-    public static String sortOrder;
 
-    ListView listView;
-    List<ExpandedMenuModel> listDataHeader;
-    HashMap<ExpandedMenuModel, List<String>> listDataChild;
-    Context context;
+    public static String sortOrder;
+    private static int state;
+
+    public static void setState(int i){
+        state = i;
+    }
 
     static final int COL_DISCOVER_MOVIES_ID = 0;
     static final int COL_DISCOVER_MOVIES_POSTER_IMAGE = 1;
@@ -44,12 +45,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     static final int COL_DISCOVER_MOVIES_POPULARITY = 5;
     static final int COL_DISCOVER_MOVIES_VOTE_AVERAGE = 6;
 
-    private static int state;
-
-    public static void setState(int i){
-        state = i;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,113 +52,138 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_discovermovies);
         setSupportActionBar(toolbar);
 
-        context = this;
-
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        final SmoothActionBarDrawerToggle toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
-        listView = (ListView) findViewById(R.id.navigationMenu_discovermovies);
-
-        /*
-        prepareListData();
-
-        mMenuAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, expandableList);
-        expandableList.setAdapter(mMenuAdapter);
-
-        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        final ListView listView = (ListView) findViewById(R.id.navigationMenu_discovermovies);
+        final String[] listItems = getResources().getStringArray(R.array.list_nav_movies);
+        NavigationAdapter navigationAdapter = new NavigationAdapter(this, R.layout.nav_item, listItems);
+        listView.setAdapter(navigationAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                String childString = (String) mMenuAdapter.getChild(i, i1);
-                drawer.closeDrawer(GravityCompat.START);
-                switch (childString){
-                    case "Completed":{
-                        Intent intent = new Intent(context, MyMoviesActivity.class);
-                        intent.putExtra(getString(R.string.intent_fragment), 1);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0: {
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
+                                intent.putExtra(getString(R.string.intent_fragment), 0);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case "Plan to Watch":{
-                        Intent intent = new Intent(context, MyMoviesActivity.class);
-                        intent.putExtra(getString(R.string.intent_fragment), 2);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
+                    case 1: {
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
+                                intent.putExtra(getString(R.string.intent_fragment), 1);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case "Popular":{
-                        PopularMoviesFragment fragment = new PopularMoviesFragment();
-                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    case 2: {
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
+                                intent.putExtra(getString(R.string.intent_fragment), 2);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case "Top Rated":{
-                        TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
-                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    case 3: {
                         break;
                     }
-                    case "Upcoming":{
-                        UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
-                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    case 4: {
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                PopularMoviesFragment fragment = new PopularMoviesFragment();
+                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case "Now in Theaters":{
-                        NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
-                        sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    case 5:{
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
+                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                }
-                return true;
-            }
-        });
-        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                switch (i){
-                    case 0:{
-                        // Click on "My Collection"
-                        drawer.closeDrawer(GravityCompat.START);
-                        Intent intent = new Intent(context, MyMoviesActivity.class);
-                        intent.putExtra(getString(R.string.intent_fragment), 0);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
+                    case 6:{
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
+                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case 1:{
-                        // Click on "Discover"
+                    case 7:{
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
+                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                            }
+                        });
+                        listView.setItemChecked(i, true);
+                        drawer.closeDrawers();
                         break;
                     }
-                    case 3:{
-                        // Click on "Settings"
-                        Intent intent = new Intent(context, SettingsActivity.class);
+                    case 8:{
+                        break;
+                    }
+                    case 9:{
+                        Intent intent = new Intent(DiscoverMoviesActivity.this, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);
                         break;
                     }
-                    case 4:{
-                        // Click on "Donate"
-                        Intent intent = new Intent(context, DonateActivity.class);
+                    case 10:{
+                        Intent intent = new Intent(DiscoverMoviesActivity.this, DonateActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);
                         break;
                     }
                 }
-                return true;
             }
         });
-        // Both are expanded by default
-        expandableList.expandGroup(0);
-        expandableList.expandGroup(1);
-        */
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
         String savedSortOrder = null;
@@ -212,47 +232,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-    }
-
-    private void prepareListData() {
-        listDataHeader = new ArrayList<ExpandedMenuModel>();
-        listDataChild = new HashMap<ExpandedMenuModel, List<String>>();
-
-        ExpandedMenuModel item1 = new ExpandedMenuModel();
-        item1.setIconName("My Collection");
-        item1.setIconImg(R.drawable.ic_mymovies);
-        listDataHeader.add(item1);
-
-        ExpandedMenuModel item2 = new ExpandedMenuModel();
-        item2.setIconName("Discover");
-        item2.setIconImg(R.drawable.ic_movies);
-        listDataHeader.add(item2);
-
-        ExpandedMenuModel item3 = new ExpandedMenuModel();
-        item3.setIconName("SEPARATOR");
-        listDataHeader.add(item3);
-
-        ExpandedMenuModel item4 = new ExpandedMenuModel();
-        item4.setIconName("Settings");
-        item4.setIconImg(R.drawable.ic_settings);
-        listDataHeader.add(item4);
-
-        ExpandedMenuModel item5 = new ExpandedMenuModel();
-        item5.setIconName("Donate");
-        item5.setIconImg(R.drawable.ic_gift);
-        listDataHeader.add(item5);
-
-        List<String> heading1 = new ArrayList<String>();
-        heading1.add("Completed");
-        heading1.add("Plan to Watch");
-
-        List<String> heading2 = new ArrayList<String>();
-        heading2.add("Popular");
-        heading2.add("Top Rated");
-        heading2.add("Upcoming");
-        heading2.add("Now in Theaters");
-        listDataChild.put(listDataHeader.get(0), heading1);
-        listDataChild.put(listDataHeader.get(1), heading2);
     }
 
     @Override

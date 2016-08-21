@@ -1,7 +1,5 @@
 package com.eduardo.fabs.movies;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,10 +8,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +25,7 @@ import com.eduardo.fabs.sync.FABSSyncAdapter;
 //TODO: Setup tablet display
 
 public class MyMoviesActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "myMovies";
 
@@ -282,29 +278,8 @@ public class MyMoviesActivity extends AppCompatActivity
     }
 
     @Override
-    public void startActivity(Intent intent) {
-        //check if search intent
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            intent.putExtra(getString(R.string.intent_activity), TAG);
-            intent.putExtra(getString(R.string.intent_fragment), state);
-            intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
-        }
-
-        super.startActivity(intent);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mymovies, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search_mymovies).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+        // The menu is inflated in the fragment, but we still need to override this if we wan to handle the sortOrder
         return true;
     }
 

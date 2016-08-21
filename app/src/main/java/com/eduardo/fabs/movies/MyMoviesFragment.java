@@ -11,9 +11,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
@@ -24,7 +28,7 @@ import com.eduardo.fabs.utils.UserCategory;
 
 import java.io.IOException;
 
-public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener{
 
     // Each loader in an activity needs a different ID
     private static int loader;
@@ -42,6 +46,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loader = getArguments().getInt(getString(R.string.intent_fragment));
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -91,6 +96,54 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
             }));
         }
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.mymovies, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_mymovies).getActionView();
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        // Here is where we are going to implement the filter logic
+        FilterQueryProvider filterQueryProvider = new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence charSequence) {
+                final Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+                switch (loader){
+                    case 0: {
+                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+                        String[] selectionArgs = {charSequence.toString() + "%"};
+                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+                    }
+                    case 1: {
+                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+                        String[] selectionArgs = {UserCategory.COMPLETED.toString(), charSequence.toString() + "%"};
+                        return getActivity().getContentResolver().query( uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+                    }
+                    case 2: {
+                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+                        String[] selectionArgs = {UserCategory.PLANTOWATCH.toString(), charSequence.toString() + "%"};
+                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+                    }
+                    default:
+                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+                        String[] selectionArgs = {charSequence.toString() + "%"};
+                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+                }
+            }
+        };
+        cursorRecyclerAdapter.setFilterQueryProvider(filterQueryProvider);
+        cursorRecyclerAdapter.getFilter().filter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
     @Override

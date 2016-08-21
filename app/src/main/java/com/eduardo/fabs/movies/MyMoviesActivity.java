@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.NavigationAdapter;
@@ -213,13 +212,6 @@ public class MyMoviesActivity extends AppCompatActivity
                     }
                     case 9:{
                         Intent intent = new Intent(MyMoviesActivity.this, SettingsActivity.class);
-                        intent.putExtra(getString(R.string.intent_activity), TAG);
-                        intent.putExtra(getString(R.string.intent_fragment), state);
-                        startActivity(intent);
-                        break;
-                    }
-                    case 10:{
-                        Intent intent = new Intent(MyMoviesActivity.this, DonateActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);

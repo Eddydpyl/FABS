@@ -18,12 +18,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.eduardo.fabs.DonateActivity;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.NavigationAdapter;
-import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
+import com.eduardo.fabs.data.FABSContract;
 
 public class DiscoverMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -169,13 +168,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                     }
                     case 9:{
                         Intent intent = new Intent(DiscoverMoviesActivity.this, SettingsActivity.class);
-                        intent.putExtra(getString(R.string.intent_activity), TAG);
-                        intent.putExtra(getString(R.string.intent_fragment), state);
-                        startActivity(intent);
-                        break;
-                    }
-                    case 10:{
-                        Intent intent = new Intent(DiscoverMoviesActivity.this, DonateActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
                         startActivity(intent);

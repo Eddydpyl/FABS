@@ -57,12 +57,6 @@ public class NavigationAdapter extends ArrayAdapter<String> {
                 textView.setLayoutParams(params);
                 textView.setTypeface(null, Typeface.BOLD);
                 break;
-            } case 10:{
-                imageView.setImageResource(R.drawable.ic_gift);
-                params.setMargins(0, 5, 0, 0);
-                textView.setLayoutParams(params);
-                textView.setTypeface(null, Typeface.BOLD);
-                break;
             } default:{
                 imageView.setVisibility(View.GONE);
                 params.setMargins(60, 0, 0, 0);

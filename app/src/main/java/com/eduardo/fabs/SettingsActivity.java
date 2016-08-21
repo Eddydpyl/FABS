@@ -181,9 +181,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 case MyMoviesActivity.TAG:
                     resIntent.setClass(this, MyMoviesActivity.class);
                     startActivity(resIntent);
+                    break;
                 case DiscoverMoviesActivity.TAG:
                     resIntent.setClass(this, DiscoverMoviesActivity.class);
                     startActivity(resIntent);
+                    break;
             }
             return true;
         }

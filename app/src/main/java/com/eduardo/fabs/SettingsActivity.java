@@ -175,8 +175,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Intent intent = getIntent();
             String origin = intent.getStringExtra(getString(R.string.intent_activity));
             Integer state = intent.getIntExtra(getString(R.string.intent_fragment), 0);
+            String sortOrder = intent.getStringExtra(getString(R.string.intent_sort_order));
             Intent resIntent = new Intent();
             resIntent.putExtra(getString(R.string.intent_fragment), state);
+            resIntent.putExtra(getString(R.string.intent_sort_order), sortOrder);
             switch (origin){
                 case MyMoviesActivity.TAG:
                     resIntent.setClass(this, MyMoviesActivity.class);

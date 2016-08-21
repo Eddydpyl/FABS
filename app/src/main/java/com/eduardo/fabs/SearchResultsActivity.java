@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.eduardo.fabs.movies.DiscoverMoviesActivity;
+import com.eduardo.fabs.movies.MyMoviesActivity;
 
 import java.util.concurrent.ExecutionException;
 
@@ -59,44 +60,24 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (TAG.equals(DiscoverMoviesActivity.TAG)) {
-                    switch (STATE) {
-                        case 0: {
-                            Intent intent = new Intent(this, DiscoverMoviesActivity.class);
-                            intent.putExtra(getString(R.string.intent_fragment), 0);
-                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
-                            startActivity(intent);
-                            break;
-                        }
-                        case 1: {
-                            Intent intent = new Intent(this, DiscoverMoviesActivity.class);
-                            intent.putExtra(getString(R.string.intent_fragment), 1);
-                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
-                            startActivity(intent);
-                            break;
-                        }
-                        case 2: {
-                            Intent intent = new Intent(this, DiscoverMoviesActivity.class);
-                            intent.putExtra(getString(R.string.intent_fragment), 2);
-                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
-                            startActivity(intent);
-                            break;
-                        }
-                        case 3: {
-                            Intent intent = new Intent(this, DiscoverMoviesActivity.class);
-                            intent.putExtra(getString(R.string.intent_fragment), 3);
-                            intent.putExtra(getString(R.string.intent_sort_order),SORT_ORDER);
-                            startActivity(intent);
-                            break;
-                        }
-                    }
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            Intent resIntent = new Intent();
+            resIntent.putExtra(getString(R.string.intent_fragment), STATE);
+            resIntent.putExtra(getString(R.string.intent_sort_order), SORT_ORDER);
+            switch (TAG){
+                case MyMoviesActivity.TAG:
+                    resIntent.setClass(this, MyMoviesActivity.class);
+                    startActivity(resIntent);
+                    break;
+                case DiscoverMoviesActivity.TAG:
+                    resIntent.setClass(this, DiscoverMoviesActivity.class);
+                    startActivity(resIntent);
+                    break;
+            }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

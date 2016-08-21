@@ -170,6 +170,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         Intent intent = new Intent(DiscoverMoviesActivity.this, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
+                        intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
                         startActivity(intent);
                         break;
                     }

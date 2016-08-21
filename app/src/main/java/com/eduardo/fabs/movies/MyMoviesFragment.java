@@ -122,7 +122,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                     case 1: {
                         String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
                         String[] selectionArgs = {UserCategory.COMPLETED.toString(), charSequence.toString() + "%"};
-                        return getActivity().getContentResolver().query( uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
+                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
                     }
                     case 2: {
                         String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";

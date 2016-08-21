@@ -7,18 +7,24 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.SearchResultsActivity;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.adapters.EndlessRecyclerViewScrollListener;
 import com.eduardo.fabs.adapters.RecyclerItemClickListener;
@@ -32,11 +38,12 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
-public class PopularMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class PopularMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener {
 
     // Each loader in an activity needs a different ID
     private static final int POPULARMOVIES_LOADER = 0;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
+    private TextView emptyCursorTextView;
 
     public static final String[] POPULAR_MOVIES_COLUMNS = {
             FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.POPULAR_MOVIES_TABLE._ID,
@@ -61,11 +68,14 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getContext().getString(R.string.title_fragment_popular_movies));
         DiscoverMoviesActivity.setState(0);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_popularmovies_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_popularmovies_list, container, false);
+        View view = rootView.findViewById(R.id.recyclerView);
+        emptyCursorTextView = (TextView) rootView.findViewById(R.id.empty_cursor);
         if (view instanceof RecyclerView) {
             final Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -163,7 +173,54 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
             endlessRecyclerViewScrollListener.setCurrentPage(previouslyStarted);
             recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
         }
-        return view;
+        return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        DiscoverMoviesActivity.searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        // Here is where we are going to implement the filter logic
+        FilterQueryProvider filterQueryProvider = new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence charSequence) {
+                final Uri uri = FABSContract.POPULAR_MOVIES_TABLE.CONTENT_URI;
+                String selection = FABSContract.POPULAR_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.POPULAR_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+                String[] selectionArgs = {charSequence.toString() + "%"};
+                return getActivity().getContentResolver().query(uri, PopularMoviesFragment.POPULAR_MOVIES_COLUMNS, selection, selectionArgs, DiscoverMoviesActivity.sortOrder);
+
+            }
+        };
+        cursorRecyclerAdapter.setFilterQueryProvider(filterQueryProvider);
+        cursorRecyclerAdapter.getFilter().filter(query);
+        // Execute some code after 0.2 seconds have passed
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(cursorRecyclerAdapter.getItemCount()==0){
+                    emptyCursorTextView.setVisibility(View.VISIBLE);
+                } else {
+                    emptyCursorTextView.setVisibility(View.GONE);
+                }
+            }
+        }, 200);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Intent intent = new Intent(getContext(), SearchResultsActivity.class);
+        intent.putExtra(getString(R.string.intent_query), query);
+        intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
+        intent.putExtra(getString(R.string.intent_fragment), 0);
+        intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
+        startActivity(intent);
+        return true;
     }
 
     @Override

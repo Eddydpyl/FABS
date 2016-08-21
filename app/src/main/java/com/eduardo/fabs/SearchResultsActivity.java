@@ -54,8 +54,13 @@ public class SearchResultsActivity extends AppCompatActivity {
             TAG = intent.getStringExtra(getString(R.string.intent_activity));
             STATE = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
-            //TODO: use query, origin and state to search your data
+        } else {
+            QUERY = intent.getStringExtra(getString(R.string.intent_query));
+            TAG = intent.getStringExtra(getString(R.string.intent_activity));
+            STATE = intent.getIntExtra(getString(R.string.intent_fragment), 0);
+            SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
         }
+        //TODO: use query, origin and state to search your data
     }
 
     @Override

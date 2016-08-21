@@ -1,7 +1,5 @@
 package com.eduardo.fabs.movies;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -31,6 +29,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
     public static String sortOrder;
     private static int state;
+    public static SearchView searchView;
 
     public static void setState(int i){
         state = i;
@@ -120,6 +119,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
+                        setState(0);
                         listView.setItemChecked(i, true);
                         drawer.closeDrawers();
                         break;
@@ -133,6 +133,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
+                        setState(1);
                         listView.setItemChecked(i, true);
                         drawer.closeDrawers();
                         break;
@@ -146,6 +147,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
+                        setState(2);
                         listView.setItemChecked(i, true);
                         drawer.closeDrawers();
                         break;
@@ -159,6 +161,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
+                        setState(3);
                         listView.setItemChecked(i, true);
                         drawer.closeDrawers();
                         break;
@@ -205,15 +208,15 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                     break;
                 case 1:
                     fragment = new TopRatedMoviesFragment();
-                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
+                    sortOrder = FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                     break;
                 case 2:
                     fragment = new UpcomingMoviesFragment();
-                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+                    sortOrder = FABSContract.UPCOMING_MOVIES_TABLE.COLUMN_RELEASE_DATE;
                     break;
                 case 3:
                     fragment = new NowInTheatersMoviesFragment();
-                    sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                    sortOrder = FABSContract.NOW_IN_THEATERS_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                     break;
                 default:
                     fragment = new PopularMoviesFragment();
@@ -238,29 +241,11 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     }
 
     @Override
-    public void startActivity(Intent intent) {
-        //check if search intent
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            intent.putExtra(getString(R.string.intent_activity), TAG);
-            intent.putExtra(getString(R.string.intent_fragment), state);
-            intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
-        }
-
-        super.startActivity(intent);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.discovermovies, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search_discovermovies).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+        searchView = (SearchView) menu.findItem(R.id.search_discovermovies).getActionView();
         return true;
     }
 

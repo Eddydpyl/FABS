@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -30,6 +31,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     public static String sortOrder;
     private static int state;
     public static SearchView searchView;
+    public static Boolean searching;
 
     public static void setState(int i){
         state = i;
@@ -54,6 +56,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         final SmoothActionBarDrawerToggle toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        searching = false;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
@@ -246,6 +250,21 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.discovermovies, menu);
         searchView = (SearchView) menu.findItem(R.id.search_discovermovies).getActionView();
+        MenuItem menuItem = menu.findItem(R.id.search_discovermovies);
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                searching = true;
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                searching = false;
+                reloadFragment();
+                return true;
+            }
+        });
         return true;
     }
 

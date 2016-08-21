@@ -121,7 +121,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
             EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    if(page > 100){
+                    if(page > 100D || DiscoverMoviesActivity.searching){
                         // The online database has only up to 100 pages at any time
                         return;
                     }

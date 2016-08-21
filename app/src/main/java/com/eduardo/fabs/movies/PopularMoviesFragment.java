@@ -121,8 +121,8 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
             EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    if(page > 100){
-                        // The online database has only up to 100 pages at any time
+                    if(page > 100 || DiscoverMoviesActivity.searching){
+                        // The online database has only up to 100 pages at any time and we don't want to load any more while searching
                         return;
                     }
                     try {

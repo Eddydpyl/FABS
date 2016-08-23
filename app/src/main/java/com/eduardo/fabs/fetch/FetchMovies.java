@@ -310,18 +310,15 @@ public class FetchMovies {
 
         public final String LOG_TAG = SearchOnlineMoviesTask.class.getSimpleName();
 
-        private Context mContext;
-
-        public SearchOnlineMoviesTask(Context context) {
+        public SearchOnlineMoviesTask() {
             super();
-            mContext = context;
         }
 
         @Override
         protected List<MovieModel> doInBackground(String... searchQuery) {
             String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.SEARCH_TAG + "/"
                     + Constants.TMDBConstants.MOVIE_TAG + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
-                    + Constants.TMDBConstants.API_KEY + "&" + Constants.TMDBConstants.QUERY_PARAM + searchQuery;
+                    + Constants.TMDBConstants.API_KEY + "&" + Constants.TMDBConstants.QUERY_PARAM + searchQuery[0];
             return fetchMovies(urlStr);
         }
 
@@ -332,11 +329,8 @@ public class FetchMovies {
 
         public final String LOG_TAG = FetchMovieDetailsTask.class.getSimpleName();
 
-        private Context mContext;
-
-        public FetchMovieDetailsTask(Context context) {
+        public FetchMovieDetailsTask() {
             super();
-            mContext = context;
         }
 
         @Override
@@ -414,12 +408,10 @@ public class FetchMovies {
 
         public final String LOG_TAG = FetchMoreMoviesTask.class.getSimpleName();
 
-        private Context mContext;
         private String category;
 
-        public FetchMoreMoviesTask(Context context, String category) {
+        public FetchMoreMoviesTask(String category) {
             super();
-            mContext = context;
             this.category = category;
         }
 

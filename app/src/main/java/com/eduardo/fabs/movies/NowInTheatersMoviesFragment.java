@@ -131,7 +131,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
                         edit.putInt(getString(R.string.pref_pages_loaded_theaters_movies), page);
                         edit.commit();
 
-                        List<MovieModel> nowInTheatersMovies = new FetchMovies.FetchMoreMoviesTask(context, Constants.TMDBConstants.REQUEST_MOVIES_IN_THEATERS).execute(page).get();
+                        List<MovieModel> nowInTheatersMovies = new FetchMovies.FetchMoreMoviesTask(Constants.TMDBConstants.REQUEST_MOVIES_IN_THEATERS).execute(page).get();
                         Vector<ContentValues> nowInTheatersMoviesVector = new Vector<ContentValues>(nowInTheatersMovies.size());
 
                         for (int i = 0; i < nowInTheatersMovies.size(); i++) {

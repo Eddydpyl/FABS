@@ -131,7 +131,7 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
                         edit.putInt(getString(R.string.pref_pages_loaded_top_rated_movies), page);
                         edit.commit();
 
-                        List<MovieModel> topRatedMovies = new FetchMovies.FetchMoreMoviesTask(context, Constants.TMDBConstants.REQUEST_TOP_RATED).execute(page).get();
+                        List<MovieModel> topRatedMovies = new FetchMovies.FetchMoreMoviesTask(Constants.TMDBConstants.REQUEST_TOP_RATED).execute(page).get();
                         Vector<ContentValues> topRatedMoviesVector = new Vector<ContentValues>(topRatedMovies.size());
 
                         for (int i = 0; i < topRatedMovies.size(); i++) {

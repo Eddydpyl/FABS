@@ -86,7 +86,7 @@ public class MovieDetailsActivityFragment extends Fragment {
         Cursor cursor = getActivity().getContentResolver().query(URI, MyMoviesActivity.MY_MOVIES_COLUMNS, SELECTION, new String[]{ID}, null);
 
         try {
-            movieModel = new FetchMovies.FetchMovieDetailsTask(getContext()).execute(ID).get();
+            movieModel = new FetchMovies.FetchMovieDetailsTask().execute(ID).get();
 
             ImageView poster = (ImageView) rootView.findViewById(R.id.poster);
             String imageUrlStr = movieModel.getImageFullURL(Constants.TMDBConstants.IMAGE_MEDIUM_SIZE);
@@ -245,7 +245,11 @@ public class MovieDetailsActivityFragment extends Fragment {
             TextView overview = (TextView) rootView.findViewById(R.id.overview);
             overview.setText(movieModel.getOverview());
             TextView releaseDate = (TextView) rootView.findViewById(R.id.releaseDate);
-            releaseDate.setText(movieModel.getReleaseDate());
+            if(movieModel.getReleaseDate().isEmpty()){
+                releaseDate.setText("-");
+            } else{
+                releaseDate.setText(movieModel.getReleaseDate());
+            }
             TextView voteAverage = (TextView) rootView.findViewById(R.id.voteAverage);
             voteAverage.setText(movieModel.getRating());
             TextView budget = (TextView) rootView.findViewById(R.id.budget);
@@ -262,11 +266,15 @@ public class MovieDetailsActivityFragment extends Fragment {
             }
             TextView genres = (TextView) rootView.findViewById(R.id.genres);
             List<String> genreList = movieModel.getGenre_names();
-            String genreString = genreList.get(0);
-            for(int i = 1; i < genreList.size(); i++){
-                genreString.concat("," + genreList.get(i));
+            if(genreList.isEmpty()){
+                genres.setText("-");
+            } else {
+                String genreString = genreList.get(0);
+                for(int i = 1; i < genreList.size(); i++){
+                    genreString.concat("," + genreList.get(i));
+                }
+                genres.setText(genreString);
             }
-            genres.setText(genreString);
 
             // Create a list of trailers that launch the youtube app
             LinearLayout trailers = (LinearLayout) rootView.findViewById(R.id.trailers);

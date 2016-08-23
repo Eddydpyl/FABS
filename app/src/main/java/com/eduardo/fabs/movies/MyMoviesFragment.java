@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -33,6 +34,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     // Each loader in an activity needs a different ID
     private static int loader;
     private static CursorRecyclerAdapter cursorRecyclerAdapter;
+    private TextView emptyCursorTextView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,8 +53,9 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
+        View view = rootView.findViewById(R.id.recyclerView);
+        emptyCursorTextView = (TextView) rootView.findViewById(R.id.empty_cursor);
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -95,7 +98,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                 }
             }));
         }
-        return view;
+        return rootView;
     }
 
     @Override
@@ -138,6 +141,18 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         };
         cursorRecyclerAdapter.setFilterQueryProvider(filterQueryProvider);
         cursorRecyclerAdapter.getFilter().filter(query);
+        // Execute some code after 0.2 seconds have passed
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(cursorRecyclerAdapter.getItemCount()==0){
+                    emptyCursorTextView.setVisibility(View.VISIBLE);
+                } else {
+                    emptyCursorTextView.setVisibility(View.GONE);
+                }
+            }
+        }, 200);
         return true;
     }
 

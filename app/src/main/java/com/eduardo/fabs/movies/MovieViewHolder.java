@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.models.MovieModel;
 import com.eduardo.fabs.utils.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -49,5 +50,14 @@ public class MovieViewHolder extends android.support.v7.widget.RecyclerView.View
         movieViewHolder.ID.setText(_id.toString());
         movieViewHolder.mTitle.setText(cursor.getString(DiscoverMoviesActivity.COL_DISCOVER_MOVIES_TITLE));
         movieViewHolder.mOverview.setText(cursor.getString(DiscoverMoviesActivity.COL_DISCOVER_MOVIES_OVERVIEW));
+    }
+
+    public static void populateMovieModel(Context context, MovieViewHolder movieViewHolder, MovieModel movieModel) throws IOException {
+        String imageUrlStr = movieModel.getImageFullURL(Constants.TMDBConstants.IMAGE_SMALL_SIZE);
+        Picasso.with(context).load(imageUrlStr).into(movieViewHolder.mPoster);
+        String _id = movieModel.getId();
+        movieViewHolder.ID.setText(_id);
+        movieViewHolder.mTitle.setText(movieModel.getTitle());
+        movieViewHolder.mOverview.setText(movieModel.getOverview());
     }
 }

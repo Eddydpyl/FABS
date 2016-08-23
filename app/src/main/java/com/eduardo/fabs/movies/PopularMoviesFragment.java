@@ -131,7 +131,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
                         edit.putInt(getString(R.string.pref_pages_loaded_popular_movies), page);
                         edit.commit();
 
-                        List<MovieModel> popularMovies = new FetchMovies.FetchMoreMoviesTask(context, Constants.TMDBConstants.REQUEST_POPULAR).execute(page).get();
+                        List<MovieModel> popularMovies = new FetchMovies.FetchMoreMoviesTask(Constants.TMDBConstants.REQUEST_POPULAR).execute(page).get();
                         Vector<ContentValues> popularMoviesVector = new Vector<ContentValues>(popularMovies.size());
 
                         for (int i = 0; i < popularMovies.size(); i++) {

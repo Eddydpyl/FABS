@@ -131,7 +131,7 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
                         edit.putInt(getString(R.string.pref_pages_loaded_upcoming_movies), page);
                         edit.commit();
 
-                        List<MovieModel> upcomingMovies = new FetchMovies.FetchMoreMoviesTask(context, Constants.TMDBConstants.REQUEST_UPCOMING_MOVIES).execute(page).get();
+                        List<MovieModel> upcomingMovies = new FetchMovies.FetchMoreMoviesTask(Constants.TMDBConstants.REQUEST_UPCOMING_MOVIES).execute(page).get();
                         Vector<ContentValues> upcomingMoviesVector = new Vector<ContentValues>(upcomingMovies.size());
 
                         for (int i = 0; i < upcomingMovies.size(); i++) {

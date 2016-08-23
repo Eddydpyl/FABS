@@ -19,9 +19,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -316,9 +318,15 @@ public class FetchMovies {
 
         @Override
         protected List<MovieModel> doInBackground(String... searchQuery) {
+            String encodedString = searchQuery[0];
+            try {
+                encodedString = URLEncoder.encode(searchQuery[0], "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.SEARCH_TAG + "/"
                     + Constants.TMDBConstants.MOVIE_TAG + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
-                    + Constants.TMDBConstants.API_KEY + "&" + Constants.TMDBConstants.QUERY_PARAM + searchQuery[0];
+                    + Constants.TMDBConstants.API_KEY + "&" + Constants.TMDBConstants.QUERY_PARAM + encodedString;
             return fetchMovies(urlStr);
         }
 

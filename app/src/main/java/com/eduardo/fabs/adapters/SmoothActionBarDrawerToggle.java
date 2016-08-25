@@ -11,6 +11,7 @@ import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
 /**
  * Created by Eduardo on 20/08/2016.
  */
+
 public class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
 
     private Runnable runnable;

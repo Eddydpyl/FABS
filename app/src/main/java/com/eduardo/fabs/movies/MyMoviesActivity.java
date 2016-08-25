@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
-import com.eduardo.fabs.adapters.NavigationAdapter;
+import com.eduardo.fabs.adapters.MoviesNavigationAdapter;
 import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.sync.FABSSyncAdapter;
@@ -84,8 +84,8 @@ public class MyMoviesActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         final ListView listView = (ListView) findViewById(R.id.navigationMenu_mymovies);
         final String[] listItems = getResources().getStringArray(R.array.list_nav_movies);
-        NavigationAdapter navigationAdapter = new NavigationAdapter(this, R.layout.nav_item, listItems);
-        listView.setAdapter(navigationAdapter);
+        MoviesNavigationAdapter moviesNavigationAdapter = new MoviesNavigationAdapter(this, R.layout.nav_item, listItems);
+        listView.setAdapter(moviesNavigationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

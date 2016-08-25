@@ -15,9 +15,9 @@ import com.eduardo.fabs.R;
 /**
  * Created by Eduardo on 19/08/2016.
  */
-public class NavigationAdapter extends ArrayAdapter<String> {
+public class MoviesNavigationAdapter extends ArrayAdapter<String> {
 
-    public NavigationAdapter(Context context, int resource, String[] objects) {
+    public MoviesNavigationAdapter(Context context, int resource, String[] objects) {
         super(context, resource, objects);
     }
 

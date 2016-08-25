@@ -83,6 +83,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.intent_activity), TAG);
                 intent.putExtra(getString(R.string.intent_fragment), STATE);
                 intent.putExtra(getString(R.string.intent_sort_order), SORT_ORDER);
+                intent.putExtra(getString(R.string.intent_query), QUERY);
                 startActivity(intent);
             }
 

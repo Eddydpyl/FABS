@@ -34,19 +34,16 @@
     <string name="search_hint">Search...</string>
     <string name="search_more">Press the Enter key to search in the entire database</string>
     <string name="search_nothing">Nothing found</string>
-    
-    <string-array name="list_nav_movies">
-        <item>My Collection</item>
-        <item>Completed</item>
-        <item>Plan to Watch</item>
-        <item>Discover</item>
-        <item>Popular</item>
-        <item>Top Rated</item>
-        <item>Upcoming</item>
-        <item>Now in Theaters</item>
-        <item></item>
-        <item>Settings</item>
-    </string-array>
+
+    <string name="my_collection">My Collection</string>
+    <string name="completed">Completed</string>
+    <string name="plan_to_watch">Plan to Watch</string>
+    <string name="discover">Discover</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="now_in_theaters">Now in Theaters</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="settings">Settings</string>
 
     <string-array name="list_movie_status">
         <item></item>

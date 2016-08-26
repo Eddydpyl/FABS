@@ -13,13 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.eduardo.fabs.R;
-import com.eduardo.fabs.SettingsActivity;
-import com.eduardo.fabs.adapters.MoviesNavigationAdapter;
 import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.data.FABSContract;
 
@@ -61,6 +56,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
+        //TODO: Refactor as in MyMoviesActivity
+        /*
         final ListView listView = (ListView) findViewById(R.id.navigationMenu_discovermovies);
         final String[] listItems = getResources().getStringArray(R.array.list_nav_movies);
         MoviesNavigationAdapter moviesNavigationAdapter = new MoviesNavigationAdapter(this, R.layout.nav_item, listItems);
@@ -184,6 +181,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                 }
             }
         });
+        */
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
         String savedSortOrder = null;

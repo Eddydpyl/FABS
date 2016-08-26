@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/my_collection"
+        android:checked="false"
+        android:title="@string/my_collection">
+        <menu>
+            <item
+                android:id="@+id/completed"
+                android:checked="false"
+                android:title="@string/completed" />
+            <item
+                android:id="@+id/plan_to_watch"
+                android:checked="false"
+                android:title="@string/plan_to_watch" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/discover"
+        android:checked="false"
+        android:icon="@drawable/ic_movies"
+        android:title="@string/discover">
+        <menu>
+            <item
+                android:id="@+id/popular"
+                android:checked="false"
+                android:title="@string/popular" />
+            <item
+                android:id="@+id/top_rated"
+                android:checked="false"
+                android:title="@string/top_rated" />
+            <item
+                android:id="@+id/now_in_theaters"
+                android:checked="false"
+                android:title="@string/top_rated" />
+            <item
+                android:id="@+id/upcoming"
+                android:checked="false"
+                android:title="@string/upcoming" />
+        </menu>
+    </item>
+    <group>
+        <item
+            android:id="@+id/settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
+    </group>
+</menu>

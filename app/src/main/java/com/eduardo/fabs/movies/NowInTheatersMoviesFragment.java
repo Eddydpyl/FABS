@@ -41,7 +41,7 @@ import java.util.concurrent.ExecutionException;
 public class NowInTheatersMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener {
 
     // Each loader in an activity needs a different ID
-    private static final int NOWINTHEATERSMOVIES_LOADER = 3;
+    private static final int NOWINTHEATERSMOVIES_LOADER = 2;
     private CursorRecyclerAdapter cursorRecyclerAdapter;
     private TextView emptyCursorTextView;
 
@@ -67,7 +67,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
     public void onCreate(Bundle savedInstanceState) {
         getActivity().setTitle(getContext().getString(R.string.title_fragment_now_in_theaters_movies));
         super.onCreate(savedInstanceState);
-        DiscoverMoviesActivity.setState(3);
+        DiscoverMoviesActivity.setState(2);
         setHasOptionsMenu(true);
     }
 
@@ -108,7 +108,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
                     Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
                     intent.putExtra(getString(R.string.intent_movie_id), ID);
                     intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-                    intent.putExtra(getString(R.string.intent_fragment), 3);
+                    intent.putExtra(getString(R.string.intent_fragment), 2);
                     intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
                     startActivity(intent);
                 }
@@ -217,7 +217,7 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
         Intent intent = new Intent(getContext(), SearchResultsActivity.class);
         intent.putExtra(getString(R.string.intent_query), query);
         intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-        intent.putExtra(getString(R.string.intent_fragment), 3);
+        intent.putExtra(getString(R.string.intent_fragment), 2);
         intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
         startActivity(intent);
         return true;

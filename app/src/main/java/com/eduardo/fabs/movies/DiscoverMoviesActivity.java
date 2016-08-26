@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.data.FABSContract;
 
@@ -27,6 +28,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     private static int state;
     public static SearchView searchView;
     public static Boolean searching;
+    private static MenuItem mPreviousMenuItem;
 
     public static void setState(int i){
         state = i;
@@ -57,16 +59,23 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
         //TODO: Refactor as in MyMoviesActivity
-        /*
-        final ListView listView = (ListView) findViewById(R.id.navigationMenu_discovermovies);
-        final String[] listItems = getResources().getStringArray(R.array.list_nav_movies);
-        MoviesNavigationAdapter moviesNavigationAdapter = new MoviesNavigationAdapter(this, R.layout.nav_item, listItems);
-        listView.setAdapter(moviesNavigationAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    case 0: {
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                if (mPreviousMenuItem != null) {
+                    mPreviousMenuItem.setChecked(false);
+                }
+                menuItem.setCheckable(true);
+                menuItem.setChecked(true);
+                mPreviousMenuItem = menuItem;
+
+                //Closing drawer on item click
+                drawer.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+                    case(R.id.my_collection):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -76,11 +85,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 startActivity(intent);
                             }
                         });
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 1: {
+                    case(R.id.completed):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -90,11 +97,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 startActivity(intent);
                             }
                         });
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 2: {
+                    case(R.id.plan_to_watch):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -104,14 +109,12 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 startActivity(intent);
                             }
                         });
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 3: {
+                    case(R.id.discover):{
                         break;
                     }
-                    case 4: {
+                    case(R.id.popular):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -121,11 +124,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                             }
                         });
                         setState(0);
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 5:{
+                    case(R.id.top_rated):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -135,25 +136,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                             }
                         });
                         setState(1);
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 6:{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
-                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                            }
-                        });
-                        setState(2);
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
-                        break;
-                    }
-                    case 7:{
+                    case(R.id.now_in_theaters):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -162,15 +147,22 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
+                        setState(2);
+                        break;
+                    }
+                    case(R.id.upcoming):{
+                        toggle.runWhenIdle(new Runnable() {
+                            @Override
+                            public void run() {
+                                UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
+                                sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                            }
+                        });
                         setState(3);
-                        listView.setItemChecked(i, true);
-                        drawer.closeDrawers();
                         break;
                     }
-                    case 8:{
-                        break;
-                    }
-                    case 9:{
+                    case(R.id.settings):{
                         Intent intent = new Intent(DiscoverMoviesActivity.this, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
                         intent.putExtra(getString(R.string.intent_fragment), state);
@@ -179,9 +171,10 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         break;
                     }
                 }
+                return true;
             }
         });
-        */
+
         // Retrieve the desired fragment from Intents
         Intent intent = getIntent();
         String savedSortOrder = null;
@@ -203,6 +196,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
             // Create a new Fragment to be placed in the activity layout
             Fragment fragment;
+            if(navigationView.getMenu().size()>0){
+                mPreviousMenuItem = navigationView.getMenu().getItem(3).getSubMenu().getItem(state).setChecked(true).setCheckable(true);
+            }
             switch (state){
                 case 0:
                     fragment = new PopularMoviesFragment();
@@ -213,12 +209,12 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                     sortOrder = FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                     break;
                 case 2:
-                    fragment = new UpcomingMoviesFragment();
-                    sortOrder = FABSContract.UPCOMING_MOVIES_TABLE.COLUMN_RELEASE_DATE;
-                    break;
-                case 3:
                     fragment = new NowInTheatersMoviesFragment();
                     sortOrder = FABSContract.NOW_IN_THEATERS_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
+                    break;
+                case 3:
+                    fragment = new UpcomingMoviesFragment();
+                    sortOrder = FABSContract.UPCOMING_MOVIES_TABLE.COLUMN_RELEASE_DATE;
                     break;
                 default:
                     fragment = new PopularMoviesFragment();
@@ -304,10 +300,10 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                 fragment = new TopRatedMoviesFragment();
                 break;
             case 2:
-                fragment = new UpcomingMoviesFragment();
+                fragment = new NowInTheatersMoviesFragment();
                 break;
             case 3:
-                fragment = new NowInTheatersMoviesFragment();
+                fragment = new UpcomingMoviesFragment();
                 break;
             default:
                 fragment = new PopularMoviesFragment();

@@ -77,19 +77,17 @@ public class MyMoviesActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        //TODO: Add icons to menuItems
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_mymovies);
         navigationView.setNavigationItemSelectedListener(this);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                //TODO: Handle click on Settings (maintain checked item)
-                menuItem.setCheckable(true);
-                menuItem.setChecked(true);
                 if (mPreviousMenuItem != null) {
                     mPreviousMenuItem.setChecked(false);
                 }
+                menuItem.setCheckable(true);
+                menuItem.setChecked(true);
                 mPreviousMenuItem = menuItem;
 
                 //Closing drawer on item click
@@ -98,7 +96,6 @@ public class MyMoviesActivity extends AppCompatActivity
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case(R.id.my_collection):{
-                        //TODO: Make My Collection clickable
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
@@ -195,6 +192,7 @@ public class MyMoviesActivity extends AppCompatActivity
                                 startActivity(intent);
                             }
                         });
+                        break;
                     }
                     case(R.id.settings):{
                         Intent intent = new Intent(MyMoviesActivity.this, SettingsActivity.class);
@@ -227,12 +225,12 @@ public class MyMoviesActivity extends AppCompatActivity
                 return;
             }
 
-            //TODO: Restore checked item after exiting movie details
             // Create a new Fragment to be placed in the activity layout
             MyMoviesFragment fragment = new MyMoviesFragment();
             Bundle bundle = new Bundle(1);
             bundle.putInt(getString(R.string.intent_fragment), state);
             fragment.setArguments(bundle);
+            mPreviousMenuItem = navigationView.getMenu().getItem(state).setChecked(true).setCheckable(true);
             switch (state){
                 case 0:
                     sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";

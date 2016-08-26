@@ -3,43 +3,47 @@
     <item
         android:id="@+id/my_collection"
         android:checked="false"
-        android:title="@string/my_collection">
-        <menu>
-            <item
-                android:id="@+id/completed"
-                android:checked="false"
-                android:title="@string/completed" />
-            <item
-                android:id="@+id/plan_to_watch"
-                android:checked="false"
-                android:title="@string/plan_to_watch" />
-        </menu>
+        android:title="@string/my_collection"
+        android:icon="@drawable/ic_my_collection">
     </item>
+    <item
+        android:id="@+id/completed"
+        android:checked="false"
+        android:title="@string/completed"
+        android:icon="@drawable/ic_completed"/>
+    <item
+        android:id="@+id/plan_to_watch"
+        android:checked="false"
+        android:title="@string/plan_to_watch"
+        android:icon="@drawable/ic_plant_to_watch"/>
     <item
         android:id="@+id/discover"
         android:checked="false"
-        android:icon="@drawable/ic_movies"
         android:title="@string/discover">
         <menu>
             <item
                 android:id="@+id/popular"
                 android:checked="false"
-                android:title="@string/popular" />
+                android:title="@string/popular"
+                android:icon="@drawable/ic_popular"/>
             <item
                 android:id="@+id/top_rated"
                 android:checked="false"
-                android:title="@string/top_rated" />
+                android:title="@string/top_rated"
+                android:icon="@drawable/ic_top_rated"/>
             <item
                 android:id="@+id/now_in_theaters"
                 android:checked="false"
-                android:title="@string/top_rated" />
+                android:title="@string/now_in_theaters"
+                android:icon="@drawable/ic_now_in_theaters"/>
             <item
                 android:id="@+id/upcoming"
                 android:checked="false"
-                android:title="@string/upcoming" />
+                android:title="@string/upcoming"
+                android:icon="@drawable/ic_upcoming"/>
         </menu>
     </item>
-    <group>
+    <group android:id="@+id/group_extra">
         <item
             android:id="@+id/settings"
             android:checked="false"

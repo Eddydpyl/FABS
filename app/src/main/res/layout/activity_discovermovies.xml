@@ -19,19 +19,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header">
-
-        <ListView
-            android:id="@+id/navigationMenu_discovermovies"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="165dp"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:background="@android:color/transparent"
-            android:groupIndicator="@android:color/transparent"
-            android:divider="@android:color/transparent">
-        </ListView>
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_movies">
 
     </android.support.design.widget.NavigationView>
 

@@ -13,7 +13,9 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.models.MovieModel;
 import com.eduardo.fabs.utils.Constants;
+import com.eduardo.fabs.utils.RoundedCornersTransformation;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 
@@ -52,7 +54,8 @@ public class MovieViewHolder extends android.support.v7.widget.RecyclerView.View
 
     public static void populateMovieModel(Context context, MovieViewHolder movieViewHolder, Cursor cursor) throws IOException {
         String imageUrlStr = Constants.TMDBConstants.IMAGE_BASE_URL + Constants.TMDBConstants.IMAGE_SMALL_SIZE + cursor.getString(DiscoverMoviesActivity.COL_DISCOVER_MOVIES_POSTER_IMAGE);
-        Picasso.with(context).load(imageUrlStr).into(movieViewHolder.mPoster);
+        final Transformation transformation = new RoundedCornersTransformation(4, 5, RoundedCornersTransformation.CornerType.RIGHT);
+        Picasso.with(context).load(imageUrlStr).transform(transformation).into(movieViewHolder.mPoster);
         Integer _id = cursor.getInt(DiscoverMoviesActivity.COL_DISCOVER_MOVIES_ID);
         movieViewHolder.ID.setText(_id.toString());
         movieViewHolder.mTitle.setText(cursor.getString(DiscoverMoviesActivity.COL_DISCOVER_MOVIES_TITLE));
@@ -72,7 +75,8 @@ public class MovieViewHolder extends android.support.v7.widget.RecyclerView.View
 
     public static void populateMovieModel(Context context, MovieViewHolder movieViewHolder, MovieModel movieModel) throws IOException {
         String imageUrlStr = movieModel.getImageFullURL(Constants.TMDBConstants.IMAGE_SMALL_SIZE);
-        Picasso.with(context).load(imageUrlStr).into(movieViewHolder.mPoster);
+        final Transformation transformation = new RoundedCornersTransformation(4, 5, RoundedCornersTransformation.CornerType.RIGHT);
+        Picasso.with(context).load(imageUrlStr).transform(transformation).into(movieViewHolder.mPoster);
         String _id = movieModel.getId();
         movieViewHolder.ID.setText(_id);
         movieViewHolder.mTitle.setText(movieModel.getTitle());

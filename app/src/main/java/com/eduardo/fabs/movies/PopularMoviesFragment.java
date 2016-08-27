@@ -73,7 +73,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_popularmovies_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_discovermovies, container, false);
         View view = rootView.findViewById(R.id.recyclerView);
         emptyCursorTextView = (TextView) rootView.findViewById(R.id.empty_cursor);
         if (view instanceof RecyclerView) {
@@ -94,7 +94,7 @@ public class PopularMoviesFragment extends Fragment implements LoaderManager.Loa
 
                 @Override
                 public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_discovermovies, parent, false);
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_movies, parent, false);
                     return new MovieViewHolder(view);
                 }
             };

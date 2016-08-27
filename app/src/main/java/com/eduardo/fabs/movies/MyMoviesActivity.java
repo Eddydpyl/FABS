@@ -59,7 +59,7 @@ public class MyMoviesActivity extends AppCompatActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mymovies);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_mymovies);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_movies);
         setSupportActionBar(toolbar);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());

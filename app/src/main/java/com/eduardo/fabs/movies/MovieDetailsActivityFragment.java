@@ -60,7 +60,7 @@ public class MovieDetailsActivityFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.menu_movie_details, menu);
+        inflater.inflate(R.menu.movie_details, menu);
     }
 
     @Override

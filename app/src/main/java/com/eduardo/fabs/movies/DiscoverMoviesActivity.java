@@ -46,7 +46,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovermovies);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_discovermovies);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_movies);
         setSupportActionBar(toolbar);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);

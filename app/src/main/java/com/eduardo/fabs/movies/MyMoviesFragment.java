@@ -53,7 +53,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_mymovies_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_mymovies, container, false);
         View view = rootView.findViewById(R.id.recyclerView);
         emptyCursorTextView = (TextView) rootView.findViewById(R.id.empty_cursor);
         if (view instanceof RecyclerView) {
@@ -73,7 +73,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
                 @Override
                 public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_mymovies, parent, false);
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_movies, parent, false);
                     return new MovieViewHolder(view);
                 }
             };

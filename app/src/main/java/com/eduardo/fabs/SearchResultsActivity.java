@@ -53,7 +53,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
             @Override
             public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_discovermovies, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_movies, parent, false);
                 return new MovieViewHolder(view);
             }
 

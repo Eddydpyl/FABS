@@ -26,6 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_mymovies"/>
+        tools:listitem="@layout/list_item_movies"/>
 
 </LinearLayout>

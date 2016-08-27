@@ -44,8 +44,8 @@ public class MovieDetailsActivityFragment extends Fragment {
     private static TextView episodes_seen;
     private static Spinner personal_score;
 
-    final static Uri URI = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
-    final static String SELECTION = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
+    private final static Uri URI = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
+    private final static String SELECTION = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
 
     public MovieDetailsActivityFragment() {
     }

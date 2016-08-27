@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.adapters.CursorRecyclerAdapter;
 import com.eduardo.fabs.adapters.RecyclerItemClickListener;
+import com.eduardo.fabs.adapters.SwipeToDeleteCursorWrapper;
+import com.eduardo.fabs.adapters.SwipeableRecyclerViewTouchListener;
 import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.utils.UserCategory;
 
@@ -35,6 +37,8 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
     private static int loader;
     private static CursorRecyclerAdapter cursorRecyclerAdapter;
     private TextView emptyCursorTextView;
+
+    private final static String SELECTION = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,7 +82,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
                 }
             };
             recyclerView.setAdapter(cursorRecyclerAdapter);
-            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener(){
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(View view, int position) {
@@ -97,13 +101,38 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
                 }
             }));
+            recyclerView.addOnItemTouchListener(new SwipeableRecyclerViewTouchListener(recyclerView, new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                @Override
+                public boolean canSwipeLeft(int position) {
+                    return false;
+                }
+
+                @Override
+                public boolean canSwipeRight(int position) {
+                    return true;
+                }
+
+                @Override
+                public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+
+                }
+
+                @Override
+                public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                    TextView textView = (TextView) recyclerView.getChildAt(reverseSortedPositions[0]).findViewById(R.id.ID);
+                    String ID = textView.getText().toString();
+                    // This wrapper deals with the flicker that takes place when swiping for delete
+                    SwipeToDeleteCursorWrapper cursorWrapper = new SwipeToDeleteCursorWrapper(cursorRecyclerAdapter.getCursor(), reverseSortedPositions[0]);
+                    cursorRecyclerAdapter.swapCursor(cursorWrapper);
+                    getActivity().getContentResolver().delete(FABSContract.MY_MOVIES_TABLE.CONTENT_URI, SELECTION, new String[] {ID});
+                }
+            }));
         }
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.mymovies, menu);
         super.onCreateOptionsMenu(menu,inflater);
         SearchView searchView = (SearchView) menu.findItem(R.id.search_mymovies).getActionView();
         searchView.setOnQueryTextListener(this);

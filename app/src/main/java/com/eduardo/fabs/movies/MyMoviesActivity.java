@@ -2,10 +2,12 @@ package com.eduardo.fabs.movies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -269,7 +271,24 @@ public class MyMoviesActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // The menu is inflated in the fragment, but we still need to override this if we wan to handle the sortOrder
+        getMenuInflater().inflate(R.menu.mymovies, menu);
+        MenuItem menuItem = menu.findItem(R.id.search_mymovies);
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                //Prevents screen rotation when searching
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                reloadFragment();
+                //Restores screen rotation
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                return true;
+            }
+        });
         return true;
     }
 

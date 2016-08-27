@@ -1,6 +1,7 @@
 package com.eduardo.fabs.movies;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -58,7 +59,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
         navigationView.setNavigationItemSelectedListener(this);
-        //TODO: Refactor as in MyMoviesActivity
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -248,6 +248,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                //Prevents screen rotation when searching
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
                 searching = true;
                 return true;
             }
@@ -256,6 +258,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 searching = false;
                 reloadFragment();
+                //Restores screen rotation
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 return true;
             }
         });

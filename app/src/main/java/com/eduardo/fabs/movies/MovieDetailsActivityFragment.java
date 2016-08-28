@@ -316,6 +316,8 @@ public class MovieDetailsActivityFragment extends Fragment {
                 trailers.addView(view);
             }
 
+            //TODO: Add some reviews
+
             // Disable score field if user has not chosen a status yet
             if(status.getSelectedItemPosition() == 0){
                 personal_score.setEnabled(false);

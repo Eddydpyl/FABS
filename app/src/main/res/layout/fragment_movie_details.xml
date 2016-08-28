@@ -14,27 +14,32 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:weightSum="3">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/poster"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:layout_weight="1"/>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_alignTop="@id/poster"
                 android:layout_toRightOf="@id/poster"
                 android:layout_toEndOf="@id/poster"
                 android:layout_alignBottom="@id/poster"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="2"
                 android:weightSum="3">
 
                 <LinearLayout
@@ -50,8 +55,7 @@
                         android:text="Status:"
                         android:id="@+id/textView_status"
                         android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_gravity="center"/>
 
                     <Spinner
                         android:layout_width="0dp"
@@ -74,8 +78,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp">
+                        android:layout_gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -95,6 +98,7 @@
                         android:orientation="horizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:weightSum="2">
 
@@ -133,8 +137,7 @@
                         android:text="Score:"
                         android:id="@+id/textView_personal_score"
                         android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_gravity="center"/>
 
                     <Spinner
                         android:layout_width="0dp"
@@ -182,13 +185,14 @@
             android:scaleType="fitXY"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:paddingTop="@dimen/activity_vertical_margin" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
             android:weightSum="2">
 
             <TextView
@@ -202,7 +206,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/releaseDate" />
 
         </LinearLayout>
@@ -211,6 +214,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
             android:weightSum="2">
 
             <TextView
@@ -233,6 +237,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
             android:weightSum="2">
 
             <TextView
@@ -255,6 +260,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
             android:weightSum="2">
 
             <TextView

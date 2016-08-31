@@ -36,14 +36,16 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
+
+//TODO: Write Settings Activity
+// One of the last things you should do, use this same Activity for all FABS.
+
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-
-    //TODO: Write Settings Activity
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override

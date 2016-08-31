@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/my_collection"
-        android:checked="false"
-        android:title="@string/my_collection"
-        android:icon="@drawable/ic_my_collection">
-    </item>
-    <item
-        android:id="@+id/completed"
-        android:checked="false"
-        android:title="@string/completed"
-        android:icon="@drawable/ic_completed"/>
-    <item
-        android:id="@+id/plan_to_watch"
-        android:checked="false"
-        android:title="@string/plan_to_watch"
-        android:icon="@drawable/ic_plant_to_watch"/>
+    <group android:id="@+id/groupA">
+        <item
+            android:id="@+id/my_collection"
+            android:checked="false"
+            android:title="@string/my_collection"
+            android:icon="@drawable/ic_my_collection">
+        </item>
+    </group>
+    <group android:id="@+id/groupB">
+        <item
+            android:id="@+id/completed"
+            android:checked="false"
+            android:title="@string/completed"
+            android:icon="@drawable/ic_completed"/>
+        <item
+            android:id="@+id/plan_to_watch"
+            android:checked="false"
+            android:title="@string/plan_to_watch"
+            android:icon="@drawable/ic_plant_to_watch"/>
+    </group>
     <item
         android:id="@+id/discover"
         android:checked="false"

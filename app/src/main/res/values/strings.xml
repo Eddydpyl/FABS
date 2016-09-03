@@ -17,7 +17,7 @@
 
     <string name="title_fragment_completed_movies">Completed Films</string>
     <string name="title_fragment_plan_to_watch_movies">Plan to Watch</string>
-    <string name="title_fragment_my_movies">FABS Films</string>
+    <string name="title_fragment_my_movies">My Collection</string>
     <string name="title_fragment_now_in_theaters_movies">Now in Theaters</string>
     <string name="title_fragment_popular_movies">Popular Films</string>
     <string name="title_fragment_top_rated_movies">Top Rated Films</string>

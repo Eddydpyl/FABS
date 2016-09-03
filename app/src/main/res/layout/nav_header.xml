@@ -5,30 +5,69 @@
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="8dp"
+    android:paddingRight="8dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView_header"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@android:drawable/sym_def_app_icon" />
+        android:paddingLeft="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_selected"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/ic_circle_a"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|right"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_first"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:src="@drawable/ic_circle_a"/>
+
+            <ImageView
+                android:id="@+id/imageView_second"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:src="@drawable/ic_circle_a"/>
+
+            <ImageView
+                android:id="@+id/imageView_third"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:src="@drawable/ic_circle_a"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/textView_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="FABS Films"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView_header"
+        android:id="@+id/textView_subtitle"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+        android:text="Some text or something I dunno" />
 
 </LinearLayout>

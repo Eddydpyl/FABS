@@ -5,7 +5,7 @@
             android:id="@+id/my_collection"
             android:checked="false"
             android:title="@string/my_collection"
-            android:icon="@drawable/ic_my_collection">
+            android:icon="@drawable/ic_my_collection_movies">
         </item>
     </group>
     <group android:id="@+id/groupB">

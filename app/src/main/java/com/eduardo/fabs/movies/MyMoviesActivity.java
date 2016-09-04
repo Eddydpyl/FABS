@@ -22,8 +22,7 @@ import com.eduardo.fabs.sync.FABSSyncAdapter;
 
 //TODO: Setup tablet display
 //TODO: Setup FABS navigation in navigationView header
-// Inspired on the one in the Gmail app for changing accounts. Same animations, same positioning.
-// Also, when selecting a new FABS, the drawer must stay open and the different menu items appear or disappear with animations.
+// Use a horizontal scroll view or similar for the animations
 
 public class MyMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

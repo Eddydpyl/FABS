@@ -3,7 +3,6 @@ package com.eduardo.fabs.movies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -12,10 +11,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
@@ -24,8 +23,6 @@ import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.sync.FABSSyncAdapter;
 
 //TODO: Setup tablet display
-//TODO: Setup FABS navigation in navigationView header
-// Use a horizontal scroll view or similar for the animations
 
 public class MyMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -262,17 +259,83 @@ public class MyMoviesActivity extends AppCompatActivity
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-        // Calculate ActionBar height and set background of nav_header
-        Integer actionBarHeight = 0;
-        TypedValue tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-        {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-        }
+        // Handle onClick events in nav_header
         View headerView = navigationView.getHeaderView(0);
-        GradientDrawable background = (GradientDrawable) headerView.getBackground();
-        Float yPos = (float) (actionBarHeight * 0.0063);
-        background.setGradientCenter(0,yPos);
+        final float scale = getResources().getDisplayMetrics().density;
+        final int pixelsBig  = (int) (85 * scale + 0.5f);
+        final int pixelsSmall  = (int) (55 * scale + 0.5f);
+        final ImageView imageView_movies = (ImageView) headerView.findViewById(R.id.imageView_movies);
+        final ImageView imageView_anime = (ImageView) headerView.findViewById(R.id.imageView_anime);
+        final ImageView imageView_books = (ImageView) headerView.findViewById(R.id.imageView_books);
+        final ImageView imageView_series= (ImageView) headerView.findViewById(R.id.imageView_series);
+        imageView_movies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView_movies.getLayoutParams().height = pixelsBig;
+                imageView_movies.getLayoutParams().width = pixelsBig;
+                imageView_movies.requestLayout();
+                imageView_anime.getLayoutParams().height = pixelsSmall;
+                imageView_anime.getLayoutParams().width = pixelsSmall;
+                imageView_anime.requestLayout();
+                imageView_books.getLayoutParams().height = pixelsSmall;
+                imageView_books.getLayoutParams().width = pixelsSmall;
+                imageView_books.requestLayout();
+                imageView_series.getLayoutParams().height = pixelsSmall;
+                imageView_series.getLayoutParams().width = pixelsSmall;
+                imageView_series.requestLayout();
+            }
+        });
+        imageView_anime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView_movies.getLayoutParams().height = pixelsSmall;
+                imageView_movies.getLayoutParams().width = pixelsSmall;
+                imageView_movies.requestLayout();
+                imageView_anime.getLayoutParams().height = pixelsBig;
+                imageView_anime.getLayoutParams().width = pixelsBig;
+                imageView_anime.requestLayout();
+                imageView_books.getLayoutParams().height = pixelsSmall;
+                imageView_books.getLayoutParams().width = pixelsSmall;
+                imageView_books.requestLayout();
+                imageView_series.getLayoutParams().height = pixelsSmall;
+                imageView_series.getLayoutParams().width = pixelsSmall;
+                imageView_series.requestLayout();
+            }
+        });
+        imageView_books.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView_movies.getLayoutParams().height = pixelsSmall;
+                imageView_movies.getLayoutParams().width = pixelsSmall;
+                imageView_movies.requestLayout();
+                imageView_anime.getLayoutParams().height = pixelsSmall;
+                imageView_anime.getLayoutParams().width = pixelsSmall;
+                imageView_anime.requestLayout();
+                imageView_books.getLayoutParams().height = pixelsBig;
+                imageView_books.getLayoutParams().width = pixelsBig;
+                imageView_books.requestLayout();
+                imageView_series.getLayoutParams().height = pixelsSmall;
+                imageView_series.getLayoutParams().width = pixelsSmall;
+                imageView_series.requestLayout();
+            }
+        });
+        imageView_series.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView_movies.getLayoutParams().height = pixelsSmall;
+                imageView_movies.getLayoutParams().width = pixelsSmall;
+                imageView_movies.requestLayout();
+                imageView_anime.getLayoutParams().height = pixelsSmall;
+                imageView_anime.getLayoutParams().width = pixelsSmall;
+                imageView_anime.requestLayout();
+                imageView_books.getLayoutParams().height = pixelsSmall;
+                imageView_books.getLayoutParams().width = pixelsSmall;
+                imageView_books.requestLayout();
+                imageView_series.getLayoutParams().height = pixelsBig;
+                imageView_series.getLayoutParams().width = pixelsBig;
+                imageView_series.requestLayout();
+            }
+        });
     }
 
     @Override

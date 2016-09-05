@@ -5,5 +5,5 @@
         android:useLevel="false"
         android:endColor="@color/colorPrimaryMiddle"
         android:startColor="@color/colorPrimary"
-        android:type="sweep" />
+        android:type="linear" />
 </shape>

@@ -3,7 +3,6 @@
     <gradient
         android:angle="135"
         android:useLevel="false"
-        android:centerY="0.65"
         android:endColor="@color/colorPrimaryMiddle"
         android:startColor="@color/colorPrimary"
         android:type="sweep" />

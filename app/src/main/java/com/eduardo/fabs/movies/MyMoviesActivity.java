@@ -3,6 +3,7 @@ package com.eduardo.fabs.movies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -11,8 +12,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
@@ -259,6 +262,17 @@ public class MyMoviesActivity extends AppCompatActivity
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
+        // Calculate ActionBar height and set background of nav_header
+        Integer actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        }
+        View headerView = navigationView.getHeaderView(0);
+        GradientDrawable background = (GradientDrawable) headerView.getBackground();
+        Float yPos = (float) (actionBarHeight * 0.0063);
+        background.setGradientCenter(0,yPos);
     }
 
     @Override

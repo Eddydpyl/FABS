@@ -1,12 +1,10 @@
 package com.eduardo.fabs.movies;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -336,25 +334,6 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.discovermovies, menu);
         searchView = (SearchView) menu.findItem(R.id.search_discovermovies).getActionView();
-        MenuItem menuItem = menu.findItem(R.id.search_discovermovies);
-        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                //Prevents screen rotation when searching
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-                searching = true;
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                searching = false;
-                reloadFragment();
-                //Restores screen rotation
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                return true;
-            }
-        });
         return true;
     }
 

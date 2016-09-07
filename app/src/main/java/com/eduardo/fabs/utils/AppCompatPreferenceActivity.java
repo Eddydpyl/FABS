@@ -1,4 +1,4 @@
-package com.eduardo.fabs;
+package com.eduardo.fabs.utils;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

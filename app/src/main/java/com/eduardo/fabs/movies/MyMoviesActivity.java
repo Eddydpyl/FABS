@@ -336,6 +336,19 @@ public class MyMoviesActivity extends AppCompatActivity
                 imageView_series.requestLayout();
             }
         });
+        // Set Movies as selected
+        imageView_movies.getLayoutParams().height = pixelsBig;
+        imageView_movies.getLayoutParams().width = pixelsBig;
+        imageView_movies.requestLayout();
+        imageView_anime.getLayoutParams().height = pixelsSmall;
+        imageView_anime.getLayoutParams().width = pixelsSmall;
+        imageView_anime.requestLayout();
+        imageView_books.getLayoutParams().height = pixelsSmall;
+        imageView_books.getLayoutParams().width = pixelsSmall;
+        imageView_books.requestLayout();
+        imageView_series.getLayoutParams().height = pixelsSmall;
+        imageView_series.getLayoutParams().width = pixelsSmall;
+        imageView_series.requestLayout();
     }
 
     @Override

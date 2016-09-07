@@ -22,6 +22,7 @@ import android.view.MenuItem;
 
 import com.eduardo.fabs.movies.DiscoverMoviesActivity;
 import com.eduardo.fabs.movies.MyMoviesActivity;
+import com.eduardo.fabs.utils.AppCompatPreferenceActivity;
 
 import java.util.List;
 

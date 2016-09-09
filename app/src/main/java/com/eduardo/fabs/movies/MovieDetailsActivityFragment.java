@@ -271,7 +271,7 @@ public class MovieDetailsActivityFragment extends Fragment {
             } else {
                 String genreString = genreList.get(0);
                 for(int i = 1; i < genreList.size(); i++){
-                    genreString.concat("," + genreList.get(i));
+                    genreString = genreString.concat(", " + genreList.get(i));
                 }
                 genres.setText(genreString);
             }

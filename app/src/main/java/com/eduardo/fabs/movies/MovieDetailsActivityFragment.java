@@ -90,7 +90,11 @@ public class MovieDetailsActivityFragment extends Fragment {
 
             ImageView poster = (ImageView) rootView.findViewById(R.id.poster);
             String imageUrlStr = movieModel.getImageFullURL(Constants.TMDBConstants.IMAGE_MEDIUM_SIZE);
-            Picasso.with(getContext()).load(imageUrlStr).into(poster);
+            if(imageUrlStr!=null){
+                Picasso.with(getContext()).load(imageUrlStr).into(poster);
+            } else {
+                Picasso.with(getContext()).load(R.drawable.no_poster_w342).resize(342,513).into(poster);
+            }
 
             episodes_seen = (TextView) rootView.findViewById(R.id.episodes_seen);
 

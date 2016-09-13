@@ -279,7 +279,9 @@ public class MovieModel {
     }
 
     public String getImageFullURL(String size) {
-        return Constants.TMDBConstants.IMAGE_BASE_URL + size + getPosterPath();
+        if(getPosterPath().equals("null")||getPosterPath()==null){
+            return null;
+        } return Constants.TMDBConstants.IMAGE_BASE_URL + size + getPosterPath();
     }
 
     public String getRating() {

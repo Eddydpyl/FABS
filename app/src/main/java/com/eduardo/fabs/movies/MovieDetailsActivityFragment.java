@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
@@ -27,6 +26,7 @@ import com.eduardo.fabs.data.FABSContract;
 import com.eduardo.fabs.fetch.FetchMovies;
 import com.eduardo.fabs.models.MovieModel;
 import com.eduardo.fabs.utils.Constants;
+import com.eduardo.fabs.utils.CustomSpinner;
 import com.eduardo.fabs.utils.UserCategory;
 import com.squareup.picasso.Picasso;
 
@@ -40,9 +40,9 @@ public class MovieDetailsActivityFragment extends Fragment {
 
     private static String ID;
     private static MovieModel movieModel;
-    private static Spinner status;
+    private static CustomSpinner status;
     private static TextView episodes_seen;
-    private static Spinner personal_score;
+    private static CustomSpinner personal_score;
 
     private final static Uri URI = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
     private final static String SELECTION = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID + " = ? ";
@@ -80,7 +80,7 @@ public class MovieDetailsActivityFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ID = getActivity().getIntent().getStringExtra(getString(R.string.intent_movie_id));
         Cursor cursor = getActivity().getContentResolver().query(URI, MyMoviesActivity.MY_MOVIES_COLUMNS, SELECTION, new String[]{ID}, null);
@@ -121,7 +121,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                 }
             });
 
-            status = (Spinner) rootView.findViewById(R.id.status);
+            status = (CustomSpinner) rootView.findViewById(R.id.status);
             List<String> list_status = Arrays.asList(getResources().getStringArray(R.array.list_movie_status));
             // Populate the spinner using a customized ArrayAdapter that hides the first (dummy) entry
             ArrayAdapter<String> adapter_status = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list_status) {
@@ -149,7 +149,7 @@ public class MovieDetailsActivityFragment extends Fragment {
             };
 
             // Specify the layout to use when the list of choices appears
-            adapter_status.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            adapter_status.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             status.setAdapter(adapter_status);
             // Set the Listener
@@ -178,17 +178,25 @@ public class MovieDetailsActivityFragment extends Fragment {
                 }
             });
 
-            personal_score = (Spinner) rootView.findViewById(R.id.personal_score);
+            personal_score = (CustomSpinner) rootView.findViewById(R.id.personal_score);
             List<String> list_score = Arrays.asList(getResources().getStringArray(R.array.list_personal_score));
             // Populate the spinner using a customized ArrayAdapter that hides the first (dummy) entry
             ArrayAdapter<String> adapter_score = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list_score) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    if(position!=0){
+                        position = position + 10;
+                    }
+                    return super.getView(position, convertView, parent);
+                }
+
                 @Override
                 public View getDropDownView(int position, View convertView, ViewGroup parent)
                 {
                     View v = null;
 
                     // If this is the initial dummy entry, make it hidden
-                    if (position == 0) {
+                    if (position == 0 || position>10) {
                         TextView tv = new TextView(getContext());
                         tv.setHeight(0);
                         tv.setVisibility(View.GONE);

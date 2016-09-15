@@ -46,13 +46,13 @@
     <string name="settings">Settings</string>
 
     <string-array name="list_movie_status">
-        <item></item>
-        <item>Completed</item>
-        <item>Plan to Watch</item>
+        <item>STATUS</item>
+        <item>COMPLETED</item>
+        <item>PLAN TO WATCH</item>
     </string-array>
 
     <string-array name="list_personal_score">
-        <item></item>
+        <item>SCORE: —</item>
         <item>(1) Appalling</item>
         <item>(2) Horrible</item>
         <item>(3) Very Bad</item>
@@ -63,6 +63,16 @@
         <item>(8) Very Good</item>
         <item>(9) Great</item>
         <item>(10) Masterpiece</item>
+        <item>SCORE: 1</item>
+        <item>SCORE: 2</item>
+        <item>SCORE: 3</item>
+        <item>SCORE: 4</item>
+        <item>SCORE: 5</item>
+        <item>SCORE: 6</item>
+        <item>SCORE: 7</item>
+        <item>SCORE: 8</item>
+        <item>SCORE: 9</item>
+        <item>SCORE: 10</item>
     </string-array>
 
     <!-- Strings related to Settings -->

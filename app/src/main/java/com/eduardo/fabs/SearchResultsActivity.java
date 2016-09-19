@@ -30,7 +30,6 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private String QUERY;
     private String TAG;
-    private Integer STATE;
     private String SORT_ORDER;
 
     private static RecyclerView recyclerView;
@@ -81,7 +80,6 @@ public class SearchResultsActivity extends AppCompatActivity {
                 Intent intent = new Intent(SearchResultsActivity.this, MovieDetailsActivity.class);
                 intent.putExtra(getString(R.string.intent_movie_id), ID);
                 intent.putExtra(getString(R.string.intent_activity), TAG);
-                intent.putExtra(getString(R.string.intent_fragment), STATE);
                 intent.putExtra(getString(R.string.intent_sort_order), SORT_ORDER);
                 intent.putExtra(getString(R.string.intent_query), QUERY);
                 startActivity(intent);
@@ -119,12 +117,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             QUERY = intent.getStringExtra(SearchManager.QUERY);
             TAG = intent.getStringExtra(getString(R.string.intent_activity));
-            STATE = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
         } else {
             QUERY = intent.getStringExtra(getString(R.string.intent_query));
             TAG = intent.getStringExtra(getString(R.string.intent_activity));
-            STATE = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
         }
         movies = new FetchMovies.SearchOnlineMoviesTask().execute(QUERY).get();
@@ -135,7 +131,6 @@ public class SearchResultsActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             Intent resIntent = new Intent();
-            resIntent.putExtra(getString(R.string.intent_fragment), STATE);
             resIntent.putExtra(getString(R.string.intent_sort_order), SORT_ORDER);
             switch (TAG){
                 case MyMoviesActivity.TAG:

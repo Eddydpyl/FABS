@@ -1,7 +1,9 @@
 package com.eduardo.fabs.movies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -26,14 +28,10 @@ public class DiscoverMoviesActivity extends AppCompatActivity
     public static final String TAG = "discoverMovies";
 
     public static String sortOrder;
-    private static int state;
     public static SearchView searchView;
     public static Boolean searching;
     private static MenuItem mPreviousMenuItem;
 
-    public static void setState(int i){
-        state = i;
-    }
 
     static final int COL_DISCOVER_MOVIES_ID = 0;
     static final int COL_DISCOVER_MOVIES_POSTER_IMAGE = 1;
@@ -49,6 +47,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         setContentView(R.layout.activity_discovermovies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_movies);
         setSupportActionBar(toolbar);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final SharedPreferences.Editor edit = prefs.edit();
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         final SmoothActionBarDrawerToggle toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,8 +81,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 0);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 0);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -92,8 +94,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 1);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 1);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -104,8 +107,9 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 2);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 2);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -118,54 +122,57 @@ public class DiscoverMoviesActivity extends AppCompatActivity
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 0);
+                                edit.commit();
                                 PopularMoviesFragment fragment = new PopularMoviesFragment();
                                 sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
-                        setState(0);
                         break;
                     }
                     case(R.id.top_rated):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 1);
+                                edit.commit();
                                 TopRatedMoviesFragment fragment = new TopRatedMoviesFragment();
                                 sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
-                        setState(1);
                         break;
                     }
                     case(R.id.now_in_theaters):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 2);
+                                edit.commit();
                                 NowInTheatersMoviesFragment fragment = new NowInTheatersMoviesFragment();
                                 sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_POPULARITY + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
-                        setState(2);
                         break;
                     }
                     case(R.id.upcoming):{
                         toggle.runWhenIdle(new Runnable() {
                             @Override
                             public void run() {
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 3);
+                                edit.commit();
                                 UpcomingMoviesFragment fragment = new UpcomingMoviesFragment();
                                 sortOrder = FABSContract.POPULAR_MOVIES_TABLE.COLUMN_RELEASE_DATE;
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
                         });
-                        setState(3);
                         break;
                     }
                     case(R.id.settings):{
                         Intent intent = new Intent(DiscoverMoviesActivity.this, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
-                        intent.putExtra(getString(R.string.intent_fragment), state);
                         intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
                         startActivity(intent);
                         break;
@@ -179,9 +186,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         Intent intent = getIntent();
         String savedSortOrder = null;
         if(intent != null) {
-            Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             savedSortOrder = intent.getStringExtra(getString(R.string.intent_sort_order));
-            setState(i);
         }
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -196,6 +201,7 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
             // Create a new Fragment to be placed in the activity layout
             Fragment fragment;
+            Integer state = prefs.getInt(getString(R.string.pref_discover_movies_state),0);
             if(navigationView.getMenu().size()>0){
                 mPreviousMenuItem = navigationView.getMenu().getItem(3).getSubMenu().getItem(state).setChecked(true).setCheckable(true);
             }
@@ -318,13 +324,25 @@ public class DiscoverMoviesActivity extends AppCompatActivity
         imageView_series.requestLayout();
     }
 
+    protected void onResume() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_discovermovies);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        mPreviousMenuItem = navigationView.getMenu().getItem(3).getSubMenu().getItem(prefs.getInt(getString(R.string.pref_discover_movies_state),0));
+        navigationView.setCheckedItem(mPreviousMenuItem.getItemId());
+        super.onResume();
+    }
+
     @Override
     public void onBackPressed() {
+        // Only works as expected as long as there is only the movie collection, will need to be reworked later on
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_discovermovies);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(DiscoverMoviesActivity.this, MyMoviesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -367,6 +385,8 @@ public class DiscoverMoviesActivity extends AppCompatActivity
 
     private void reloadFragment(){
         Fragment fragment;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Integer state = prefs.getInt(getString(R.string.pref_discover_movies_state),0);
         switch (state){
             case 0:
                 fragment = new PopularMoviesFragment();

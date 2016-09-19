@@ -67,7 +67,6 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getContext().getString(R.string.title_fragment_upcoming_movies));
-        DiscoverMoviesActivity.setState(3);
         setHasOptionsMenu(true);
     }
 
@@ -217,7 +216,6 @@ public class UpcomingMoviesFragment extends Fragment implements LoaderManager.Lo
         Intent intent = new Intent(getContext(), SearchResultsActivity.class);
         intent.putExtra(getString(R.string.intent_query), query);
         intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-        intent.putExtra(getString(R.string.intent_fragment), 3);
         intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
         startActivity(intent);
         return true;

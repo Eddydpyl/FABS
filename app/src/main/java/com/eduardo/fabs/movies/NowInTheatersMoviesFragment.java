@@ -67,7 +67,6 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
     public void onCreate(Bundle savedInstanceState) {
         getActivity().setTitle(getContext().getString(R.string.title_fragment_now_in_theaters_movies));
         super.onCreate(savedInstanceState);
-        DiscoverMoviesActivity.setState(2);
         setHasOptionsMenu(true);
     }
 
@@ -217,7 +216,6 @@ public class NowInTheatersMoviesFragment extends Fragment implements LoaderManag
         Intent intent = new Intent(getContext(), SearchResultsActivity.class);
         intent.putExtra(getString(R.string.intent_query), query);
         intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-        intent.putExtra(getString(R.string.intent_fragment), 2);
         intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
         startActivity(intent);
         return true;

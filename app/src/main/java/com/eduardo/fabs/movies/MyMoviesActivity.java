@@ -18,7 +18,6 @@ import com.eduardo.fabs.R;
 import com.eduardo.fabs.SettingsActivity;
 import com.eduardo.fabs.adapters.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.data.FABSContract;
-import com.eduardo.fabs.sync.FABSSyncAdapter;
 
 //TODO: Setup tablet display
 
@@ -28,12 +27,7 @@ public class MyMoviesActivity extends AppCompatActivity
     public static final String TAG = "myMovies";
 
     public static String sortOrder;
-    private static int state;
     private static MenuItem mPreviousMenuItem;
-
-    public static void setState(int i){
-        state = i;
-    }
 
     public static final String[] MY_MOVIES_COLUMNS = {
         FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE._ID,
@@ -64,15 +58,8 @@ public class MyMoviesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_movies);
         setSupportActionBar(toolbar);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
-        if(!previouslyStarted) {
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putBoolean(getString(R.string.pref_previously_started), Boolean.TRUE);
-            edit.commit();
-            FABSSyncAdapter.syncImmediately(this);
-        }
-        FABSSyncAdapter.periodicSync(this);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final SharedPreferences.Editor edit = prefs.edit();
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
         final SmoothActionBarDrawerToggle toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -102,11 +89,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 setTitle(getString(R.string.title_fragment_my_movies));
-                                MyMoviesActivity.setState(0);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 0);
+                                edit.commit();
                                 MyMoviesFragment fragment = new MyMoviesFragment();
-                                Bundle bundle = new Bundle(1);
-                                bundle.putInt(getString(R.string.intent_fragment), state);
-                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -118,11 +103,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 setTitle(getString(R.string.title_fragment_completed_movies));
-                                MyMoviesActivity.setState(1);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 1);
+                                edit.commit();
                                 MyMoviesFragment fragment = new MyMoviesFragment();
-                                Bundle bundle = new Bundle(1);
-                                bundle.putInt(getString(R.string.intent_fragment), state);
-                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -134,11 +117,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 setTitle(getString(R.string.title_fragment_plan_to_watch_movies));
-                                MyMoviesActivity.setState(2);
+                                edit.putInt(getString(R.string.pref_my_movies_state), 2);
+                                edit.commit();
                                 MyMoviesFragment fragment = new MyMoviesFragment();
-                                Bundle bundle = new Bundle(1);
-                                bundle.putInt(getString(R.string.intent_fragment), state);
-                                fragment.setArguments(bundle);
                                 sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                             }
@@ -153,8 +134,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 0);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 0);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -165,8 +147,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 1);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 1);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -177,8 +160,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 2);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 2);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -189,8 +173,9 @@ public class MyMoviesActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.putExtra(getString(R.string.intent_fragment), 3);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                edit.putInt(getString(R.string.pref_discover_movies_state), 3);
+                                edit.commit();
                                 startActivity(intent);
                             }
                         });
@@ -199,7 +184,6 @@ public class MyMoviesActivity extends AppCompatActivity
                     case(R.id.settings):{
                         Intent intent = new Intent(MyMoviesActivity.this, SettingsActivity.class);
                         intent.putExtra(getString(R.string.intent_activity), TAG);
-                        intent.putExtra(getString(R.string.intent_fragment), state);
                         intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
                         startActivity(intent);
                         break;
@@ -212,9 +196,7 @@ public class MyMoviesActivity extends AppCompatActivity
         Intent intent = getIntent();
         String savedSortOrder = null;
         if(intent != null){
-            Integer i = intent.getIntExtra(getString(R.string.intent_fragment), 0);
             savedSortOrder = intent.getStringExtra(getString(R.string.intent_sort_order));
-            setState(i);
         }
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -229,9 +211,7 @@ public class MyMoviesActivity extends AppCompatActivity
 
             // Create a new Fragment to be placed in the activity layout
             MyMoviesFragment fragment = new MyMoviesFragment();
-            Bundle bundle = new Bundle(1);
-            bundle.putInt(getString(R.string.intent_fragment), state);
-            fragment.setArguments(bundle);
+            Integer state = prefs.getInt(getString(R.string.pref_my_movies_state),0);
             mPreviousMenuItem = navigationView.getMenu().getItem(state).setChecked(true).setCheckable(true);
             switch (state){
                 case 0:
@@ -349,13 +329,37 @@ public class MyMoviesActivity extends AppCompatActivity
         imageView_series.requestLayout();
     }
 
+    protected void onResume() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_mymovies);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Integer state = prefs.getInt(getString(R.string.pref_my_movies_state),0);
+        mPreviousMenuItem = navigationView.getMenu().getItem(state);
+        navigationView.setCheckedItem(mPreviousMenuItem.getItemId());
+        super.onResume();
+    }
+
     @Override
     public void onBackPressed() {
+        // Only works as expected as long as there is only the movie collection, will need to be reworked later on
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            if(prefs.getInt(getString(R.string.pref_my_movies_state),0)==0){
+                finish();
+            } else{
+                final SharedPreferences.Editor edit = prefs.edit();
+                edit.putInt(getString(R.string.pref_my_movies_state),0);
+                edit.commit();
+                sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                setTitle(getString(R.string.title_fragment_my_movies));
+                reloadFragment();
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_mymovies);
+                mPreviousMenuItem = navigationView.getMenu().getItem(0);
+                mPreviousMenuItem.setChecked(true);
+                mPreviousMenuItem.setCheckable(true);
+            }
         }
     }
 
@@ -400,9 +404,6 @@ public class MyMoviesActivity extends AppCompatActivity
 
     private void reloadFragment(){
         MyMoviesFragment fragment = new MyMoviesFragment();
-        Bundle bundle = new Bundle(1);
-        bundle.putInt(getString(R.string.intent_fragment), state);
-        fragment.setArguments(bundle);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);

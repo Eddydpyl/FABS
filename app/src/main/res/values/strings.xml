@@ -22,7 +22,7 @@
     <string name="title_fragment_popular_movies">Popular Films</string>
     <string name="title_fragment_top_rated_movies">Top Rated Films</string>
     <string name="title_fragment_upcoming_movies">Upcoming Films</string>
-    
+
     <string name="preference_file_key">preferencesGlobal</string>
 
     <string name="pref_previously_started">prevStarted</string>
@@ -30,6 +30,8 @@
     <string name="pref_pages_loaded_top_rated_movies">loadedTopRatedMovies</string>
     <string name="pref_pages_loaded_upcoming_movies">loadedUpcomingMovies</string>
     <string name="pref_pages_loaded_theaters_movies">loadedTheatersMovies</string>
+    <string name="pref_discover_movies_state">discoverMoviesState</string>
+    <string name="pref_my_movies_state">myMoviesState</string>
 
     <string name="search_hint">Search...</string>
     <string name="search_more">Press the Enter key to search in the entire database</string>

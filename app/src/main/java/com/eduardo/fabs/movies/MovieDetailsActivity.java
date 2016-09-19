@@ -13,7 +13,6 @@ import com.eduardo.fabs.SearchResultsActivity;
 public class MovieDetailsActivity extends AppCompatActivity {
 
     private static String TAG;
-    private static Integer STATE;
     private static String SORT_ORDER;
     private static String QUERY;
 
@@ -28,7 +27,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         TAG = intent.getStringExtra(getString(R.string.intent_activity));
-        STATE = intent.getIntExtra(getString(R.string.intent_fragment),0);
         SORT_ORDER = intent.getStringExtra(getString(R.string.intent_sort_order));
         QUERY = intent.getStringExtra(getString(R.string.intent_query));
     }
@@ -38,7 +36,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             Intent resIntent = new Intent();
-            resIntent.putExtra(getString(R.string.intent_fragment), STATE);
             resIntent.putExtra(getString(R.string.intent_sort_order), SORT_ORDER);
             if (QUERY != null) {
                 resIntent.putExtra(getString(R.string.intent_activity), TAG);

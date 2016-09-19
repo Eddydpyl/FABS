@@ -266,13 +266,13 @@ public class MovieDetailsActivityFragment extends Fragment {
             voteAverage.setText(movieModel.getRating());
             TextView budget = (TextView) rootView.findViewById(R.id.budget);
             if(movieModel.getBudget()!=0){
-                budget.setText(movieModel.getBudget().toString() + "$");
+                budget.setText(movieModel.getBudgetString());
             } else{
                 budget.setText("-");
             }
             TextView revenue = (TextView) rootView.findViewById(R.id.revenue);
             if(movieModel.getRevenue()!=0){
-                revenue.setText(movieModel.getRevenue().toString() + "$");
+                revenue.setText(movieModel.getRevenueString());
             } else{
                 revenue.setText("-");
             }

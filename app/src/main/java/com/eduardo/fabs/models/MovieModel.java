@@ -294,6 +294,26 @@ public class MovieModel {
         return date;
     }
 
+    public String getBudgetString(){
+        String budgetString = budget.toString();
+        if(budgetString.length()>=7){
+            budgetString = "$" + budgetString.substring(0,budgetString.length()-6) + "M";
+        } else if(budgetString.length()>=4){
+            budgetString = "$" + budgetString.substring(0,budgetString.length()-3) + "K";
+        }
+        return budgetString;
+    }
+
+    public String getRevenueString(){
+        String revenueString = revenue.toString();
+        if(revenueString.length()>=7){
+            revenueString = "$" + revenueString.substring(0,revenueString.length()-6) + "M";
+        } else if(revenueString.length()>=4){
+            revenueString = "$" + revenueString.substring(0,revenueString.length()-3) + "K";
+        }
+        return revenueString;
+    }
+
     @Override
     public String toString() {
         return "MovieModel{" +

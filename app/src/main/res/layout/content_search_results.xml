@@ -8,7 +8,7 @@
     android:layout_margin="16dp"
     android:name="com.eduardo.fabs.MyMoviesFragment"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.eduardo.fabs.SearchResultsActivity"
+    tools:context=".view.SearchResultsActivity"
     tools:showIn="@layout/activity_search_results">
 
     <TextView

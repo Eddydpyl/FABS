@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.eduardo.fabs.movies.MyMoviesActivity;
-import com.eduardo.fabs.sync.FABSSyncAdapter;
+import com.eduardo.fabs.view.movies.MyMoviesActivity;
+import com.eduardo.fabs.model.sync.FABSSyncAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

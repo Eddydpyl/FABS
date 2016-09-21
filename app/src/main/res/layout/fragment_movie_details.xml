@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.eduardo.fabs.movies.MovieDetailsActivityFragment"
+    tools:context=".view.movies.MovieDetailsActivityFragment"
     tools:showIn="@layout/activity_movie_details"
     android:scrollbars="none">
 
@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical">
 
-                <com.eduardo.fabs.utils.CustomSpinner
+                <com.eduardo.fabs.presenter.miscellany.CustomSpinner
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:id="@+id/status"
@@ -61,7 +61,7 @@
                     android:popupElevation="3dp"
                     android:textAlignment="center"/>
 
-                <com.eduardo.fabs.utils.CustomSpinner
+                <com.eduardo.fabs.presenter.miscellany.CustomSpinner
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:id="@+id/personal_score"

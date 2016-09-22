@@ -20,7 +20,7 @@ public class FABSContentProvider extends ContentProvider {
     static final int MY_MOVIE_WITH_ID = 101;
     static final int MY_MOVIE_WITH_USER_CATEGORY = 102;
     static final int POPULAR_MOVIE = 103;
-    static final int TOP_RATED_MOVIE = 104;;
+    static final int TOP_RATED_MOVIE = 104;
     static final int UPCOMING_MOVIE = 105;
     static final int NOW_IN_THEATERS_MOVIE = 106;
 

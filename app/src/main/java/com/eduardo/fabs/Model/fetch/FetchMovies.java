@@ -85,15 +85,15 @@ public class FetchMovies {
         final List<MovieModel> popularMovies = fetchMovies(popularMoviesStr);
         final String topRatedMoviesStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/"
                 + Constants.TMDBConstants.REQUEST_TOP_RATED + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
-                + Constants.TMDBConstants.API_KEY;;
+                + Constants.TMDBConstants.API_KEY;
         final List<MovieModel> topRatedMovies = fetchMovies(topRatedMoviesStr);
         final String upcomingMoviesStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/"
                 + Constants.TMDBConstants.REQUEST_UPCOMING_MOVIES + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
-                + Constants.TMDBConstants.API_KEY;;
+                + Constants.TMDBConstants.API_KEY;
         final List<MovieModel> upcomingMovies = fetchMovies(upcomingMoviesStr);
         final String nowInTheatersMoviesStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/"
                 + Constants.TMDBConstants.REQUEST_MOVIES_IN_THEATERS + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM
-                + Constants.TMDBConstants.API_KEY;;
+                + Constants.TMDBConstants.API_KEY;
         final List<MovieModel> nowInTheatersMovies = fetchMovies(nowInTheatersMoviesStr);
 
         // delete old data so we don't build up an endless history
@@ -354,7 +354,6 @@ public class FetchMovies {
             String urlStr = Constants.TMDBConstants.BASE_URL + Constants.TMDBConstants.MOVIE_TAG + "/" + movieID[0]
                     + "?" + Constants.TMDBConstants.API_KEY_QUERY_PARAM + Constants.TMDBConstants.API_KEY + "&"
                     + Constants.TMDBConstants.APPEND_TO_RESPONSE + Constants.TMDBConstants.REQUEST_VIDEOS;
-            ;
 
             try {
                 URL url = new URL(urlStr);

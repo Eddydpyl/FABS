@@ -11,13 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.eduardo.fabs.R;
-import com.eduardo.fabs.view.SettingsActivity;
-import com.eduardo.fabs.presenter.miscellany.SmoothActionBarDrawerToggle;
 import com.eduardo.fabs.model.data.FABSContract;
+import com.eduardo.fabs.presenter.miscellany.SmoothActionBarDrawerToggle;
+import com.eduardo.fabs.view.SettingsActivity;
+
+import static com.eduardo.fabs.presenter.MovieActivityMethods.setUpNavHeader;
 
 //TODO: Setup tablet display
 
@@ -59,7 +59,6 @@ public class MyMoviesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        final SharedPreferences.Editor edit = prefs.edit();
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_mymovies);
         final SmoothActionBarDrawerToggle toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -72,123 +71,7 @@ public class MyMoviesActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                if (mPreviousMenuItem != null) {
-                    mPreviousMenuItem.setChecked(false);
-                }
-                menuItem.setCheckable(true);
-                menuItem.setChecked(true);
-                mPreviousMenuItem = menuItem;
-
-                //Closing drawer on item click
-                drawer.closeDrawers();
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
-                    case(R.id.my_collection):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                setTitle(getString(R.string.title_fragment_my_movies));
-                                edit.putInt(getString(R.string.pref_my_movies_state), 0);
-                                edit.commit();
-                                MyMoviesFragment fragment = new MyMoviesFragment();
-                                sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.completed):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                setTitle(getString(R.string.title_fragment_completed_movies));
-                                edit.putInt(getString(R.string.pref_my_movies_state), 1);
-                                edit.commit();
-                                MyMoviesFragment fragment = new MyMoviesFragment();
-                                sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.plan_to_watch):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                setTitle(getString(R.string.title_fragment_plan_to_watch_movies));
-                                edit.putInt(getString(R.string.pref_my_movies_state), 2);
-                                edit.commit();
-                                MyMoviesFragment fragment = new MyMoviesFragment();
-                                sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.discover):{
-                        break;
-                    }
-                    case(R.id.popular):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                edit.putInt(getString(R.string.pref_discover_movies_state), 0);
-                                edit.commit();
-                                startActivity(intent);
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.top_rated):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                edit.putInt(getString(R.string.pref_discover_movies_state), 1);
-                                edit.commit();
-                                startActivity(intent);
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.now_in_theaters):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                edit.putInt(getString(R.string.pref_discover_movies_state), 2);
-                                edit.commit();
-                                startActivity(intent);
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.upcoming):{
-                        toggle.runWhenIdle(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                edit.putInt(getString(R.string.pref_discover_movies_state), 3);
-                                edit.commit();
-                                startActivity(intent);
-                            }
-                        });
-                        break;
-                    }
-                    case(R.id.settings):{
-                        Intent intent = new Intent(MyMoviesActivity.this, SettingsActivity.class);
-                        intent.putExtra(getString(R.string.intent_activity), TAG);
-                        intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
-                        startActivity(intent);
-                        break;
-                    }
-                }
+                setUpNavBody(menuItem, drawer, toggle, prefs);
                 return true;
             }
         });
@@ -238,95 +121,7 @@ public class MyMoviesActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         // Handle onClick events in nav_header
-        View headerView = navigationView.getHeaderView(0);
-        final float scale = getResources().getDisplayMetrics().density;
-        final int pixelsBig  = (int) (85 * scale + 0.5f);
-        final int pixelsSmall  = (int) (55 * scale + 0.5f);
-        final ImageView imageView_movies = (ImageView) headerView.findViewById(R.id.imageView_movies);
-        final ImageView imageView_anime = (ImageView) headerView.findViewById(R.id.imageView_anime);
-        final ImageView imageView_books = (ImageView) headerView.findViewById(R.id.imageView_books);
-        final ImageView imageView_series= (ImageView) headerView.findViewById(R.id.imageView_series);
-        imageView_movies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView_movies.getLayoutParams().height = pixelsBig;
-                imageView_movies.getLayoutParams().width = pixelsBig;
-                imageView_movies.requestLayout();
-                imageView_anime.getLayoutParams().height = pixelsSmall;
-                imageView_anime.getLayoutParams().width = pixelsSmall;
-                imageView_anime.requestLayout();
-                imageView_books.getLayoutParams().height = pixelsSmall;
-                imageView_books.getLayoutParams().width = pixelsSmall;
-                imageView_books.requestLayout();
-                imageView_series.getLayoutParams().height = pixelsSmall;
-                imageView_series.getLayoutParams().width = pixelsSmall;
-                imageView_series.requestLayout();
-            }
-        });
-        imageView_anime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView_movies.getLayoutParams().height = pixelsSmall;
-                imageView_movies.getLayoutParams().width = pixelsSmall;
-                imageView_movies.requestLayout();
-                imageView_anime.getLayoutParams().height = pixelsBig;
-                imageView_anime.getLayoutParams().width = pixelsBig;
-                imageView_anime.requestLayout();
-                imageView_books.getLayoutParams().height = pixelsSmall;
-                imageView_books.getLayoutParams().width = pixelsSmall;
-                imageView_books.requestLayout();
-                imageView_series.getLayoutParams().height = pixelsSmall;
-                imageView_series.getLayoutParams().width = pixelsSmall;
-                imageView_series.requestLayout();
-            }
-        });
-        imageView_books.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView_movies.getLayoutParams().height = pixelsSmall;
-                imageView_movies.getLayoutParams().width = pixelsSmall;
-                imageView_movies.requestLayout();
-                imageView_anime.getLayoutParams().height = pixelsSmall;
-                imageView_anime.getLayoutParams().width = pixelsSmall;
-                imageView_anime.requestLayout();
-                imageView_books.getLayoutParams().height = pixelsBig;
-                imageView_books.getLayoutParams().width = pixelsBig;
-                imageView_books.requestLayout();
-                imageView_series.getLayoutParams().height = pixelsSmall;
-                imageView_series.getLayoutParams().width = pixelsSmall;
-                imageView_series.requestLayout();
-            }
-        });
-        imageView_series.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView_movies.getLayoutParams().height = pixelsSmall;
-                imageView_movies.getLayoutParams().width = pixelsSmall;
-                imageView_movies.requestLayout();
-                imageView_anime.getLayoutParams().height = pixelsSmall;
-                imageView_anime.getLayoutParams().width = pixelsSmall;
-                imageView_anime.requestLayout();
-                imageView_books.getLayoutParams().height = pixelsSmall;
-                imageView_books.getLayoutParams().width = pixelsSmall;
-                imageView_books.requestLayout();
-                imageView_series.getLayoutParams().height = pixelsBig;
-                imageView_series.getLayoutParams().width = pixelsBig;
-                imageView_series.requestLayout();
-            }
-        });
-        // Set Movies as selected
-        imageView_movies.getLayoutParams().height = pixelsBig;
-        imageView_movies.getLayoutParams().width = pixelsBig;
-        imageView_movies.requestLayout();
-        imageView_anime.getLayoutParams().height = pixelsSmall;
-        imageView_anime.getLayoutParams().width = pixelsSmall;
-        imageView_anime.requestLayout();
-        imageView_books.getLayoutParams().height = pixelsSmall;
-        imageView_books.getLayoutParams().width = pixelsSmall;
-        imageView_books.requestLayout();
-        imageView_series.getLayoutParams().height = pixelsSmall;
-        imageView_series.getLayoutParams().width = pixelsSmall;
-        imageView_series.requestLayout();
+        setUpNavHeader(navigationView, this.getBaseContext());
     }
 
     protected void onResume() {
@@ -409,5 +204,126 @@ public class MyMoviesActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private void setUpNavBody(MenuItem menuItem, DrawerLayout drawer, SmoothActionBarDrawerToggle toggle, SharedPreferences prefs){
+        final SharedPreferences.Editor edit = prefs.edit();
+        if (mPreviousMenuItem != null) {
+            mPreviousMenuItem.setChecked(false);
+        }
+        menuItem.setCheckable(true);
+        menuItem.setChecked(true);
+        mPreviousMenuItem = menuItem;
+
+        //Closing drawer on item click
+        drawer.closeDrawers();
+
+        //Check to see which item was being clicked and perform appropriate action
+        switch (menuItem.getItemId()) {
+            case(R.id.my_collection):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTitle(getString(R.string.title_fragment_my_movies));
+                        edit.putInt(getString(R.string.pref_my_movies_state), 0);
+                        edit.commit();
+                        MyMoviesFragment fragment = new MyMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    }
+                });
+                break;
+            }
+            case(R.id.completed):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTitle(getString(R.string.title_fragment_completed_movies));
+                        edit.putInt(getString(R.string.pref_my_movies_state), 1);
+                        edit.commit();
+                        MyMoviesFragment fragment = new MyMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_USER_RATING + " DESC";
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    }
+                });
+                break;
+            }
+            case(R.id.plan_to_watch):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTitle(getString(R.string.title_fragment_plan_to_watch_movies));
+                        edit.putInt(getString(R.string.pref_my_movies_state), 2);
+                        edit.commit();
+                        MyMoviesFragment fragment = new MyMoviesFragment();
+                        sortOrder = FABSContract.MY_MOVIES_TABLE.COLUMN_VOTE_AVERAGE + " DESC";
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    }
+                });
+                break;
+            }
+            case(R.id.discover):{
+                break;
+            }
+            case(R.id.popular):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        edit.putInt(getString(R.string.pref_discover_movies_state), 0);
+                        edit.commit();
+                        startActivity(intent);
+                    }
+                });
+                break;
+            }
+            case(R.id.top_rated):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        edit.putInt(getString(R.string.pref_discover_movies_state), 1);
+                        edit.commit();
+                        startActivity(intent);
+                    }
+                });
+                break;
+            }
+            case(R.id.now_in_theaters):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        edit.putInt(getString(R.string.pref_discover_movies_state), 2);
+                        edit.commit();
+                        startActivity(intent);
+                    }
+                });
+                break;
+            }
+            case(R.id.upcoming):{
+                toggle.runWhenIdle(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MyMoviesActivity.this, DiscoverMoviesActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        edit.putInt(getString(R.string.pref_discover_movies_state), 3);
+                        edit.commit();
+                        startActivity(intent);
+                    }
+                });
+                break;
+            }
+            case(R.id.settings):{
+                Intent intent = new Intent(MyMoviesActivity.this, SettingsActivity.class);
+                intent.putExtra(getString(R.string.intent_activity), TAG);
+                intent.putExtra(getString(R.string.intent_sort_order), sortOrder);
+                startActivity(intent);
+                break;
+            }
+        }
     }
 }

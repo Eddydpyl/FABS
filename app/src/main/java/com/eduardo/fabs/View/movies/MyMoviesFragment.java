@@ -1,12 +1,10 @@
 package com.eduardo.fabs.view.movies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -20,18 +18,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
 import com.eduardo.fabs.R;
+import com.eduardo.fabs.model.UserCategory;
+import com.eduardo.fabs.model.data.FABSContract;
 import com.eduardo.fabs.presenter.miscellany.CursorRecyclerAdapter;
 import com.eduardo.fabs.presenter.miscellany.RecyclerItemClickListener;
 import com.eduardo.fabs.presenter.miscellany.SwipeToDeleteCursorWrapper;
 import com.eduardo.fabs.presenter.miscellany.SwipeableRecyclerViewTouchListener;
-import com.eduardo.fabs.model.data.FABSContract;
-import com.eduardo.fabs.model.UserCategory;
 
 import java.io.IOException;
+
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.filterMyCursorRecycler;
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.launchMyMovieDetailsActivity;
 
 public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener{
 
@@ -64,7 +64,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
         View view = rootView.findViewById(R.id.recyclerView);
         emptyCursorTextView = (TextView) rootView.findViewById(R.id.empty_cursor);
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+            final Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             // We initialize the cursorRecyclerAdapter without a cursor, so we can set it as the recyclerView's adapter
@@ -89,14 +89,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
                 @Override
                 public void onItemClick(View view, int position) {
-                    TextView textView = (TextView) view.findViewById(R.id.ID);
-                    String ID = textView.getText().toString();
-                    Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
-                    intent.putExtra(getString(R.string.intent_movie_id), ID);
-                    intent.putExtra(getString(R.string.intent_activity), MyMoviesActivity.TAG);
-                    intent.putExtra(getString(R.string.intent_fragment), loader);
-                    intent.putExtra(getString(R.string.intent_sort_order), MyMoviesActivity.sortOrder);
-                    startActivity(intent);
+                    launchMyMovieDetailsActivity(view, context);
                 }
 
                 @Override
@@ -143,48 +136,7 @@ public class MyMoviesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public boolean onQueryTextChange(String query) {
-        // Here is where we are going to implement the filter logic
-        FilterQueryProvider filterQueryProvider = new FilterQueryProvider() {
-            @Override
-            public Cursor runQuery(CharSequence charSequence) {
-                final Uri uri = FABSContract.MY_MOVIES_TABLE.CONTENT_URI;
-                switch (loader){
-                    case 0: {
-                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
-                        String[] selectionArgs = {charSequence.toString() + "%"};
-                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
-                    }
-                    case 1: {
-                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
-                        String[] selectionArgs = {UserCategory.COMPLETED.toString(), charSequence.toString() + "%"};
-                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
-                    }
-                    case 2: {
-                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_USER_CATEGORY + " = ? AND " + FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
-                        String[] selectionArgs = {UserCategory.PLANTOWATCH.toString(), charSequence.toString() + "%"};
-                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
-                    }
-                    default:
-                        String selection = FABSContract.MY_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.MY_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
-                        String[] selectionArgs = {charSequence.toString() + "%"};
-                        return getActivity().getContentResolver().query(uri, MyMoviesActivity.MY_MOVIES_COLUMNS, selection, selectionArgs, MyMoviesActivity.sortOrder);
-                }
-            }
-        };
-        cursorRecyclerAdapter.setFilterQueryProvider(filterQueryProvider);
-        cursorRecyclerAdapter.getFilter().filter(query);
-        // Execute some code after 0.2 seconds have passed
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(cursorRecyclerAdapter.getItemCount()==0){
-                    emptyCursorTextView.setVisibility(View.VISIBLE);
-                } else {
-                    emptyCursorTextView.setVisibility(View.GONE);
-                }
-            }
-        }, 200);
+        filterMyCursorRecycler(cursorRecyclerAdapter, emptyCursorTextView, query, loader, getContext());
         return true;
     }
 

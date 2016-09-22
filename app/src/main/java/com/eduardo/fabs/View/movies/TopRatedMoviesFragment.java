@@ -1,13 +1,10 @@
 package com.eduardo.fabs.view.movies;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -20,23 +17,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
+import com.eduardo.fabs.Constants;
 import com.eduardo.fabs.R;
-import com.eduardo.fabs.view.SearchResultsActivity;
+import com.eduardo.fabs.model.data.FABSContract;
 import com.eduardo.fabs.presenter.miscellany.CursorRecyclerAdapter;
 import com.eduardo.fabs.presenter.miscellany.EndlessRecyclerViewScrollListener;
 import com.eduardo.fabs.presenter.miscellany.RecyclerItemClickListener;
-import com.eduardo.fabs.model.data.FABSContract;
-import com.eduardo.fabs.model.fetch.FetchMovies;
-import com.eduardo.fabs.model.MovieModel;
-import com.eduardo.fabs.Constants;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.ExecutionException;
+
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.filterCursorRecycler;
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.launchMovieDetailsActivity;
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.launchSearchActivity;
+import static com.eduardo.fabs.presenter.MovieFragmentMethods.loadMoreMovies;
 
 public class TopRatedMoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener {
 
@@ -102,14 +97,7 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
 
                 @Override
                 public void onItemClick(View view, int position) {
-                    TextView textView = (TextView) view.findViewById(R.id.ID);
-                    String ID = textView.getText().toString();
-                    Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
-                    intent.putExtra(getString(R.string.intent_movie_id), ID);
-                    intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-                    intent.putExtra(getString(R.string.intent_fragment), 1);
-                    intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
-                    startActivity(intent);
+                    launchMovieDetailsActivity(view, context);
                 }
 
                 @Override
@@ -120,51 +108,10 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
             EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    if(page > 100 || DiscoverMoviesActivity.searching){
-                        // The online database has only up to 100 pages at any time and we don't want to load any more while searching
-                        return;
-                    }
-                    try {
-                        SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                        SharedPreferences.Editor edit = sharedPref.edit();
-                        edit.putInt(getString(R.string.pref_pages_loaded_top_rated_movies), page);
-                        edit.commit();
-
-                        List<MovieModel> topRatedMovies = new FetchMovies.FetchMoreMoviesTask(Constants.TMDBConstants.REQUEST_TOP_RATED).execute(page).get();
-                        Vector<ContentValues> topRatedMoviesVector = new Vector<ContentValues>(topRatedMovies.size());
-
-                        for (int i = 0; i < topRatedMovies.size(); i++) {
-                            ContentValues movieValues = new ContentValues();
-                            String id = topRatedMovies.get(i).getId();
-                            String title = topRatedMovies.get(i).getTitle();
-                            String overview = topRatedMovies.get(i).getOverview();
-                            String poster_image = topRatedMovies.get(i).getPosterPath();
-                            String release_date = topRatedMovies.get(i).getReleaseDate();
-                            Double popularity = topRatedMovies.get(i).getPopularity();
-                            Double vote_average = topRatedMovies.get(i).getVoteAverage();
-
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE._ID, Integer.valueOf(id));
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_TITLE, title);
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_OVERVIEW, overview);
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_POSTER_IMAGE, poster_image);
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_RELEASE_DATE, release_date);
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_POPULARITY, popularity);
-                            movieValues.put(FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_VOTE_AVERAGE, vote_average);
-
-                            topRatedMoviesVector.add(movieValues);
-                        }
-
-                        // add top rated movies to database
-                        if (topRatedMoviesVector.size() > 0) {
-                            ContentValues[] cvArray = new ContentValues[topRatedMoviesVector.size()];
-                            topRatedMoviesVector.toArray(cvArray);
-                            context.getContentResolver().bulkInsert(FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI, cvArray);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    String request = Constants.TMDBConstants.REQUEST_TOP_RATED;
+                    Uri contentUri = FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI;
+                    String prefString = getString(R.string.pref_pages_loaded_top_rated_movies);
+                    loadMoreMovies(page, request, contentUri, prefString, context);
                 }
             };
             SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -183,41 +130,15 @@ public class TopRatedMoviesFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public boolean onQueryTextChange(String query) {
-        // Here is where we are going to implement the filter logic
-        FilterQueryProvider filterQueryProvider = new FilterQueryProvider() {
-            @Override
-            public Cursor runQuery(CharSequence charSequence) {
-                final Uri uri = FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI;
-                String selection = FABSContract.TOP_RATED_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
-                String[] selectionArgs = {charSequence.toString() + "%"};
-                return getActivity().getContentResolver().query(uri, TopRatedMoviesFragment.TOP_RATED_MOVIES_COLUMNS, selection, selectionArgs, DiscoverMoviesActivity.sortOrder);
-
-            }
-        };
-        cursorRecyclerAdapter.setFilterQueryProvider(filterQueryProvider);
-        cursorRecyclerAdapter.getFilter().filter(query);
-        // Execute some code after 0.2 seconds have passed
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(cursorRecyclerAdapter.getItemCount()==0){
-                    emptyCursorTextView.setVisibility(View.VISIBLE);
-                } else {
-                    emptyCursorTextView.setVisibility(View.GONE);
-                }
-            }
-        }, 200);
+        final Uri uri = FABSContract.TOP_RATED_MOVIES_TABLE.CONTENT_URI;
+        String selection = FABSContract.TOP_RATED_MOVIES_TABLE.TABLE_NAME + "." + FABSContract.TOP_RATED_MOVIES_TABLE.COLUMN_TITLE + " LIKE ? ";
+        filterCursorRecycler(cursorRecyclerAdapter, emptyCursorTextView, query, uri, selection, TOP_RATED_MOVIES_COLUMNS, getContext());
         return true;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Intent intent = new Intent(getContext(), SearchResultsActivity.class);
-        intent.putExtra(getString(R.string.intent_query), query);
-        intent.putExtra(getString(R.string.intent_activity), DiscoverMoviesActivity.TAG);
-        intent.putExtra(getString(R.string.intent_sort_order), DiscoverMoviesActivity.sortOrder);
-        startActivity(intent);
+        launchSearchActivity(query, getContext());
         return true;
     }
 

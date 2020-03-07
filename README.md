@@ -1,4 +1,4 @@
-# FABS
+# FABS [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![Status: Abandoned](https://img.shields.io/badge/Status-Abandoned-red.svg)
 
 My first Android app, a media database that allows you to keep track of your favorite Films, Anime, Books and Series. At the state the app is as of now, the films collection is fully functional but the rest of them aren't even accesible. The coding that remains to be done is little more than copying and pasting thousands of lines of code, as well as fixing several issues that do not affect the performance of the app all that much. This was a training exercise for Udacity's course <a href="https://eu.udacity.com/course/new-android-fundamentals--ud851">Developing Android Apps</a> and thus never meant to be published.
 
